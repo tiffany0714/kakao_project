@@ -1,0 +1,19 @@
+name: Daily Update
+on:
+  schedule:
+    - cron: '0 3 * * *' # 한국시간 낮 12시
+  workflow_dispatch: # 수동 실행 버튼
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Update
+        run: python update_data.py
+      - name: Commit changes
+        run: |
+          git config --global user.name "GeminiBot"
+          git config --global user.email "bot@gemini.ai"
+          git add .
+          git commit -m "매일 12시 자동 업데이트" || echo "No changes"
+          git push

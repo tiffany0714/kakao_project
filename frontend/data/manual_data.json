@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "name": "[3/23일주] FOR❤️ME 브랜드카드",
+      "schedule": "3/23일주",
+      "scheme": "구글폼 제안 항목",
+      "deadline": "3/17일까지",
+      "source": "form_option"
+    },
+    {
+      "name": "[3/23주] 카쇼페 24시간 카쇼페딜",
+      "schedule": "3/23주",
+      "scheme": "구글폼 제안 항목",
+      "deadline": "3/16일까지",
+      "source": "form_option"
+    },
+    {
+      "name": "새학기 준비 (School Prep)",
+      "schedule": "2026.3.2(월) ~ 3.8(일)",
+      "scheme": "헤더 추출 테스트",
+      "deadline": "2/23(월)까지",
+      "source": "header"
+    }
+  ],
+  "ranking": {
+    "rank": "1",
+    "name": "오즈키즈 데스크탑 테스트 상품",
+    "img": ""
+  }
+}

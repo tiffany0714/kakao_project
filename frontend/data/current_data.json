@@ -1,0 +1,182 @@
+{
+  "last_updated": "2026-03-12T09:55:00",
+  "events": [
+    {
+      "name": "새학기 준비",
+      "schedule": "3월 2일 ~ 3월 8일",
+      "scheme": "- 3만원 이상, 3,000원 정액 할인 (배송 / 자기구매 전용) *1장",
+      "deadline": "2월 23일"
+    },
+    {
+      "name": "FOR♥️ME 브랜드카드",
+      "schedule": "3월 23일 ~ 3월 29일",
+      "scheme": "- 3만원 이상, 3,000원 정액 할인\n- 5만원 이상, 5,000원 정액 할인",
+      "deadline": "3월 17일"
+    },
+    {
+      "name": "선물하기 베프",
+      "schedule": "3월 16일 ~ 3월 22일",
+      "scheme": "- 10% 할인 쿠폰 (3만원 이상 구매시 최대 5만원)\n- 10만원 이상 구매시 1만원 할인\n- 5만원 이상 구매시 5천원 할인",
+      "deadline": "3월 9일"
+    },
+    {
+      "name": "🎊 1주차 카카오 쇼핑 페스타 🎊",
+      "schedule": "3월 16일 ~ 3월 22일",
+      "scheme": "- 선착순 2만원 이상 구매시 5천원 할인\n- 데일리 2만/5만/10만 이상 구매시 2천/5천/1만 할인\n- 카카오페이 결제할인 10% / 5%",
+      "deadline": "3월 4일"
+    },
+    {
+      "name": "🎊 2주차 카카오 쇼핑 페스타 🎊",
+      "schedule": "3월 23일 ~ 3월 29일",
+      "scheme": "- 선착순 2만원 이상 구매시 5천원 할인\n- 데일리 2만/5만/10만 이상 구매시 2천/5천/1만 할인\n- 카카오페이 결제할인 10% / 5%",
+      "deadline": "3월 16일"
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 68,
+      "product_code": "11494581",
+      "category": "realtime",
+      "name": "[오즈키즈] 블룸 유아 여아 슬립온 구두",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250410094552_7ec9c303450c41cab44408025c39bc53.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 114,
+      "product_code": "11472940",
+      "category": "realtime",
+      "name": "[오즈키즈] 클로버 유아 남아 운동화",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 286,
+      "product_code": "10997952",
+      "category": "realtime",
+      "name": "[오즈키즈] 스노우 유아 부츠",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250108110855_de679d346d4541c1a8f952f38db79b02.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 368,
+      "product_code": "6840482",
+      "category": "realtime",
+      "name": "[오즈키즈] 쿠션 유아 샌들",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260119094959_ca7615b8a3e14a6a9a1dfc7e79d9d006.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 387,
+      "product_code": "10284937",
+      "category": "realtime",
+      "name": "[오즈키즈] 레인 유아 장화",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240902091942_3caf4f34cf234a02a44d9113b1784850.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 394,
+      "product_code": "11017493",
+      "category": "realtime",
+      "name": "[오즈키즈] 스타 유아 슬리퍼",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 399,
+      "product_code": "12202727",
+      "category": "realtime",
+      "name": "[오즈키즈] 플라워 유아 여아 단화",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260127115537_2165810deb104985ae817ecf0a911470.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 402,
+      "product_code": "12961891",
+      "category": "realtime",
+      "name": "[오즈키즈] 클라우드 유아 운동화",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260212101103_a91f4b64c62e4e34a1336a83cce9c410.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 434,
+      "product_code": "12302900",
+      "category": "realtime",
+      "name": "[오즈키즈] 소프트 유아 슬립온",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 466,
+      "product_code": "2935877",
+      "category": "realtime",
+      "name": "[오즈키즈] 베이비 신발 세트",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250805180129_fc2b9d2b925741b3b503b302c6185748.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    }
+  ],
+  "niece_ranking": [
+    {
+      "rank": 39,
+      "product_code": "11494581",
+      "name": "[어린이선물] 블룸 유아 여아 슬립온",
+      "img": "https://st.kakaocdn.net/product/gift/product/20250410094552_7ec9c303450c41cab44408025c39bc53.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 83,
+      "product_code": "12092860",
+      "name": "유아 여아원피스 어린이 여아옷 3종 (택 1)",
+      "img": "https://st.kakaocdn.net/product/gift/product/20260303140707_3a898880283349e9aeb966980c42612e.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 112,
+      "product_code": "10130839",
+      "name": "[어린이선물] 코코리본 유아 여아 원피스",
+      "img": "https://st.kakaocdn.net/product/gift/product/20240920115520_9532178d77f346a799c503d2c92b4d40.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 131,
+      "product_code": "10284937",
+      "name": "크라운리본 아동 여아 원피스",
+      "img": "https://st.kakaocdn.net/product/gift/product/20240902091942_3caf4f34cf234a02a44d9113b1784850.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 141,
+      "product_code": "8717028",
+      "name": "[어린이선물] 마이돌 유아 여아 초등학교 유치원 스쿨백팩",
+      "img": "https://st.kakaocdn.net/product/gift/product/20240206154924_95a6aba0d18541518a1174f98772adf5.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    },
+    {
+      "rank": 179,
+      "product_code": "6213554",
+      "name": "[입학선물] 오늘 유아 초등학교 유치원 실내화",
+      "img": "https://st.kakaocdn.net/product/gift/product/PwylMIha2kCKoQFLNOI3Uw/wHgWRxW_NvVfEyYHY7nPDL35TAR1oTpWjNlCMqvZv0g.jpg",
+      "diff_yesterday": null,
+      "diff_last_week": null
+    }
+  ],
+  "changes": [
+    "Updated event list from Google Form data",
+    "Fixed ranking: 오즈키즈 제품만 표기",
+    "Added niece_ranking gift data"
+  ]
+}
