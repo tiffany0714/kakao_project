@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-12T16:59:06.687625",
+  "last_updated": "2026-03-12T18:00:18.122714",
   "events": [
     {
       "area": "유아동 / 패션",
@@ -32,51 +32,51 @@
   ],
   "ranking": [
     {
-      "rank": "96",
+      "rank": "111",
       "name": "오즈키즈",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260127115537_2165810deb104985ae817ecf0a911470.jpg",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "12202727"
     },
     {
-      "rank": "101",
+      "rank": "122",
       "name": "오즈키즈",
       "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20251121150135_fa53d2376b594d788e987ec5ed5311df.jpg",
       "product_code": "12359723"
     },
     {
-      "rank": "208",
+      "rank": "209",
       "name": "오즈키즈",
       "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250813110944_c1e197841bb44599952e3f62f0b18f73.jpg",
       "product_code": "12093016"
     },
     {
-      "rank": "209",
-      "name": "오즈키즈",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250407165137_b3b1bc47b9504d06a63eabce6db548c9.jpg",
-      "product_code": "11472940"
-    },
-    {
-      "rank": "265",
+      "rank": "264",
       "name": "오즈키즈",
       "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250410094552_7ec9c303450c41cab44408025c39bc53.jpg",
       "product_code": "11494581"
     },
     {
-      "rank": "365",
+      "rank": "326",
+      "name": "오즈키즈",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250407165137_b3b1bc47b9504d06a63eabce6db548c9.jpg",
+      "product_code": "11472940"
+    },
+    {
+      "rank": "381",
       "name": "오즈키즈",
       "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250813112353_51cda414804f4f169709f9e8c76109f4.jpg",
       "product_code": "12093091"
     },
     {
-      "rank": "495",
+      "rank": "491",
       "name": "오즈키즈",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "10095578"
     },
     {
-      "rank": "496",
+      "rank": "492",
       "name": "오즈키즈",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250918154941_d6713099fa324164a25c7bd043fd1793.jpg",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "11239447"
     }
   ],
