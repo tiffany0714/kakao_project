@@ -241,7 +241,8 @@ async def main():
         browser = await p.chromium.launch(headless=True)
         
         import os
-        state_path = "C:/Users/User/.gemini/antigravity/scratch/kakao_project/backend/auth_state.json"
+        backend_dir = os.path.dirname(os.path.abspath(__file__))
+        state_path = os.path.join(backend_dir, "auth_state.json")
         if os.path.exists(state_path):
             context = await browser.new_context(storage_state=state_path)
             print(f"Loaded auth state for scraping.")
@@ -267,18 +268,25 @@ async def main():
         except Exception as e:
             print(f"Error form: {e}")
             # Load old events fallback
-            try:
-                with open("C:/Users/User/.gemini/antigravity/scratch/kakao_project/frontend/data/current_data.json", "r", encoding='utf-8') as f:
-                    old_data = json.load(f)
-                    data["events"] = old_data.get("events", [])
-            except: pass
-
         try:
-            output_dir = "C:/Users/User/.gemini/antigravity/scratch/kakao_project/frontend/data"
+            # Construct relative path to frontend/data
+            project_root = os.path.dirname(backend_dir)
+            output_dir = os.path.join(project_root, "frontend", "data")
             os.makedirs(output_dir, exist_ok=True)
-            with open(os.path.join(output_dir, "current_data.json"), "w", encoding='utf-8') as f:
+            output_file = os.path.join(output_dir, "current_data.json")
+            
+            # Load existing events if they exist to prevent overwriting with error fallback
+            if not data["events"]:
+                try:
+                    if os.path.exists(output_file):
+                        with open(output_file, "r", encoding='utf-8') as f:
+                            old_data = json.load(f)
+                            data["events"] = old_data.get("events", [])
+                except: pass
+
+            with open(output_file, "w", encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
-            print("Successfully saved data.")
+            print(f"Successfully saved data to {output_file}")
         except Exception as e:
             print(f"Error saving: {e}")
         finally:
