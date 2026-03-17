@@ -62,7 +62,7 @@ async def scrape_google_form(page, url):
                 elif mode == "deadline":
                     deadline += " " + line_str
                 elif mode == "scheme":
-                    scheme += line_str + "<br>"
+                    scheme += line_str + "\n"
                     
         if name and (schedule or deadline or scheme):
             events.append({
@@ -105,33 +105,59 @@ async def scrape_kakao_ranking(page, url):
     # Granular detection logic with Product Code
     ozkids_products = await page.evaluate(r'''() => {
         const results = [];
-        const items = document.querySelectorAll('li');
+        // Refined selector to target actual product cards and avoid containers
+        const items = Array.from(document.querySelectorAll('li')).filter(li => {
+            const hasBrand = li.querySelector('.txt_brand, [class*="brand"]');
+            const hasTitle = li.querySelector('.tit_goods, .tit_prd, .tit_item, [class*="tit"], strong');
+            // Ensure it's not a container by checking if it contains other li elements
+            return hasBrand && hasTitle && li.querySelectorAll('li').length === 0;
+        });
         
         items.forEach(li => {
-            const brandEl = li.querySelector('.txt_brand');
-            const titleEl = li.querySelector('.tit_goods');
-            const infoLink = li.querySelector('.link_info');
+            const brandEl = li.querySelector('.txt_brand, [class*="brand"]');
+            const titleEl = li.querySelector('.tit_goods, .tit_prd, .tit_item, [class*="tit"], strong');
+            const infoLink = li.querySelector('a');
             
-            const brandName = brandEl ? brandEl.innerText : "";
-            const titleText = titleEl ? titleEl.innerText : "";
-            const fullText = li.innerText;
+            const brandName = brandEl ? brandEl.innerText.trim() : "";
+            const titleText = titleEl ? titleEl.innerText.trim() : "";
+            const fullText = li.innerText || "";
             
             if (brandName.includes('오즈키즈') || titleText.includes('오즈키즈') || 
                 fullText.includes('오즈키즈') || fullText.toUpperCase().includes('OZKIDS')) {
                 
-                const rankEl = li.querySelector('.num_rank');
+                const rankEl = li.querySelector('.num_rank, .num_badge, [class*="rank"]');
                 const rank = rankEl ? rankEl.innerText.trim() : "N/A";
                 
-                const imgEl = li.querySelector('.link_thumb img');
-                const img = imgEl ? imgEl.src : "";
+                const imgEl = li.querySelector('img, [style*="background-image"]');
+                let img = "";
+                if (imgEl) {
+                    if (imgEl.tagName.toLowerCase() === 'img') {
+                        img = imgEl.src || imgEl.getAttribute('data-src') || imgEl.getAttribute('data-original') || "";
+                    } else {
+                        const style = imgEl.getAttribute('style') || "";
+                        const match = style.match(/url\((['"]?)(.*?)\1\)/);
+                        if (match) img = match[2];
+                    }
+                }
                 
                 let productCode = "";
-                if (infoLink && infoLink.href) {
-                    const match = infoLink.href.match(/product\/(\d+)/);
+                let href = infoLink ? infoLink.href : "";
+                if (href) {
+                    const match = href.match(/product\/(\d+)/);
                     productCode = match ? match[1] : "";
                 }
                 
-                const finalName = titleText.trim() || (infoLink ? infoLink.innerText.trim().split('\n')[1] : "Unknown");
+                // Smart name extraction
+                let finalName = titleText;
+                if (!finalName || finalName === "오즈키즈" || finalName === "OZKIDS") {
+                    const lines = fullText.split('\n').map(l => l.trim()).filter(l => l.length > 3 && !l.includes('원') && !l.match(/^\d+$/));
+                    const betterName = lines.find(l => l !== "오즈키즈" && l !== brandName);
+                    if (betterName) finalName = betterName;
+                }
+                
+                // Unify formatting
+                finalName = finalName.replace(/^\[오즈키즈\]\s*/, '').replace(/^오즈키즈\s*/, '').trim();
+                finalName = `[오즈키즈] ${finalName}`;
                 
                 results.push({ rank, name: finalName, img, product_code: productCode });
             }
@@ -148,7 +174,7 @@ async def scrape_kakao_ranking(page, url):
             seen.add(p_key)
             unique_products.append(p)
 
-    print(f"Found {len(unique_products)} OzKids products.")
+    print(f"Found {len(unique_products)} OzKids products: {[p['name'] for p in unique_products[:3]]}")
     return unique_products
 
 async def scrape_niece_ranking(page, url):
@@ -184,11 +210,11 @@ async def scrape_niece_ranking(page, url):
         
         items.forEach(li => {
             const brandEl = li.querySelector('.txt_brand, [class*="brand"]');
-            const titleEl = li.querySelector('.tit_prd, .tit_goods, strong, [class*="tit"], [class*="name"]');
+            const titleEl = li.querySelector('.tit_prd, .tit_goods, .tit_item, strong, [class*="tit"], [class*="name"]');
             const infoLink = li.querySelector('a');
             
-            const brandName = brandEl ? brandEl.innerText : "";
-            const titleText = titleEl ? titleEl.innerText : "";
+            const brandName = brandEl ? brandEl.innerText.trim() : "";
+            const titleText = titleEl ? titleEl.innerText.trim() : "";
             const fullText = li.innerText || "";
             
             // Sometimes gc-link has the href attribute directly
@@ -197,26 +223,39 @@ async def scrape_niece_ranking(page, url):
                 href = li.getAttribute('href');
             }
             
-            if (titleText) {
-                if (brandName.includes('오즈키즈') || titleText.includes('오즈키즈') || 
-                    fullText.includes('오즈키즈') || fullText.toUpperCase().includes('OZKIDS')) {
-                    
-                    const rankEl = li.querySelector('.num_rank, .num_badge, .badge_rank');
-                    const rank = rankEl ? rankEl.innerText.trim() : String(rankCounter);
-                    
-                    const imgEl = li.querySelector('img');
-                    const img = imgEl ? imgEl.src : "";
-                    
-                    let productCode = "";
-                    if (href) {
-                        const match = href.match(/product\/(\d+)/);
-                        productCode = match ? match[1] : "";
+            if (brandName.includes('오즈키즈') || titleText.includes('오즈키즈') || 
+                fullText.includes('오즈키즈') || fullText.toUpperCase().includes('OZKIDS')) {
+                
+                const rankEl = li.querySelector('.num_rank, .num_badge, .badge_rank, [class*="rank"]');
+                const rank = rankEl ? rankEl.innerText.trim() : String(rankCounter);
+                
+                const imgEl = li.querySelector('img, [style*="background-image"]');
+                let img = "";
+                if (imgEl) {
+                    if (imgEl.tagName.toLowerCase() === 'img') {
+                        img = imgEl.src || imgEl.getAttribute('data-src') || imgEl.getAttribute('data-original') || "";
+                    } else {
+                        const style = imgEl.getAttribute('style') || "";
+                        const match = style.match(/url\((['"]?)(.*?)\1\)/);
+                        if (match) img = match[2];
                     }
-                    
-                    results.push({ rank, name: titleText.trim(), img, product_code: productCode });
                 }
-                rankCounter++;
+                
+                let productCode = "";
+                if (href) {
+                    const match = href.match(/product\/(\d+)/);
+                    productCode = match ? match[1] : "";
+                }
+                
+                let finalName = titleText || fullText.split('\n')[0].trim();
+                // Clean up prefixes like "조카선물"
+                finalName = finalName.replace(/^["'“”]*(조카선물|어린이선물)[^"”“]*["'“”]*\s*/, '').trim();
+                finalName = finalName.replace(/^\[오즈키즈\]\s*/, '').replace(/^오즈키즈\s*/, '').trim();
+                finalName = `[오즈키즈] ${finalName}`;
+                
+                results.push({ rank, name: finalName, img, product_code: productCode });
             }
+            rankCounter++;
         });
         return results;
     }''')
@@ -229,7 +268,7 @@ async def scrape_niece_ranking(page, url):
             seen.add(p_key)
             unique_products.append(p)
 
-    print(f"Found {len(unique_products)} OzKids products in Niece/Nephew tab.")
+    print(f"Found {len(unique_products)} OzKids products in Niece/Nephew tab: {[p['name'] for p in unique_products[:3]]}")
     return unique_products
 
 async def main():
@@ -251,6 +290,17 @@ async def main():
             
         page = await context.new_page()
         
+        # Load existing data to preserve events if they are already polished
+        existing_data = {}
+        try:
+            backend_dir = os.path.dirname(os.path.abspath(__file__))
+            project_root = os.path.dirname(backend_dir)
+            output_file = os.path.join(project_root, "frontend", "data", "current_data.json")
+            if os.path.exists(output_file):
+                with open(output_file, "r", encoding='utf-8') as f:
+                    existing_data = json.load(f)
+        except: pass
+
         data = {"last_updated": datetime.datetime.now().isoformat(), "events": [], "ranking": [], "niece_ranking": []}
         
         try:
@@ -263,11 +313,24 @@ async def main():
         except Exception as e:
             print(f"Error niece ranking: {e}")
             
+        # 3. Handle Events (Merge new with existing to preserve history/formatting)
+        new_events = []
         try:
-            data["events"] = await scrape_google_form(page, google_form_url)
+            new_events = await scrape_google_form(page, google_form_url)
         except Exception as e:
-            print(f"Error form: {e}")
-            # Load old events fallback
+            print(f"Error scraping Google Form: {e}")
+
+        # Merge logic: Keep existing ones (they have manual formatting), add new ones
+        existing_events = existing_data.get("events", [])
+        existing_event_names = {e["name"] for e in existing_events}
+        
+        merged_events = list(existing_events)
+        for ne in new_events:
+            if ne["name"] not in existing_event_names:
+                print(f"Adding new event: {ne['name']}")
+                merged_events.append(ne)
+        
+        data["events"] = merged_events
         try:
             # Construct relative path to frontend/data
             project_root = os.path.dirname(backend_dir)
@@ -275,18 +338,9 @@ async def main():
             os.makedirs(output_dir, exist_ok=True)
             output_file = os.path.join(output_dir, "current_data.json")
             
-            # Load existing events if they exist to prevent overwriting with error fallback
-            if not data["events"]:
-                try:
-                    if os.path.exists(output_file):
-                        with open(output_file, "r", encoding='utf-8') as f:
-                            old_data = json.load(f)
-                            data["events"] = old_data.get("events", [])
-                except: pass
-
             with open(output_file, "w", encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
-            print(f"Successfully saved data to {output_file}")
+            print(f"Successfully saved merged data to {output_file}")
         except Exception as e:
             print(f"Error saving: {e}")
         finally:

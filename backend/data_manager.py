@@ -1,89 +1,109 @@
 import json
 import os
 import datetime
-import shutil
 
-DATA_PATH = "C:/Users/User/.gemini/antigravity/scratch/kakao_project/data/current_data.json"
-HISTORY_DIR = "C:/Users/User/.gemini/antigravity/scratch/kakao_project/history"
+# Use relative paths for portability
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "frontend", "data", "current_data.json")
+HISTORY_FILE = os.path.join(BASE_DIR, "history", "rank_history.json")
 
-def get_monthly_path():
-    now = datetime.datetime.now()
-    month_str = now.strftime("%Y-%m")
-    path = os.path.join(HISTORY_DIR, month_str)
-    os.makedirs(path, exist_ok=True)
-    return path
+def load_json(path):
+    if os.path.exists(path):
+        with open(path, "r", encoding='utf-8') as f:
+            return json.load(f)
+    return {}
 
-def save_history(data):
-    now = datetime.datetime.now()
-    timestamp = now.strftime("%Y%m%d_%H%M%S")
-    history_file = os.path.join(get_monthly_path(), f"data_{timestamp}.json")
-    
-    with open(history_file, "w", encoding='utf-8') as f:
+def save_json(path, data):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    return history_file
 
-def detect_changes(new_data):
-    if not os.path.exists(DATA_PATH):
-        return ["Initial data creation"]
-    
-    with open(DATA_PATH, "r", encoding='utf-8') as f:
-        old_data = json.load(f)
-    
-    changes = []
-    
-    # Compare events
-    old_event_names = {e['name'] for e in old_data.get('events', [])}
-    new_event_names = {e['name'] for e in new_data.get('events', [])}
-    
-    added = new_event_names - old_event_names
-    removed = old_event_names - new_event_names
-    
-    if added: changes.append(f"Added events: {', '.join(added)}")
-    if removed: changes.append(f"Removed events: {', '.join(removed)}")
-    
-    # Check for content changes in existing events
-    for new_event in new_data.get('events', []):
-        for old_event in old_data.get('events', []):
-            if new_event['name'] == old_event['name']:
-                if new_event != old_event:
-                    changes.append(f"Updated event details: {new_event['name']}")
-                break
-                
-    # Compare ranking
-    if new_data.get('ranking', {}).get('rank') != old_data.get('ranking', {}).get('rank'):
-        changes.append(f"Ranking changed from {old_data.get('ranking', {}).get('rank')} to {new_data.get('ranking', {}).get('rank')}")
+import re
+
+def calculate_diff(current_rank_str, historical_rank_str):
+    try:
+        # Extract only digits from strings like "단독\n순위 : 1"
+        c_match = re.search(r'(\d+)', str(current_rank_str))
+        h_match = re.search(r'(\d+)', str(historical_rank_str))
         
-    return changes
+        if c_match and h_match:
+            current = int(c_match.group(1))
+            historical = int(h_match.group(1))
+            return historical - current 
+        return 0
+    except:
+        return 0
+
+def update_history_and_calc_diffs(current_data):
+    today_str = datetime.datetime.now().strftime("%Y-%m-%d")
+    history = load_json(HISTORY_FILE)
+    
+    if "ranking" not in history: history["ranking"] = {}
+    if "niece_ranking" not in history: history["niece_ranking"] = {}
+    
+    # Store today's rankings in history
+    for tab in ["ranking", "niece_ranking"]:
+        hist_tab = history[tab]
+        hist_tab[today_str] = {}
+        for item in current_data.get(tab, []):
+            product_id = item.get("product_code") or item.get("name")
+            if product_id:
+                hist_tab[today_str][product_id] = item.get("rank")
+
+        # Sort dates to find T-1 and T-7
+        sorted_dates = sorted(hist_tab.keys(), reverse=True)
+        yesterday_idx = 1 if len(sorted_dates) > 1 else None
+        last_week_idx = None
+        
+        # Find exactly 7 days ago if possible, or closest
+        today_date = datetime.datetime.strptime(today_str, "%Y-%m-%d")
+        y_date = (today_date - datetime.timedelta(days=1)).strftime("%Y-%m-%d")
+        w_date = (today_date - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+        
+        # Add diff info to current items
+        for item in current_data.get(tab, []):
+            product_id = item.get("product_code") or item.get("name")
+            
+            # Yesterday
+            y_rank = hist_tab.get(y_date, {}).get(product_id)
+            if y_rank:
+                item["diff_yesterday"] = calculate_diff(item.get("rank"), y_rank)
+            else:
+                item["diff_yesterday"] = 0
+                
+            # Last week
+            w_rank = hist_tab.get(w_date, {}).get(product_id)
+            if w_rank:
+                item["diff_last_week"] = calculate_diff(item.get("rank"), w_rank)
+            else:
+                item["diff_last_week"] = 0
+
+    # Cleanup history (keep last 30 days to avoid bloating)
+    # sorted_dates = sorted(history["ranking"].keys())
+    # if len(sorted_dates) > 30:
+    #     for d in sorted_dates[:-30]:
+    #         del history["ranking"][d]
+    #         if d in history["niece_ranking"]: del history["niece_ranking"][d]
+
+    save_json(HISTORY_FILE, history)
 
 def run_update_cycle():
-    # This function would be called by a scheduler
-    # 1. Run scraper (via subprocess or direct import if possible)
-    # For now, we assume scraper.py has run and updated current_data.json
-    # Or we can trigger it here.
-    
     if not os.path.exists(DATA_PATH):
-        print("Scraper has not run yet.")
+        print(f"Data file not found: {DATA_PATH}")
         return
 
-    with open(DATA_PATH, "r", encoding='utf-8') as f:
-        current_data = json.load(f)
+    current_data = load_json(DATA_PATH)
     
-    # Calculate rank changes before saving
-    calculate_fluctuations(current_data.get('ranking', []))
-    calculate_fluctuations(current_data.get('niece_ranking', []))
+    # Update fluctuations
+    update_history_and_calc_diffs(current_data)
     
-    changes = detect_changes(current_data)
+    # Track changes log (optional but nice)
+    # (Existing detect_changes logic can be added here if needed)
     
-    if changes:
-        print(f"Detected changes: {changes}")
-        current_data['changes'] = changes
-        # Save to history
-        save_history(current_data)
-        # Update current data with change info
-        with open(DATA_PATH, "w", encoding='utf-8') as f:
-            json.dump(current_data, f, ensure_ascii=False, indent=2)
-    else:
-        print("No changes detected.")
+    current_data["last_updated"] = datetime.datetime.now().isoformat()
+    
+    save_json(DATA_PATH, current_data)
+    print("Fluctuation data updated successfully.")
 
 if __name__ == "__main__":
     run_update_cycle()

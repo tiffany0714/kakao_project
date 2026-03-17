@@ -1,123 +1,165 @@
 {
-  "last_updated": "2026-03-17T10:39:00",
+  "last_updated": "2026-03-17T14:32:42.925393",
   "events": [
     {
+      "area": "유아동 / 패션",
       "name": "새학기 준비",
       "schedule": "3월 2일 ~ 3월 8일",
       "scheme": "- 3만원 이상, 3,000원 정액 할인 (배송 / 자기구매 전용) *1장",
       "deadline": "2월 23일"
     },
     {
-      "name": "FOR♥️ME 브랜드카드",
-      "schedule": "3월 23일 ~ 3월 29일",
-      "scheme": "- 3만원 이상, 3,000원 정액 할인\n- 5만원 이상, 5,000원 정액 할인",
-      "deadline": "3월 17일"
+      "area": "유아동 / 패션",
+      "name": "FOR♥️ME 브랜드카드 (브랜드 단독 행사)",
+      "schedule": "3월 2일 ~ 3월 8일 / 3월 23일 ~ 3월 29일",
+      "scheme": "1) 쿠폰할인\n- 3만원 이상, 3,000원 정액 할인 (배송 / 자기구매 전용) *1장\n- 5만원 이상, 5,000원 정액 할인 (배송 / 자기구매 전용) *1장",
+      "deadline": "차수별 상이"
     },
     {
-      "name": "선물하기 베프",
+      "area": "유아동 / 패션",
+      "name": "선물하기 베프 (VIP대상 히든프로모션)",
       "schedule": "3월 16일 ~ 3월 22일",
-      "scheme": "- 10% 할인 쿠폰 (3만원 이상 구매시 최대 5만원)\n- 10만원 이상 구매시 1만원 할인\n- 5만원 이상 구매시 5천원 할인",
-      "deadline": "3월 9일"
+      "scheme": "1) 쿠폰할인\n- 10% 할인 쿠폰: 3만원 이상 구매시 최대 5만원 할인\n- 10만원 이상 구매시 1만원 할인\n- 5만원 이상 구매시 5천원 할인",
+      "deadline": "3월 9일 월요일까지"
     },
     {
-      "name": "🎊 1주차 카카오 쇼핑 페스타 🎊",
-      "schedule": "3월 16일 ~ 3월 22일",
-      "scheme": "- 선착순 2만원 이상 구매시 5천원 할인\n- 데일리 2만/5만/10만 이상 구매시 2천/5천/1만 할인\n- 카카오페이 결제할인 10% / 5%",
-      "deadline": "3월 4일"
-    },
-    {
-      "name": "🎊 2주차 카카오 쇼핑 페스타 🎊",
-      "schedule": "3월 23일 ~ 3월 29일",
-      "scheme": "- 선착순 2만원 이상 구매시 5천원 할인\n- 데일리 2만/5만/10만 이상 구매시 2천/5천/1만 할인\n- 카카오페이 결제할인 10% / 5%",
-      "deadline": "3월 16일"
+      "area": "유아동 / 패션",
+      "name": "🎊카카오 쇼핑 페스타🎊 (상반기 가장 중요한 행사)",
+      "schedule": "3월 16일 ~ 3월 29일",
+      "scheme": "1) 쿠폰 할인 ✔ 자기구매 ONLY\n- 선착순 쿠폰 (매일 오전 11시 / 오후 6시 발급)\n➊ 2만원 이상 구매 시, 5천원 할인  (배송 only / 자기구매 전용) *1장\n- 데일리 쿠폰팩 (매일 오전 8시 발급)\n➊ 2만원 이상, 2천원 정액 할인 (배송, 교환권 / 자기구매 전용) *1장\n➋ 5만원 이상, 5천원 정액 할인 (배송 only / 자기구매 전용) *1장\n➌ 10만원 이상, 1만원 정액 할인 (배송 only / 자기구매 전용) *1장\n2) 카카오페이 결제할인 (머니한정)\n➊ (쿠폰 적용 후) 2만원 이상 결제 시, 10% 정률 할인 (최대 1만원 / 페이 머니 only / 횟수 제한 X)\n➋ (쿠폰 적용 후) 20만원 이상 결제 시, 5% 정률 할인 (최대 5만원 / 머니or카드)",
+      "deadline": "기간별 상이"
     }
   ],
   "ranking": [
     {
-      "rank": 68,
-      "product_code": "11494581",
-      "category": "realtime",
-      "name": "[오즈키즈] 블룸 유아 여아 슬립온 구두",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250410094552_7ec9c303450c41cab44408025c39bc53.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "rank": "118",
+      "name": "[오즈키즈] \"조카선물\" 하이퍼피 유아 남아 자켓",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260212101103_a91f4b64c62e4e34a1336a83cce9c410.jpg",
+      "product_code": "12961891",
+      "diff_yesterday": 7,
+      "diff_last_week": 0
     },
     {
-      "rank": 114,
-      "product_code": "11472940",
-      "category": "realtime",
-      "name": "[오즈키즈] 클로버 유아 남아 운동화",
+      "rank": "181",
+      "name": "[오즈키즈] \"조카선물여아\" 레인보우캔디 유아 여아 원피스",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260219140710_4a9688c14c124b56970051ea47a5c6f6.jpg",
+      "product_code": "12819625",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "199",
+      "name": "[오즈키즈] \"조카선물여아\" 코코아프릴 어린이 유아 여아원피스",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250813110944_c1e197841bb44599952e3f62f0b18f73.jpg",
+      "product_code": "12093016",
+      "diff_yesterday": 1,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "213",
+      "name": "[오즈키즈] \"조카선물여아\" 엔플로라 유아 여아 원피스",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "product_code": "10987909",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
     },
     {
-      "rank": 286,
-      "product_code": "10997952",
-      "category": "realtime",
-      "name": "[오즈키즈] 스노우 유아 부츠",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250108110855_de679d346d4541c1a8f952f38db79b02.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "rank": "308",
+      "name": "[오즈키즈] \"조카선물/어린이선물\" 깔깔깔 남아여아 경량 패딩 점퍼",
+      "img": "https://st.kakaocdn.net/gift/gift-applied/jLqza/20260226_WPTXKBBEXVBZ6025053434238280504.png",
+      "product_code": "2148922",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
     },
     {
-      "rank": 368,
-      "product_code": "6840482",
-      "category": "realtime",
-      "name": "[오즈키즈] 쿠션 유아 샌들",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260119094959_ca7615b8a3e14a6a9a1dfc7e79d9d006.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
-    },
-    {
-      "rank": 387,
-      "product_code": "10284937",
-      "category": "realtime",
-      "name": "[오즈키즈] 레인 유아 장화",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240902091942_3caf4f34cf234a02a44d9113b1784850.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
-    },
-    {
-      "rank": 394,
-      "product_code": "11017493",
-      "category": "realtime",
-      "name": "[오즈키즈] 스타 유아 슬리퍼",
+      "rank": "373",
+      "name": "[오즈키즈] \"조카선물\" [어린이선물] 아동 유아 여아 남아 경량 패딩 점퍼",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "product_code": "10590721",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
     },
     {
-      "rank": 399,
-      "product_code": "12202727",
-      "category": "realtime",
-      "name": "[오즈키즈] 플라워 유아 여아 단화",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260127115537_2165810deb104985ae817ecf0a911470.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "rank": "403",
+      "name": "[오즈키즈] \"조카선물/여아선물\" 꽃향기가득 유아 여아 원피스",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240205134008_5ef7fdd53ca942f78e0c05ac29d7d0b3.jpg",
+      "product_code": "9148153",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "408",
+      "name": "[오즈키즈] \"조카선물/어린이선물\" [입학선물] 아동 유아 어린이 여아 남아 겨울 실내복 내복 13종 (택1)",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20251121150135_fa53d2376b594d788e987ec5ed5311df.jpg",
+      "product_code": "12359723",
+      "diff_yesterday": -258,
+      "diff_last_week": 0
     }
   ],
   "niece_ranking": [
     {
-      "rank": 39,
-      "product_code": "11494581",
-      "name": "[어린이선물] 블룸 유아 여아 슬립온",
-      "img": "https://st.kakaocdn.net/product/gift/product/20250410094552_7ec9c303450c41cab44408025c39bc53.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "rank": "144",
+      "name": "[오즈키즈] 유아 여아원피스 어린이 여아옷 3종 (택 1)",
+      "img": "",
+      "product_code": "12092860",
+      "diff_yesterday": -4,
+      "diff_last_week": 0
     },
     {
-      "rank": 83,
-      "product_code": "12092860",
-      "name": "유아 여아원피스 어린이 여아옷 3종 (택 1)",
-      "img": "https://st.kakaocdn.net/product/gift/product/20260303140707_3a898880283349e9aeb966980c42612e.jpg",
-      "diff_yesterday": null,
-      "diff_last_week": null
+      "rank": "238",
+      "name": "[오즈키즈] [어린이선물] 신학기 초등학교 유아실내화 발레슈즈 앞치마 실내화가방 모음",
+      "img": "",
+      "product_code": "5426070",
+      "diff_yesterday": 2,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "242",
+      "name": "[오즈키즈] 유아 어린이 여아 봄가을 LED 공주 메리제인 구두 11종 (택1)",
+      "img": "",
+      "product_code": "12070123",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "246",
+      "name": "[오즈키즈] 치치리본 어린이 유아 여아 상하복 세트",
+      "img": "",
+      "product_code": "12093091",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "278",
+      "name": "[오즈키즈] 깔깔깔 남아여아 경량 패딩 점퍼",
+      "img": "",
+      "product_code": "2148922",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "280",
+      "name": "[오즈키즈] [어린이선물] 블룸 유아 여아 슬립온",
+      "img": "",
+      "product_code": "11494581",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "384",
+      "name": "[오즈키즈] [입학선물] 하이스쿨 유아 여아 원피스",
+      "img": "",
+      "product_code": "1362536",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
+    },
+    {
+      "rank": "426",
+      "name": "[오즈키즈] [입학선물] 즐거운생활 맨투맨 티셔츠 유아 여아 남아 웃긴 재밌는 신박한 선물",
+      "img": "",
+      "product_code": "12944336",
+      "diff_yesterday": 0,
+      "diff_last_week": 0
     }
-  ],
-  "changes": [
-    "Restored actual product data from Netlify version",
-    "Improved date parsing for diverse formats",
-    "Enhanced ranking display with real product info"
   ]
 }

@@ -158,7 +158,37 @@ main {
 }
 
 .calendar-header h2 {
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--kakao-black);
+}
+
+#prev-month, #next-month {
+    background-color: var(--white);
+    border: 1px solid #e0e0e0;
+    color: var(--kakao-black);
+    width: 44px; /* Slightly larger */
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+#prev-month:hover, #next-month:hover {
+    background-color: var(--kakao-yellow);
+    border-color: var(--kakao-yellow);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(254, 229, 0, 0.4);
+}
+
+#prev-month:active, #next-month:active {
+    transform: scale(0.95);
 }
 
 .calendar-grid {
@@ -345,6 +375,16 @@ main {
 .scheme-line {
     line-height: 1.6;
     padding: 2px 0;
+    position: relative;
+    padding-left: 15px;
+}
+
+.scheme-line::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--kakao-yellow);
+    font-weight: bold;
 }
 
 /* Ranking Tab Refined */
@@ -494,15 +534,18 @@ main {
 /* Tooltip */
 .tooltip {
     position: fixed;
-    background: var(--kakao-black);
+    background: rgba(25, 25, 25, 0.95);
     color: var(--white);
     padding: 12px 18px;
     border-radius: 8px;
     font-size: 13px;
-    max-width: 300px;
+    max-width: 320px;
     z-index: 1000;
     pointer-events: none;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    white-space: pre-wrap;
+    line-height: 1.5;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .tooltip.hidden {

@@ -230,8 +230,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentData.events) {
                 currentData.events.forEach(event => {
                     if (event.deadline) {
-                        const dDate = parseDate(event.deadline, year);
-                        if (dDate && dDate.getMonth() === month && dDate.getDate() === i) {
+                        // Deadlines like "2월 23일" might be for the current year or previous/next year
+                        // We try the current calendar year, but if it's June and deadline is Jan, it might be next year.
+                        // For simplicity, we assume deadlines are close to the event date.
+                        let dDate = parseDate(event.deadline, year);
+                        
+                        // If parsing "2월 23일" while looking at March, it should show up.
+                        if (dDate && dDate.getMonth() === month && dDate.getDate() === i && dDate.getFullYear() === year) {
                             const bar = document.createElement('div');
                             bar.className = 'event-bar deadline';
                             bar.innerText = `[마감] ${event.name}`;
@@ -277,7 +282,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p><span class="label">마감일:</span> ${event.deadline}</p>
                 <div class="scheme">
                     <strong>행사 스킴:</strong>
-                    <div class="scheme-lines">${(event.scheme || '').split('\n').map(line => `<div class="scheme-line">${line}</div>`).join('')}</div>
+                    <div class="scheme-lines">
+                        ${(event.scheme || '').replace(/<br>/g, '\n').split('\n')
+                            .filter(line => line.trim())
+                            .map(line => `<div class="scheme-line">${line.trim()}</div>`).join('')}
+                    </div>
                 </div>
             </div>
             `;
@@ -334,7 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showTooltip(e, text) {
         if (!text) return;
-        tooltip.innerText = text;
+        // Convert <br> to newlines for innerText with white-space: pre-wrap
+        tooltip.innerText = text.replace(/<br>/g, '\n');
         tooltip.classList.remove('hidden');
         tooltip.style.left = (e.clientX + 10) + 'px';
         tooltip.style.top = (e.clientY + 10) + 'px';
