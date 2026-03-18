@@ -1,33 +1,23 @@
 name: Daily Update
-
 on:
   schedule:
-    - cron: '0 15 * * *' # 매일 한국시간 00시 (UTC 15시)
-  workflow_dispatch: # 수동 실행 버튼 생성
-
+    - cron: '0 0 * * *' # UTC 00:00 = 한국 오전 9시
+  workflow_dispatch:
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Run script
+      - name: Install
+        run: pip install pandas openpyxl requests
+      - name: Run
         run: python update_data.py
-
-      - name: Commit and push changes
+      - name: Push
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "bot"
           git add .
-          git commit -m "Update ranking data from excel" || echo "No changes to commit"
+          git commit -m "오전 9시 정기 업데이트" || exit 0
           git push
