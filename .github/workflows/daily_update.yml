@@ -1,42 +1,33 @@
 name: Daily Update
+
 on:
   schedule:
-    - cron: '0 3 * * *' # 한국시간 낮 12시
-  workflow_dispatch: # 수동 실행 버튼
+    - cron: '0 15 * * *' # 매일 한국시간 00시 (UTC 15시)
+  workflow_dispatch: # 수동 실행 버튼 생성
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # 권한 보강
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
-          pip install requests beautifulsoup4 pandas # 필요한 라이브러리 설치
+          pip install -r requirements.txt
 
-      - name: Run Update
-        run: python update_data.py # 여기서 current_data.json이 생성됨
+      - name: Run script
+        run: python update_data.py
 
-      - name: Commit and Push
+      - name: Commit and push changes
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
-          
-          # 변경사항 확인용 (로그에서 확인 가능)
-          git status
-          
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          # 변화가 있을 때만 커밋하고 푸시
-          if ! git diff --cached --quiet; then
-            git commit -m "🚀 자동 데이터 업데이트: $(date +'%Y-%m-%d %H:%M:%S')"
-            git push origin main
-          else
-            echo "변경사항이 없어 푸시를 생략합니다."
-          fi
+          git commit -m "Update ranking data from excel" || echo "No changes to commit"
+          git push
