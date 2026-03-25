@@ -9,9 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeSeason = '전체';
     
     // 캘린더 날짜 상태
-    let viewDate = new Date(2026, 2, 1); // 기본 3월로 시작
+    let viewDate = new Date(2026, 2, 1); 
 
-    // 탭 전환 로직
+    // 탭 전환
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTab = localStorage.getItem('activeTab') || 'tab1';
     document.querySelector(`[data-tab="${savedTab}"]`)?.click();
 
-    // 캘린더 네비게이션
+    // 네비게이션
     document.getElementById('prev-month-btn')?.addEventListener('click', () => {
         viewDate.setMonth(viewDate.getMonth() - 1);
         renderCalendar();
@@ -35,24 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendar();
     });
 
-    // 데이터 로드 및 렌더링
     async function loadData() {
         try {
             const response = await fetch(`data/current_data.json?v=${Date.now()}`);
             currentData = await response.json();
-            
-            if (updateStatus) {
-                updateStatus.textContent = `최근 업데이트: ${currentData.last_updated}`;
-            }
-
+            if (updateStatus) updateStatus.textContent = `최근 업데이트: ${currentData.last_updated}`;
             renderCalendar();
             renderEventDetails();
             renderRanking();
         } catch (error) {
-            console.error('데이터 로드 실패:', error);
-            if (updateStatus) updateStatus.textContent = '데이터 로드 실패';
+            console.error('Data load error:', error);
         }
     }
+
+    const parseDate = (str) => {
+        if (!str) return null;
+        const mPart = str.split('월')[0];
+        const dPart = str.split('월')[1]?.split('일')[0];
+        if (!mPart || !dPart) return null;
+        return new Date(2026, parseInt(mPart) - 1, parseInt(dPart));
+    };
 
     function renderCalendar() {
         const calendarDays = document.getElementById('calendar-days');
@@ -62,13 +64,11 @@ document.addEventListener('DOMContentLoaded', () => {
         calendarDays.innerHTML = '';
         const year = viewDate.getFullYear();
         const month = viewDate.getMonth();
-        
         monthDisplay.textContent = `${year}년 ${month + 1}월`;
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-        // 빈 칸 추가
         for (let i = 0; i < firstDay; i++) {
             const empty = document.createElement('div');
             empty.className = 'calendar-day empty';
@@ -78,29 +78,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const events = currentData?.events || [];
         
         for (let day = 1; day <= daysInMonth; day++) {
+            const current = new Date(year, month, day);
             const dateStr = `${month + 1}월 ${day}일`;
             
-            // 당일 진행중인 이벤트 필터링 (연속 바 로직 개선)
+            // 당일 이벤트 필터링
             const dayEvents = events.filter(e => {
                 const schedule = e.schedule || "";
                 if (schedule.includes('~')) {
                     const parts = schedule.split('~').map(p => p.trim());
-                    // 멀티 월 처리 (예: 3월 16일 ~ 4월 5일)
-                    const parseDate = (str) => {
-                        const m = parseInt(str.split('월')[0]);
-                        const d = parseInt(str.split('월')[1].split('일')[0]);
-                        return new Date(2026, m - 1, d);
-                    };
                     const start = parseDate(parts[0]);
                     const end = parseDate(parts[1]);
-                    const current = new Date(year, month, day);
-                    return current >= start && current <= end;
+                    return start && end && current >= start && current <= end;
                 }
                 return schedule.includes(dateStr);
             });
 
-            const deadlines = events.filter(e => e.deadline && e.deadline.includes(dateStr));
-            
             const cell = document.createElement('div');
             cell.className = 'calendar-day';
             cell.innerHTML = `<div class="day-num">${day}</div>`;
@@ -109,27 +101,39 @@ document.addEventListener('DOMContentLoaded', () => {
             eventWrapper.className = 'event-wrapper';
 
             // 마감 표시
-            deadlines.forEach(d => {
-                const deadlineTag = document.createElement('div');
-                deadlineTag.className = 'deadline-bar';
-                deadlineTag.textContent = `🚩마감: ${d.name}`;
-                deadlineTag.addEventListener('mouseenter', (e) => showTooltip(e, d));
-                deadlineTag.addEventListener('mouseleave', hideTooltip);
-                eventWrapper.appendChild(deadlineTag);
+            events.filter(e => e.deadline && e.deadline.includes(dateStr)).forEach(d => {
+                const bar = document.createElement('div');
+                bar.className = 'deadline-bar';
+                bar.textContent = `🚩 마감: ${d.name}`;
+                eventWrapper.appendChild(bar);
             });
 
-            // 이벤트 바
+            // 이벤트 바 (Line처럼 보이게 클래스 부여)
             dayEvents.forEach(e => {
-                const startStr = e.schedule.includes('~') ? e.schedule.split('~')[0].trim() : e.schedule;
-                const isStart = startStr === dateStr;
+                const bar = document.createElement('div');
+                bar.className = 'event-bar';
                 
-                const eventBar = document.createElement('div');
-                eventBar.className = 'event-bar';
-                if (isStart) eventBar.textContent = e.name;
-                
-                eventBar.addEventListener('mouseenter', (ev) => showTooltip(ev, e));
-                eventBar.addEventListener('mouseleave', hideTooltip);
-                eventWrapper.appendChild(eventBar);
+                if (e.schedule.includes('~')) {
+                    const parts = e.schedule.split('~').map(p => p.trim());
+                    const start = parseDate(parts[0]);
+                    const end = parseDate(parts[1]);
+                    
+                    const isStart = current.getTime() === start?.getTime();
+                    const isEnd = current.getTime() === end?.getTime();
+                    
+                    bar.classList.add('continued');
+                    if (isStart) {
+                        bar.classList.add('start');
+                        bar.textContent = e.name;
+                    }
+                    if (isEnd) bar.classList.add('end');
+                } else {
+                    bar.textContent = e.name;
+                }
+
+                bar.addEventListener('mouseenter', (ev) => showTooltip(ev, e));
+                bar.addEventListener('mouseleave', hideTooltip);
+                eventWrapper.appendChild(bar);
             });
 
             cell.appendChild(eventWrapper);
@@ -142,16 +146,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!detailsGrid) return;
         detailsGrid.innerHTML = '';
 
-        const events = currentData?.events || [];
-        events.forEach(e => {
+        (currentData?.events || []).forEach(e => {
             const card = document.createElement('div');
             card.className = 'event-card slide-up';
             card.innerHTML = `
-                <div class="event-area">${e.area}</div>
-                <div class="event-title">${e.name}</div>
-                <div class="event-info"><strong>📅 기간:</strong> ${e.schedule}</div>
-                <div class="event-info"><strong>📜 내용:</strong> ${e.scheme.replace(/\n/g, '<br>')}</div>
-                <div class="event-deadline">⏰ 마감기한: ${e.deadline}</div>
+                <div class="card-header">
+                    <div class="event-area">${e.area}</div>
+                    <div class="event-title">${e.name}</div>
+                </div>
+                <div class="card-body">
+                    <div class="info-item">
+                        <span class="info-label">일정</span>
+                        <span class="info-content">${e.schedule}</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">혜택</span>
+                        <span class="info-content">프로모션 상세 참고</span>
+                    </div>
+                    <div class="scheme-box">
+                        ${e.scheme.replace(/\n/g, '<br>')}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    🏁 마감 기한: ${e.deadline}
+                </div>
             `;
             detailsGrid.appendChild(card);
         });
@@ -161,129 +179,75 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentData || !rankingList) return;
         rankingList.innerHTML = '';
 
-        const subTabContainer = document.querySelector('.sub-tabs-container');
-        if (subTabContainer) {
-            subTabContainer.onclick = (e) => {
-                if (e.target.classList.contains('sub-tab-btn')) {
-                    document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-                    e.target.classList.add('active');
-                    activeSubTab = e.target.dataset.sub;
-                    localStorage.setItem('activeSubTab', activeSubTab);
-                    renderRanking();
-                }
-            };
-        }
-
-        const seasonTabs = document.querySelectorAll('.season-tab');
-        seasonTabs.forEach(tab => {
-            tab.onclick = () => {
-                seasonTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                activeSeason = tab.dataset.season;
-                renderRanking();
-            };
-        });
-
-        let html = '';
         const getDiffHtml = (diff) => {
             if (!diff || diff === 0) return '<span class="stay">-</span>';
-            return diff > 0 
-                ? `<span class="up">▲${diff}</span>` 
-                : `<span class="down">▼${Math.abs(diff)}</span>`;
+            return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
         };
 
+        let items = [];
         if (activeSubTab === 'strategy') {
             document.getElementById('strategy-filter-tabs').style.display = 'flex';
-            const sortedRank = (currentData.seasonal_ranking || []).sort((a,b) => (a.rank || 999) - (b.rank || 999));
-            const filtered = sortedRank.filter(r => {
+            items = (currentData.seasonal_ranking || []).filter(r => {
                 if (activeSeason === '전체') return true;
                 if (activeSeason === '봄/가을') return r.season === '봄' || r.season === '가을' || r.season === '봄/가을';
-                if (activeSeason === '사계절') return r.season === '사계절';
                 return r.season === activeSeason;
             });
-
-            if (filtered.length === 0) {
-                html += '<div class="no-data">해당 계절의 상품 데이터가 없습니다.</div>';
-            } else {
-                filtered.forEach(r => {
-                    html += `
-                    <div class="ranking-card slide-up">
-                        <div class="rank-badge">${r.rank === 999 ? '권외' : r.rank}</div>
-                        <div class="ranking-details">
-                            <div class="product-header">
-                                <span class="season-badge ${r.season.replace('/', '')}">${r.season}</span>
-                                <span class="product-code">#${r.code}</span>
-                            </div>
-                            <div class="product-name">${r.name}</div>
-                            <div class="rank-fluctuations">
-                                <div class="fluct-info">
-                                    <span class="fluct-label">어제</span>
-                                    <span class="fluct-val">${getDiffHtml(r.diff)}</span>
-                                </div>
-                                <div class="fluct-info">
-                                    <span class="fluct-label">지난주</span>
-                                    <span class="fluct-val">${getDiffHtml(r.week_diff || 0)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-            }
         } else {
             document.getElementById('strategy-filter-tabs').style.display = 'none';
-            const nieceData = (currentData.niece_ranking || []).sort((a,b) => (a.rank || 999) - (b.rank || 999));
-            if (nieceData.length === 0) {
-                html += '<div class="no-data">조카선물 랭킹 데이터가 없습니다.</div>';
-            } else {
-                nieceData.forEach(r => {
-                    html += `
-                    <div class="ranking-card slide-up">
-                        <div class="rank-badge">${r.rank}</div>
-                        <div class="ranking-details">
-                            <div class="product-header">
-                                <span class="product-code">#${r.code}</span>
-                            </div>
-                            <div class="product-name">${r.name}</div>
-                            <div class="rank-fluctuations">
-                                <div class="fluct-info">
-                                    <span class="fluct-label">어제</span>
-                                    <span class="fluct-val">${getDiffHtml(r.diff)}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                });
-            }
+            items = currentData.niece_ranking || [];
         }
-        rankingList.innerHTML = html;
+
+        items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
+            const card = document.createElement('div');
+            card.className = 'ranking-card slide-up';
+            card.innerHTML = `
+                <div class="rank-badge">${r.rank === 999 ? '-' : r.rank}</div>
+                <span class="season-badge ${r.season || 'default'}">${r.season || '기타'}</span>
+                <div class="product-name">${r.name}</div>
+                <div class="rank-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">어제</span>
+                        <span class="stat-val">${getDiffHtml(r.diff)}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">지난주</span>
+                        <span class="stat-val">${getDiffHtml(r.week_diff || 0)}</span>
+                    </div>
+                </div>
+            `;
+            rankingList.appendChild(card);
+        });
     }
 
-    // 툴팁
     const tooltip = document.createElement('div');
     tooltip.className = 'tooltip hidden';
     document.body.appendChild(tooltip);
 
-    function showTooltip(event, data) {
-        tooltip.innerHTML = `
-            <strong>${data.name}</strong><br>
-            📅 기간: ${data.schedule}<br>
-            📜 내용: ${data.scheme || '정보 없음'}<br>
-            ⏰ 마감: ${data.deadline || '없음'}
-        `;
+    function showTooltip(ev, data) {
+        tooltip.innerHTML = `<strong>${data.name}</strong><br><small>${data.schedule}</small>`;
         tooltip.classList.remove('hidden');
-        moveTooltip(event);
+        tooltip.style.left = (ev.pageX + 10) + 'px';
+        tooltip.style.top = (ev.pageY + 10) + 'px';
     }
+    function hideTooltip() { tooltip.classList.add('hidden'); }
 
-    function moveTooltip(event) {
-        tooltip.style.left = (event.pageX + 10) + 'px';
-        tooltip.style.top = (event.pageY + 10) + 'px';
-    }
-
-    function hideTooltip() {
-        tooltip.classList.add('hidden');
-    }
-
-    window.addEventListener('scroll', hideTooltip);
+    // Sub-tabs handling
+    document.querySelector('.sub-tabs-container').onclick = (e) => {
+        if (e.target.dataset.sub) {
+            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeSubTab = e.target.dataset.sub;
+            renderRanking();
+        }
+    };
+    document.getElementById('strategy-filter-tabs').onclick = (e) => {
+        if (e.target.dataset.season) {
+            document.querySelectorAll('.season-tab').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeSeason = e.target.dataset.season;
+            renderRanking();
+        }
+    };
 
     loadData();
 });
