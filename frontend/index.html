@@ -3,37 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카카오 선물하기 대시보드 | Premium</title>
+    <title>카카오 선물하기 대시보드</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="header-content">
-                <h1>🎁 Kakao Gift Dashboard</h1>
-                <div id="update-status" class="update-status">데이터 로딩 중...</div>
-            </div>
-            <nav class="tabs">
-                <button class="tab-btn active" data-tab="tab1">📅 행사 캘린더</button>
-                <button class="tab-btn" data-tab="tab2">📝 행사 상세</button>
-                <button class="tab-btn" data-tab="tab3">🔥 전략&인기 랭킹</button>
-            </nav>
+            <h1>카카오 선물하기 대시보드</h1>
+            <div id="update-status" class="update-status">데이터 로딩 중...</div>
         </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="tab1">이벤트 캘린더</button>
+            <button class="tab-btn" data-tab="tab2">행사 상세내용</button>
+            <button class="tab-btn" data-tab="tab3">랭킹</button>
+        </nav>
 
         <main>
             <div id="tab1" class="tab-content active">
                 <div class="calendar-header">
-                    <div id="current-month-display" class="month-display">2026년 3월</div>
+                    <h2 id="current-month-display">2026년 3월</h2>
                     <div class="calendar-nav">
-                        <button id="prev-month-btn" class="nav-btn">◀ 이전달</button>
-                        <button id="next-month-btn" class="nav-btn">다음달 ▶</button>
+                        <button id="prev-month-btn">이전달</button>
+                        <button id="next-month-btn">다음달</button>
                     </div>
                 </div>
                 <div class="calendar-labels">
-                    <div class="day-label">일요일</div><div class="day-label">월요일</div>
-                    <div class="day-label">화요일</div><div class="day-label">수요일</div>
-                    <div class="day-label">목요일</div><div class="day-label">금요일</div>
-                    <div class="day-label">토요일</div>
+                    <div class="day-label">일</div><div class="day-label">월</div>
+                    <div class="day-label">화</div><div class="day-label">수</div>
+                    <div class="day-label">목</div><div class="day-label">금</div>
+                    <div class="day-label">토</div>
                 </div>
                 <div id="calendar-days"></div>
             </div>
@@ -45,20 +44,20 @@
             <div id="tab3" class="tab-content">
                 <div class="ranking-header">
                     <div class="sub-tabs-container">
-                        <button class="sub-tab-btn active" data-sub="strategy">전략상품 분석</button>
-                        <button class="sub-tab-btn" data-sub="niece">조카선물 인기</button>
+                        <button class="sub-tab-btn active" data-sub="strategy">전략상품</button>
+                        <button class="sub-tab-btn" data-sub="niece">조카선물</button>
                     </div>
                 </div>
 
                 <div id="strategy-filter-tabs" class="season-tabs">
-                    <button class="season-tab active" data-season="전체">전체 보기</button>
+                    <button class="season-tab active" data-season="전체">전체</button>
                     <button class="season-tab" data-season="사계절">사계절</button>
                     <button class="season-tab" data-season="봄/가을">봄/가을</button>
-                    <button class="season-tab" data-season="여름">여름 시즌</button>
-                    <button class="season-tab" data-season="겨울">겨울 시즌</button>
+                    <button class="season-tab" data-season="여름">여름</button>
+                    <button class="season-tab" data-season="겨울">겨울</button>
                 </div>
 
-                <div id="ranking-list" class="ranking-grid"></div>
+                <div id="ranking-list"></div>
             </div>
         </main>
     </div>

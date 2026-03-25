@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`data/current_data.json?v=${Date.now()}`);
             currentData = await response.json();
-            if (updateStatus) updateStatus.textContent = `최근 업데이트: ${currentData.last_updated}`;
+            if (updateStatus) updateStatus.textContent = `마지막 업데이트: ${currentData.last_updated}`;
             renderCalendar();
             renderEventDetails();
             renderRanking();
@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const current = new Date(year, month, day);
             const dateStr = `${month + 1}월 ${day}일`;
             
-            // 당일 이벤트 필터링
             const dayEvents = events.filter(e => {
                 const schedule = e.schedule || "";
                 if (schedule.includes('~')) {
@@ -100,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const eventWrapper = document.createElement('div');
             eventWrapper.className = 'event-wrapper';
 
-            // 마감 표시
             events.filter(e => e.deadline && e.deadline.includes(dateStr)).forEach(d => {
                 const bar = document.createElement('div');
                 bar.className = 'deadline-bar';
@@ -108,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 eventWrapper.appendChild(bar);
             });
 
-            // 이벤트 바 (Line처럼 보이게 클래스 부여)
             dayEvents.forEach(e => {
                 const bar = document.createElement('div');
                 bar.className = 'event-bar';
@@ -117,15 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     const parts = e.schedule.split('~').map(p => p.trim());
                     const start = parseDate(parts[0]);
                     const end = parseDate(parts[1]);
-                    
                     const isStart = current.getTime() === start?.getTime();
                     const isEnd = current.getTime() === end?.getTime();
-                    
                     bar.classList.add('continued');
-                    if (isStart) {
-                        bar.classList.add('start');
-                        bar.textContent = e.name;
-                    }
+                    if (isStart) { bar.classList.add('start'); bar.textContent = e.name; }
                     if (isEnd) bar.classList.add('end');
                 } else {
                     bar.textContent = e.name;
@@ -148,27 +140,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         (currentData?.events || []).forEach(e => {
             const card = document.createElement('div');
-            card.className = 'event-card slide-up';
+            card.className = 'event-card';
             card.innerHTML = `
-                <div class="card-header">
-                    <div class="event-area">${e.area}</div>
-                    <div class="event-title">${e.name}</div>
+                <div class="event-area">${e.area}</div>
+                <div class="event-title">${e.name}</div>
+                <div class="event-info"><span class="info-label">일정:</span> ${e.schedule}</div>
+                <div class="scheme-text">
+                    ${e.scheme.replace(/\n/g, '<br>')}
                 </div>
-                <div class="card-body">
-                    <div class="info-item">
-                        <span class="info-label">일정</span>
-                        <span class="info-content">${e.schedule}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">혜택</span>
-                        <span class="info-content">프로모션 상세 참고</span>
-                    </div>
-                    <div class="scheme-box">
-                        ${e.scheme.replace(/\n/g, '<br>')}
-                    </div>
-                </div>
-                <div class="card-footer">
-                    🏁 마감 기한: ${e.deadline}
+                <div class="event-info" style="margin-top:10px; color:#e74b3c; font-weight:bold;">
+                    <span class="info-label">마감기한:</span> ${e.deadline}
                 </div>
             `;
             detailsGrid.appendChild(card);
@@ -199,19 +180,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
             const card = document.createElement('div');
-            card.className = 'ranking-card slide-up';
+            card.className = 'ranking-card';
             card.innerHTML = `
                 <div class="rank-badge">${r.rank === 999 ? '-' : r.rank}</div>
-                <span class="season-badge ${r.season || 'default'}">${r.season || '기타'}</span>
-                <div class="product-name">${r.name}</div>
-                <div class="rank-stats">
-                    <div class="stat-box">
-                        <span class="stat-label">어제</span>
-                        <span class="stat-val">${getDiffHtml(r.diff)}</span>
-                    </div>
-                    <div class="stat-box">
-                        <span class="stat-label">지난주</span>
-                        <span class="stat-val">${getDiffHtml(r.week_diff || 0)}</span>
+                <div class="ranking-details">
+                    <span class="season-badge ${r.season || 'default'}">${r.season || '기타'}</span>
+                    <div class="product-name">${r.name}</div>
+                    <div class="rank-fluctuations">
+                        <span>어제대비 ${getDiffHtml(r.diff)}</span>
+                        <span>지난주대비 ${getDiffHtml(r.week_diff || 0)}</span>
                     </div>
                 </div>
             `;
@@ -224,14 +201,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(tooltip);
 
     function showTooltip(ev, data) {
-        tooltip.innerHTML = `<strong>${data.name}</strong><br><small>${data.schedule}</small>`;
+        tooltip.innerHTML = `<strong>${data.name}</strong><br>${data.schedule}`;
         tooltip.classList.remove('hidden');
         tooltip.style.left = (ev.pageX + 10) + 'px';
         tooltip.style.top = (ev.pageY + 10) + 'px';
     }
     function hideTooltip() { tooltip.classList.add('hidden'); }
 
-    // Sub-tabs handling
     document.querySelector('.sub-tabs-container').onclick = (e) => {
         if (e.target.dataset.sub) {
             document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
