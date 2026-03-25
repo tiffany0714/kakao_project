@@ -1,7 +1,7 @@
-name: Daily Update
+name: Automated Dashboard Update
 on:
   schedule:
-    - cron: '0 0 * * *' # UTC 00:00 = 한국 오전 9시
+    - cron: '0 */3 * * *' # 3시간마다 실행 (UTC 기준)
   workflow_dispatch:
 jobs:
   build:
@@ -11,13 +11,18 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install
-        run: pip install pandas openpyxl requests
-      - name: Run
-        run: python update_data.py
-      - name: Push
+      - name: Install dependencies
         run: |
-          git config --global user.name "bot"
+          pip install pandas openpyxl requests playwright
+          playwright install chromium
+      - name: Run Full Scraper (Events & Ranking)
+        run: python backend/scraper.py
+      - name: Update Diffs and History
+        run: python backend/data_manager.py
+      - name: Push updates
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "오전 9시 정기 업데이트" || exit 0
+          git commit -m "Automated data update (3h schedule)" || exit 0
           git push

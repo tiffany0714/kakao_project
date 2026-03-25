@@ -3,84 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kakao Project Dashboard</title>
-    <link rel="stylesheet" href="style.css?v=2">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>카카오 선물하기 대시보드</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <header>
-        <div class="header-content">
-            <h1>Kakao Dashboard</h1>
-            <div id="update-status" class="update-info">데이터를 불러오는 중...</div>
-        </div>
-        <nav>
-            <button class="tab-btn active" data-tab="tab1">행사 일정 (캘린더)</button>
-            <button class="tab-btn" data-tab="tab2">행사 상세 내용</button>
+    <div class="container">
+        <header>
+            <h1>카카오 선물하기 대시보드</h1>
+            <div id="update-status">데이터 로딩 중...</div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="tab1">이벤트 캘린더</button>
+            <button class="tab-btn" data-tab="tab2">행사 상세내용</button>
             <button class="tab-btn" data-tab="tab3">랭킹</button>
         </nav>
-    </header>
 
-    <main id="app">
-        <section id="change-log" class="change-log hidden">
-            <h3>최근 업데이트 내용</h3>
-            <ul id="change-list"></ul>
-        </section>
-
-        <section id="tab1" class="tab-content active">
-            <div class="calendar-container">
+        <main>
+            <div id="tab1" class="tab-content active">
                 <div class="calendar-header">
                     <button id="prev-month">&lt;</button>
                     <h2 id="current-month">2026년 3월</h2>
                     <button id="next-month">&gt;</button>
                 </div>
-                <div class="calendar-grid">
-                    <div class="day-label">Sun</div>
-                    <div class="day-label">Mon</div>
-                    <div class="day-label">Tue</div>
-                    <div class="day-label">Wed</div>
-                    <div class="day-label">Thu</div>
-                    <div class="day-label">Fri</div>
-                    <div class="day-label">Sat</div>
-                    <div id="calendar-days" class="calendar-days"></div>
+                <!-- ... existing calendar labels ... -->
+                <div class="calendar-labels">
+                    <div class="day-label">일</div><div class="day-label">월</div>
+                    <div class="day-label">화</div><div class="day-label">수</div>
+                    <div class="day-label">목</div><div class="day-label">금</div>
+                    <div class="day-label">토</div>
                 </div>
+                <div id="calendar-days"></div>
             </div>
-            <div id="event-legend" class="event-legend"></div>
-        </section>
 
-        <section id="tab2" class="tab-content">
-            <div id="event-details" class="details-grid"></div>
-        </section>
+            <div id="tab2" class="tab-content">
+                <div id="event-details" class="details-grid"></div>
+            </div>
 
-        <section id="tab3" class="tab-content">
-            <div class="ranking-container">
+            <div id="tab3" class="tab-content">
                 <div class="ranking-header">
-                    <h2 class="slide-up">랭킹 분석</h2>
-                    <div class="ranking-sub-nav slide-up">
-                        <button class="sub-tab-btn active" data-sub="realtime">실시간 TOP 20</button>
-                        <button class="sub-tab-btn" data-sub="strategy">시즌별 전략 상품</button>
-                    </div>
-                    
-                    <div id="strategy-filter-container" class="filter-box hidden">
-                        <select id="seasonFilter">
-                            <option value="전체">🌸 모든 계절 보기</option>
-                            <option value="봄/가을">🌷 봄/가을</option>
-                            <option value="여름">☀️ 여름</option>
-                            <option value="겨울">❄️ 겨울</option>
-                            <option value="사계절">📅 사계절</option>
-                        </select>
+                    <div class="sub-tabs-container">
+                        <button class="sub-tab-btn active" data-sub="strategy">전략상품</button>
+                        <button class="sub-tab-btn" data-sub="niece">조카선물</button>
                     </div>
                 </div>
 
-                <div id="ranking-list" class="ranking-list slide-up">
-                    <div class="no-data">데이터를 불러오는 중...</div>
+                <div id="strategy-filter-tabs" class="season-tabs">
+                    <button class="season-tab active" data-season="전체">전체</button>
+                    <button class="season-tab" data-season="사계절">사계절</button>
+                    <button class="season-tab" data-season="봄/가을">봄/가을</button>
+                    <button class="season-tab" data-season="여름">여름</button>
+                    <button class="season-tab" data-season="겨울">겨울</button>
                 </div>
+
+                <div id="ranking-list"></div>
             </div>
-        </section>
-    </main>
+        </main>
+    </div>
 
     <div id="tooltip" class="tooltip hidden"></div>
-
     <script src="app.js"></script>
 </body>
 </html>

@@ -2,23 +2,28 @@
     --kakao-yellow: #FEE500;
     --kakao-black: #191919;
     --kakao-dark-grey: #3C3C3C;
-    --kakao-light-grey: #F2F2F2;
+    --kakao-light-grey: #F7F7F7; /* Lighter background */
     --white: #FFFFFF;
-    --text-main: #333333;
-    --text-sub: #666666;
+    --text-main: #191919;
+    --text-sub: #777777;
     --accent: #FF5722;
-    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --event-color-1: #FFE082; /* Light Yellow */
-    --event-color-2: #81D4FA; /* Light Blue */
-    --event-color-3: #A5D6A7; /* Light Green */
-    --event-color-4: #F48FB1; /* Light Pink */
-    --event-color-5: #CE93D8; /* Light Purple */
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Softer shadow */
+    --border-color: #DDDDDD; /* Darker border for visibility */
+    --event-color-1: rgba(254, 229, 0, 0.4);
+    --event-color-2: rgba(33, 150, 243, 0.15);
+    --event-color-3: rgba(76, 175, 80, 0.15);
+    --event-color-4: rgba(233, 30, 99, 0.1);
+    --event-color-5: rgba(156, 39, 176, 0.1);
 }
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+.hidden {
+    display: none !important;
 }
 
 body {
@@ -61,21 +66,23 @@ h1 {
 
 nav {
     display: flex;
-    gap: 10px;
-    max-width: 1400px;
-    margin: 0 auto;
+    gap: 16px;
+
+    margin-left: 50px;  /* ← 왼쪽에서 살짝 띄우기 */
+    margin-top: 27px;
 }
 
 .tab-btn {
-    background: none;
-    border: none;
-    color: #999;
-    padding: 10px 20px;
-    font-size: 16px;
+    background: #e0e0e0; /* [수정] 비활성 버튼 색상 */
+    border: 1px solid #ccc;
+    color: var(--text-sub);
+    padding: 10px 22px;  /* [수정] 버튼 크기 키움 */
+    font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    border-radius: 20px; /* [수정] 동글동글한 버튼 모양 */
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.05); /* 미세한 입체감 */
 }
 
 .tab-btn:hover {
@@ -84,9 +91,15 @@ nav {
     border-radius: 4px;
 }
 
+/* 활성화(눌렸을 때) 상태 디자인 */
 .tab-btn.active {
+    background: var(--kakao-yellow);
     color: var(--kakao-black);
-    border-bottom-color: var(--kakao-black);
+    border-color: #e6cf00;
+    font-weight: 700;
+    border-bottom: none; /* 기존 밑줄 제거 */
+    box-shadow: 0 4px 8px rgba(254, 229, 0, 0.4); /* [수정] 아래로 튀어나온 입체감 */
+    transform: translateY(-2px); /* [수정] 아래쪽으로 이동한 느낌을 위해 위로 살짝 띄움 */
 }
 
 main {
@@ -142,12 +155,13 @@ main {
     font-size: 14px;
 }
 
-/* Calendar */
+/* Calendar 컨테이너 */
 .calendar-container {
     background: var(--white);
     border-radius: 16px;
     padding: 30px;
     box-shadow: var(--shadow);
+    max-width: 100%; /* 부모 너비에 맞춤 */
 }
 
 .calendar-header {
@@ -160,7 +174,72 @@ main {
 .calendar-header h2 {
     font-size: 24px;
     font-weight: 700;
-    color: var(--kakao-black);
+    color: #191919; /* 카카오 블랙 */
+}
+
+/* 요일과 날짜 영역 공통 그리드 설정 */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 100%;
+}
+
+/* 요일 라벨 전담 영역 */
+.calendar-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.day-label {
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-sub);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.day-label:nth-child(1) { color: #FF5252; } /* Sunday */
+.day-label:nth-child(7) { color: #448AFF; } /* Saturday */
+
+/* 날짜 영역 (Grid) */
+#calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-top: 1.5px solid var(--border-color);
+    border-left: 1.5px solid var(--border-color);
+}
+
+/* 날짜 칸 */
+.day {
+    box-sizing: border-box;
+    min-height: 140px;
+    padding: 0; /* NO horizontal padding */
+    border-right: 1.5px solid var(--border-color);
+    border-bottom: 1.5px solid var(--border-color);
+    background-color: var(--white);
+    position: relative;
+    transition: background 0.2s;
+    overflow: hidden; /* Prevent bar overflow if needed */
+}
+
+.day-num {
+    padding: 10px 10px 5px 10px;
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--text-sub);
+}
+
+.day-events {
+    padding: 0; /* Ensure no padding here */
+}
+
+
+.day:hover {
+    background-color: #fafafa;
 }
 
 #prev-month, #next-month {
@@ -191,38 +270,8 @@ main {
     transform: scale(0.95);
 }
 
-.calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 1px;
-    background: #eee;
-    border: 1px solid #eee;
-}
-
-.day-label {
-    background: #f9f9f9;
-    padding: 10px;
-    text-align: center;
-    font-weight: 500;
-    font-size: 12px;
-    color: var(--text-sub);
-}
-
-.calendar-days {
-    display: contents;
-}
-
-.day {
-    background: var(--white);
-    min-height: 120px;
-    padding: 10px;
-    position: relative;
-    border-radius: 4px;
-}
-
 .day.today {
     background-color: #FFFDE7;
-    border: 2px solid var(--kakao-yellow);
 }
 
 .day.today .day-num {
@@ -234,12 +283,14 @@ main {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    font-weight: 700;
 }
 
 .day.other-month {
-    background: #fafafa;
-    color: #ccc;
+    background: #fdfdfd;
+    color: #ddd;
 }
+
 
 .day-num {
     font-weight: 500;
@@ -248,26 +299,31 @@ main {
 
 .event-bar {
     font-size: 11px;
-    padding: 3px 8px;
-    margin-bottom: 2px;
-    border-radius: 4px;
-    background: var(--kakao-yellow); /* default */
-    color: var(--text-main);
-    cursor: default;
+    padding: 4px 10px;
+    margin-bottom: 4px;
+    border-radius: 4px; /* default pill for single day */
+    background: var(--kakao-yellow);
+    color: var(--kakao-black);
+    cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: filter 0.2s;
-    height: 22px;
-    line-height: 1.4;
+    transition: all 0.2s;
+    height: 24px;
+    line-height: 1.5;
     position: relative;
     z-index: 5;
-    font-weight: 500;
+    font-weight: 600;
+    margin-left: 0;
+    margin-right: 0;
 }
 
+
+
 .event-bar:hover {
-    filter: brightness(0.95);
-    cursor: pointer;
+    filter: brightness(0.92);
+    transform: scale(1.02);
+    z-index: 10;
 }
 
 .event-bar.empty {
@@ -279,20 +335,17 @@ main {
 .event-bar.start-bar {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
-    margin-right: -11px; /* break through the 1px grid gap */
 }
 
 .event-bar.mid-bar {
     border-radius: 0;
-    margin-left: -10px;
-    margin-right: -11px;
 }
 
 .event-bar.end-bar {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    margin-left: -10px;
 }
+
 
 /* Handle same day single event naturally overrides the above */
 .event-bar.start-bar.end-bar {
@@ -308,13 +361,27 @@ main {
 .event-bar.color-4 { background: var(--event-color-5); }
 
 .deadline {
-    background: #E53935; /* Red color */
-    color: var(--white);
-    font-weight: bold;
-    border-radius: 4px !important;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 4px;
+    background: #FFF5F5; /* Very light red background */
+    color: #D32F2F; /* Bold red text */
+    font-weight: 800;
+    border-radius: 6px !important;
+    margin-top: 6px;
+    box-shadow: 0 4px 10px rgba(211, 47, 47, 0.15);
+    border: 1.5px solid #FFCDD2; /* Soft red border */
+    letter-spacing: -0.2px;
+    animation: pulse-red-soft 2s infinite;
+}
+
+@keyframes pulse-red-soft {
+    0% { border-color: #FFCDD2; box-shadow: 0 4px 10px rgba(211, 47, 47, 0.1); }
+    50% { border-color: #EF5350; box-shadow: 0 4px 15px rgba(211, 47, 47, 0.2); }
+    100% { border-color: #FFCDD2; box-shadow: 0 4px 10px rgba(211, 47, 47, 0.1); }
+}
+
+.deadline::before {
+    content: "⏰"; /* Alarm icon for urgency */
+    margin-right: 4px;
+    font-size: 10px;
 }
 
 /* Details Tab */
@@ -397,43 +464,132 @@ main {
 
 .ranking-header {
     margin-bottom: 25px;
-    text-align: center;
-}
-
-.ranking-header h2 {
-    margin-bottom: 15px;
-    font-size: 22px;
-}
-
-.ranking-sub-nav {
     display: flex;
     justify-content: center;
-    gap: 12px;
+}
+
+.sub-tabs-container {
+    display: flex;
+    background: #e0e0e0;
+    padding: 4px;
+    border-radius: 30px;
+    gap: 0;
 }
 
 .sub-tab-btn {
-    padding: 8px 18px;
-    border: 1px solid #ddd;
-    background: var(--white);
+    padding: 10px 30px;
+    border: none;
+    background: transparent;
     border-radius: 25px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
     transition: all 0.3s;
     color: var(--text-sub);
 }
 
-.sub-tab-btn:hover {
-    border-color: var(--kakao-yellow);
-    color: var(--text-main);
+.sub-tab-btn.active {
+    background: var(--white);
+    color: var(--kakao-black);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.sub-tab-btn.active {
+/* Season Tabs */
+.season-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.season-tab {
+    padding: 8px 18px;
+    border: 1px solid #ddd;
+    background: var(--white);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    color: var(--text-sub);
+}
+
+.season-tab:hover {
+    border-color: var(--kakao-yellow);
+}
+
+.season-tab.active {
     background: var(--kakao-yellow);
     border-color: var(--kakao-yellow);
     color: var(--kakao-black);
     font-weight: 700;
 }
+
+/* Rank Table */
+.rank-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.rank-table th {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid #eee;
+    font-size: 14px;
+    color: var(--text-sub);
+    font-weight: 600;
+}
+
+.rank-table td {
+    padding: 20px 15px;
+    border-bottom: 1px solid #f5f5f5;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.rank-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.rank-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-main);
+    margin-bottom: 4px;
+}
+
+.rank-code {
+    font-size: 12px;
+    color: #999;
+}
+
+.rank-num {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--kakao-black);
+}
+
+.rank-diff {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.season-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.season-badge.봄 { background: #E8F5E9; color: #2E7D32; }
+.season-badge.여름 { background: #E3F2FD; color: #1565C0; }
+.season-badge.가을 { background: #FFF3E0; color: #EF6C00; }
+.season-badge.겨울 { background: #F3E5F5; color: #7B1FA2; }
 
 .ranking-list {
     display: flex;
@@ -444,17 +600,18 @@ main {
 .ranking-item {
     display: flex;
     align-items: center;
-    padding: 15px;
-    background: #fdfdfd;
-    border: 1px solid #f0f0f0;
+    padding: 20px;
+    background: var(--white);
+    border: 1px solid #eee;
     border-radius: 12px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .ranking-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    background: var(--white);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    border-color: var(--kakao-yellow);
 }
 
 .rank-badge {
@@ -477,11 +634,22 @@ main {
     flex-shrink: 0;
 }
 
-.ranking-details {
-    flex-grow: 1;
+.season-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.season-badge.사계절 { background: #FFFDE7; color: #FBC02D; border: 1px solid #FFF9C4; }
+.season-badge.봄, .season-badge.가을, .season-badge.봄가을 { background: #E8F5E9; color: #2E7D32; border: 1px solid #C8E6C9; }
+.season-badge.여름 { background: #E3F2FD; color: #1565C0; border: 1px solid #BBDEFB; }
+.season-badge.겨울 { background: #F3E5F5; color: #7B1FA2; border: 1px solid #E1BEEF; }
+
+.product-header {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .product-code {
