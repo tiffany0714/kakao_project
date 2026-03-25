@@ -1,23 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
-    const rankingList = document.getElementById('ranking-list');
     const updateStatus = document.getElementById('update-status');
+    const rankingList = document.getElementById('ranking-list');
 
     let currentData = null;
-    let activeSubTab = localStorage.getItem('activeSubTab') || 'strategy';
+    let activeSubTab = 'strategy';
     let activeSeason = '전체';
     let viewDate = new Date(2026, 2, 1); 
 
-    const pastelPalette = [
-        '#D1E9FF', '#D1F2E1', '#FAD1E6', '#FFF9C4', '#E1D1F2', '#FFE4D1', '#E0F2F1', '#F1F8E9'
-    ];
+    const pastelPalette = ['#E0F2F1', '#E3F2FD', '#FCE4EC', '#F3E5F5', '#FFF3E0', '#FFF9C4', '#E8F5E9', '#F1F8E9'];
 
     const getPastelColor = (str) => {
         let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            hash = str.charCodeAt(i) + ((hash << 5) - hash);
-        }
+        for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
         return pastelPalette[Math.abs(hash) % pastelPalette.length];
     };
 
@@ -27,12 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             tabContents.forEach(c => c.classList.remove('active'));
             tab.classList.add('active');
             document.getElementById(tab.dataset.tab).classList.add('active');
-            localStorage.setItem('activeTab', tab.dataset.tab);
         });
     });
-
-    const savedTab = localStorage.getItem('activeTab') || 'tab1';
-    document.querySelector(`[data-tab="${savedTab}"]`)?.click();
 
     document.getElementById('prev-month-btn')?.addEventListener('click', () => {
         viewDate.setMonth(viewDate.getMonth() - 1);
@@ -51,101 +43,120 @@ document.addEventListener('DOMContentLoaded', () => {
             renderCalendar();
             renderEventDetails();
             renderRanking();
-        } catch (error) {
-            console.error('Data load error:', error);
-        }
+        } catch (error) { console.error('Data load error:', error); }
     }
 
     const parseDate = (str) => {
         if (!str || !str.includes('월')) return null;
         const mPart = str.split('월')[0];
         const dPart = str.split('월')[1]?.split('일')[0];
-        if (!mPart || !dPart) return null;
         return new Date(2026, parseInt(mPart) - 1, parseInt(dPart));
     };
 
     function renderCalendar() {
-        const calendarDays = document.getElementById('calendar-days');
+        const grid = document.getElementById('calendar-grid');
         const monthDisplay = document.getElementById('current-month-display');
-        if (!calendarDays || !monthDisplay) return;
+        if (!grid || !monthDisplay) return;
         
-        calendarDays.innerHTML = '';
+        grid.innerHTML = '';
         const year = viewDate.getFullYear();
         const month = viewDate.getMonth();
         monthDisplay.textContent = `${year}년 ${month + 1}월`;
 
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-        for (let i = 0; i < firstDay; i++) {
-            const empty = document.createElement('div');
-            empty.className = 'calendar-day empty';
-            calendarDays.appendChild(empty);
-        }
-
-        const events = currentData?.events || [];
         
-        for (let day = 1; day <= daysInMonth; day++) {
-            const current = new Date(year, month, day);
-            const dateStr = `${month + 1}월 ${day}일`;
+        // Prepare weeks
+        const events = currentData?.events || [];
+        const monthStart = new Date(year, month, 1);
+        const monthEnd = new Date(year, month, daysInMonth);
+        
+        // Calculate weeks in month
+        let currentDayPointer = new Date(year, month, 1 - firstDay);
+        while (currentDayPointer <= monthEnd) {
+            const weekRow = document.createElement('div');
+            weekRow.className = 'calendar-week';
             
-            const dayEvents = events.filter(e => {
-                const schedule = e.schedule || "";
-                if (schedule.includes('~')) {
-                    const parts = schedule.split('~').map(p => p.trim());
-                    const start = parseDate(parts[0]);
-                    const end = parseDate(parts[1]);
-                    return start && end && current >= start && current <= end;
+            // Render background cells for the week
+            for (let i = 0; i < 7; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'calendar-day-cell';
+                if (currentDayPointer.getMonth() === month) {
+                    cell.innerHTML = `<div class="day-number">${currentDayPointer.getDate()}</div>`;
+                    
+                    // Deadlines
+                    const dateStr = `${currentDayPointer.getMonth() + 1}월 ${currentDayPointer.getDate()}일`;
+                    events.filter(e => e.deadline && e.deadline.includes(dateStr)).forEach(d => {
+                        const dp = document.createElement('div');
+                        dp.className = 'deadline-pill';
+                        dp.textContent = `🚩 마감: ${d.name}`;
+                        cell.appendChild(dp);
+                    });
                 }
-                return schedule.includes(dateStr);
+                weekRow.appendChild(cell);
+                currentDayPointer.setDate(currentDayPointer.getDate() + 1);
+            }
+
+            // Render Events Layer for this week
+            const weekEndPointer = new Date(currentDayPointer);
+            weekEndPointer.setDate(weekEndPointer.getDate() - 1);
+            const weekStartPointer = new Date(weekEndPointer);
+            weekStartPointer.setDate(weekStartPointer.getDate() - 6);
+
+            const eventLayer = document.createElement('div');
+            eventLayer.className = 'week-events-layer';
+
+            // Filter events that occur this week
+            const weekEvents = events.filter(e => {
+                const parts = (e.schedule || "").split('~').map(p => p.trim());
+                const start = parseDate(parts[0]);
+                const end = parts[1] ? parseDate(parts[1]) : start;
+                return start && end && start <= weekEndPointer && end >= weekStartPointer;
             });
 
-            const cell = document.createElement('div');
-            cell.className = 'calendar-day';
-            cell.innerHTML = `<div class="day-num">${day}</div>`;
-            const eventWrapper = document.createElement('div');
-            eventWrapper.className = 'event-wrapper';
+            // Tracking for stacking
+            const tracks = [];
 
-            // 마감 표시
-            events.filter(e => e.deadline && e.deadline.includes(dateStr)).forEach(d => {
-                const bar = document.createElement('div');
-                bar.className = 'deadline-bar';
-                bar.textContent = `🚩 마감: ${d.name}`;
-                eventWrapper.appendChild(bar);
-            });
+            weekEvents.forEach(e => {
+                const parts = (e.schedule || "").split('~').map(p => p.trim());
+                const start = parseDate(parts[0]);
+                const end = parts[1] ? parseDate(parts[1]) : start;
+                
+                const effectiveStart = start < weekStartPointer ? weekStartPointer : start;
+                const effectiveEnd = end > weekEndPointer ? weekEndPointer : end;
+                
+                const startCol = effectiveStart.getDay() + 1; // 1-indexed for grid
+                const span = Math.round((effectiveEnd - effectiveStart) / (1000 * 60 * 60 * 24)) + 1;
 
-            // 이벤트 바 (Google 스타일 Spanning logic)
-            dayEvents.forEach(e => {
+                // Find first available track
+                let trackIdx = tracks.findIndex(t => t < startCol);
+                if (trackIdx === -1) {
+                    tracks.push(startCol + span - 1);
+                    trackIdx = tracks.length - 1;
+                } else {
+                    tracks[trackIdx] = startCol + span - 1;
+                }
+
                 const bar = document.createElement('div');
                 bar.className = 'event-bar';
+                bar.style.gridColumn = `${startCol} / span ${span}`;
+                bar.style.gridRow = `${trackIdx + 1}`;
                 bar.style.backgroundColor = getPastelColor(e.name);
                 
-                if (e.schedule.includes('~')) {
-                    const parts = e.schedule.split('~').map(p => p.trim());
-                    const start = parseDate(parts[0]);
-                    const end = parseDate(parts[1]);
-                    
-                    const isStart = current.getTime() === start?.getTime();
-                    const isEnd = current.getTime() === end?.getTime();
-                    
-                    bar.classList.add('continued');
-                    if (isStart) {
-                        bar.classList.add('start');
-                        bar.textContent = e.name;
-                    }
-                    if (isEnd) bar.classList.add('end');
-                } else {
+                if (start < weekStartPointer) bar.classList.add('continued-left');
+                if (end > weekEndPointer) bar.classList.add('continued-right');
+                
+                if (start >= weekStartPointer || start.getMonth() !== month) {
                     bar.textContent = e.name;
-                    bar.classList.add('start', 'end'); // 단일 일정도 시작/끝 패딩/코너 적용
                 }
 
                 bar.addEventListener('mouseenter', (ev) => showTooltip(ev, e));
                 bar.addEventListener('mouseleave', hideTooltip);
-                eventWrapper.appendChild(bar);
+                eventLayer.appendChild(bar);
             });
 
-            cell.appendChild(eventWrapper);
-            calendarDays.appendChild(cell);
+            weekRow.appendChild(eventLayer);
+            grid.appendChild(weekRow);
         }
     }
 
@@ -153,18 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const detailsGrid = document.getElementById('event-details');
         if (!detailsGrid) return;
         detailsGrid.innerHTML = '';
-
         (currentData?.events || []).forEach(e => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `
-                <div class="event-area">${e.area}</div>
-                <div class="event-title">${e.name}</div>
+                <span style="font-size:11px; color:#999; font-weight:800;">${e.area}</span>
+                <strong>${e.name}</strong>
                 <p><strong>📅 일정:</strong> ${e.schedule}</p>
-                <div class="scheme-box">
-                    ${e.scheme.replace(/\n/g, '<br>')}
-                </div>
-                <div class="deadline-pill">⏰ 마감: ${e.deadline}</div>
+                <div class="scheme-box">${e.scheme.replace(/\n/g, '<br>')}</div>
+                <p style="color:#E53935; font-size:13px; font-weight:800;">🏁 마감기한: ${e.deadline}</p>
             `;
             detailsGrid.appendChild(card);
         });
@@ -173,47 +181,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRanking() {
         if (!currentData || !rankingList) return;
         rankingList.innerHTML = '';
-
-        const getDiffHtml = (diff) => {
-            if (!diff || diff === 0) return '<span class="stay">-</span>';
-            return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
-        };
-
-        let items = [];
-        if (activeSubTab === 'strategy') {
-            document.getElementById('strategy-filter-tabs').style.display = 'flex';
-            items = (currentData.seasonal_ranking || []).filter(r => {
-                if (activeSeason === '전체') return true;
-                if (activeSeason === '봄/가을') return r.season === '봄' || r.season === '가을' || r.season === '봄/가을';
-                return r.season === activeSeason;
-            });
-        } else {
-            document.getElementById('strategy-filter-tabs').style.display = 'none';
-            items = currentData.niece_ranking || [];
-        }
-
+        const items = activeSubTab === 'strategy' ? (currentData.seasonal_ranking || []) : (currentData.niece_ranking || []);
+        
         items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
             card.innerHTML = `
-                <div class="rank-badge">${r.rank === 999 ? '-' : r.rank}</div>
-                <div class="ranking-details">
-                    <span class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</span>
-                    <div class="product-info">
-                        <div class="product-name">${r.name}</div>
-                        <div class="product-code">#${r.code || '000000'}</div>
-                    </div>
-                    <div class="rank-stats">
-                        <div class="stat-box">
-                            <span class="stat-label">DAILY DIFF</span>
-                            <span class="stat-val">${getDiffHtml(r.diff)}</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">WEEKLY DIFF</span>
-                            <span class="stat-val">${getDiffHtml(r.week_diff || 0)}</span>
-                        </div>
+                <div class="rank-num">${r.rank === 999 ? '-' : r.rank}</div>
+                <div class="product-info">
+                    <div class="name">${r.name}</div>
+                    <div class="stats">
+                        <span>어제대비 ${r.diff > 0 ? '+' : ''}${r.diff}</span>
+                        <span>지난주대비 ${r.week_diff || 0}</span>
                     </div>
                 </div>
+                <div class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</div>
             `;
             rankingList.appendChild(card);
         });
@@ -224,30 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(tooltip);
 
     function showTooltip(ev, data) {
-        tooltip.innerHTML = `<strong>${data.name}</strong><br><small>${data.schedule}</small>`;
+        tooltip.innerHTML = `<strong>${data.name}</strong><br>${data.schedule}`;
         tooltip.classList.remove('hidden');
         tooltip.style.left = (ev.pageX + 10) + 'px';
         tooltip.style.top = (ev.pageY + 10) + 'px';
     }
     function hideTooltip() { tooltip.classList.add('hidden'); }
-
-    // Sub-tabs handling
-    document.querySelector('.sub-tabs-container').onclick = (e) => {
-        if (e.target.dataset.sub) {
-            document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            activeSubTab = e.target.dataset.sub;
-            renderRanking();
-        }
-    };
-    document.getElementById('strategy-filter-tabs').onclick = (e) => {
-        if (e.target.dataset.season) {
-            document.querySelectorAll('.season-tab').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            activeSeason = e.target.dataset.season;
-            renderRanking();
-        }
-    };
 
     loadData();
 });

@@ -10,7 +10,7 @@
     <div class="container">
         <header>
             <h1>카카오 선물하기 대시보드</h1>
-            <div id="update-status" class="update-status">데이터 로딩 중...</div>
+            <div id="update-status" class="update-status">Loading...</div>
         </header>
 
         <nav class="tabs">
@@ -21,7 +21,7 @@
 
         <main>
             <div id="tab1" class="tab-content active">
-                <div class="calendar-header">
+                <div class="calendar-controls">
                     <h2 id="current-month-display">2026년 3월</h2>
                     <div class="calendar-nav">
                         <button id="prev-month-btn">이전달</button>
@@ -34,7 +34,7 @@
                     <div class="day-label">목</div><div class="day-label">금</div>
                     <div class="day-label">토</div>
                 </div>
-                <div id="calendar-days"></div>
+                <div id="calendar-grid"></div>
             </div>
 
             <div id="tab2" class="tab-content">
@@ -42,21 +42,6 @@
             </div>
 
             <div id="tab3" class="tab-content">
-                <div class="ranking-header">
-                    <div class="sub-tabs-container">
-                        <button class="sub-tab-btn active" data-sub="strategy">전략상품</button>
-                        <button class="sub-tab-btn" data-sub="niece">조카선물</button>
-                    </div>
-                </div>
-
-                <div id="strategy-filter-tabs" class="season-tabs">
-                    <button class="season-tab active" data-season="전체">전체</button>
-                    <button class="season-tab" data-season="사계절">사계절</button>
-                    <button class="season-tab" data-season="봄/가을">봄/가을</button>
-                    <button class="season-tab" data-season="여름">여름</button>
-                    <button class="season-tab" data-season="겨울">겨울</button>
-                </div>
-
                 <div id="ranking-list"></div>
             </div>
         </main>
