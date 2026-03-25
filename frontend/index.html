@@ -24,8 +24,8 @@
                 <div class="calendar-controls">
                     <h2 id="current-month-display">2026년 3월</h2>
                     <div class="calendar-nav">
-                        <button id="prev-month-btn">이전달</button>
-                        <button id="next-month-btn">다음달</button>
+                        <button id="prev-month-btn" class="nav-btn">이전달</button>
+                        <button id="next-month-btn" class="nav-btn">다음달</button>
                     </div>
                 </div>
                 <div class="calendar-labels">
@@ -42,6 +42,19 @@
             </div>
 
             <div id="tab3" class="tab-content">
+                <div class="ranking-header">
+                    <div class="sub-tabs-container">
+                        <button class="sub-tab-btn active" data-sub="strategy">전략상품</button>
+                        <button class="sub-tab-btn" data-sub="niece">조카선물</button>
+                    </div>
+                    <div id="strategy-filter-tabs" class="season-tabs">
+                        <button class="season-tab active" data-season="전체">전체</button>
+                        <button class="season-tab" data-season="사계절">사계절</button>
+                        <button class="season-tab" data-season="봄/가을">봄/가을</button>
+                        <button class="season-tab" data-season="여름">여름</button>
+                        <button class="season-tab" data-season="겨울">겨울</button>
+                    </div>
+                </div>
                 <div id="ranking-list"></div>
             </div>
         </main>

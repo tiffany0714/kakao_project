@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'event-card';
             card.innerHTML = `
                 <span style="font-size:11px; color:#999; font-weight:800;">${e.area}</span>
-                <strong>${e.name}</strong>
-                <p><strong>📅 일정:</strong> ${e.schedule}</p>
+                <div class="title-text">${e.name}</div>
+                <div style="font-size:13px; margin-bottom:10px;"><strong>📅 일정:</strong> ${e.schedule}</div>
                 <div class="scheme-box">${e.scheme.replace(/\n/g, '<br>')}</div>
                 <p style="color:#E53935; font-size:13px; font-weight:800;">🏁 마감기한: ${e.deadline}</p>
             `;
@@ -181,8 +181,27 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderRanking() {
         if (!currentData || !rankingList) return;
         rankingList.innerHTML = '';
-        const items = activeSubTab === 'strategy' ? (currentData.seasonal_ranking || []) : (currentData.niece_ranking || []);
-        
+
+        const getDiffHtml = (diff) => {
+            if (!diff || diff === 0) return '<span class="stay">-</span>';
+            return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
+        };
+
+        let items = [];
+        const filterTabs = document.getElementById('strategy-filter-tabs');
+
+        if (activeSubTab === 'strategy') {
+            if (filterTabs) filterTabs.style.display = 'flex';
+            items = (currentData.seasonal_ranking || []).filter(r => {
+                if (activeSeason === '전체') return true;
+                if (activeSeason === '봄/가을') return r.season === '봄' || r.season === '가을' || r.season === '봄/가을';
+                return r.season === activeSeason;
+            });
+        } else {
+            if (filterTabs) filterTabs.style.display = 'none';
+            items = currentData.niece_ranking || [];
+        }
+
         items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
@@ -191,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="product-info">
                     <div class="name">${r.name}</div>
                     <div class="stats">
-                        <span>어제대비 ${r.diff > 0 ? '+' : ''}${r.diff}</span>
-                        <span>지난주대비 ${r.week_diff || 0}</span>
+                        <span>어제대비 ${getDiffHtml(r.diff)}</span>
+                        <span>지난주대비 ${getDiffHtml(r.week_diff || 0)}</span>
                     </div>
                 </div>
                 <div class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</div>
@@ -212,6 +231,32 @@ document.addEventListener('DOMContentLoaded', () => {
         tooltip.style.top = (ev.pageY + 10) + 'px';
     }
     function hideTooltip() { tooltip.classList.add('hidden'); }
+
+    // Sub-tabs handling (Strategy / Niece)
+    const subTabs = document.querySelector('.sub-tabs-container');
+    if (subTabs) {
+        subTabs.onclick = (e) => {
+            if (e.target.dataset.sub) {
+                document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                activeSubTab = e.target.dataset.sub;
+                renderRanking();
+            }
+        };
+    }
+
+    // Season Filter handling (Strategy Tab Only)
+    const strategyFilter = document.getElementById('strategy-filter-tabs');
+    if (strategyFilter) {
+        strategyFilter.onclick = (e) => {
+            if (e.target.dataset.season) {
+                document.querySelectorAll('.season-tab').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                activeSeason = e.target.dataset.season;
+                renderRanking();
+            }
+        };
+    }
 
     loadData();
 });

@@ -78,14 +78,17 @@ h1 { font-size: 28px; font-weight: 800; color: #000; letter-spacing: -1px; }
 .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .month-display { font-size: 22px; font-weight: 800; }
 .nav-btn {
-    padding: 8px 16px;
+    padding: 8px 20px;
     border: 1px solid var(--border-color);
     background: #fff;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     font-weight: 700;
     font-size: 14px;
+    color: var(--text-primary);
+    transition: all 0.2s;
 }
+.nav-btn:hover { background: var(--bg-gray); border-color: #ddd; }
 
 .calendar-labels { 
     display: grid; 
@@ -176,16 +179,69 @@ h1 { font-size: 28px; font-weight: 800; color: #000; letter-spacing: -1px; }
 }
 
 /* Wide Cards but capped at 1200px */
-.details-grid { display: grid; grid-gap: 20px; }
+/* Wide Event Details */
+.details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 .event-card { 
     background: #fff; 
     border: 1px solid var(--border-color); 
     border-radius: 15px; 
-    padding: 25px; 
+    padding: 20px; 
     box-shadow: 0 2px 15px rgba(0,0,0,0.02);
 }
-.event-card strong { font-size: 18px; font-weight: 900; color: #000; display: block; margin-bottom: 10px; }
+.event-card .title-text { font-size: 18px; font-weight: 900; color: #000; display: block; margin-bottom: 10px; }
 .scheme-box { background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #f2f2f2; font-size: 13.5px; line-height: 1.8; color: #555; margin: 10px 0; }
+
+/* Ranking Tabs & Filters */
+.ranking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+
+.sub-tabs-container { 
+    display: flex; 
+    background: #f1f2f6; 
+    padding: 6px; 
+    border-radius: 12px; 
+}
+.sub-tab-btn { 
+    padding: 8px 20px; 
+    border: none; 
+    background: transparent; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-weight: 700; 
+    color: var(--text-muted); 
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.sub-tab-btn.active { 
+    background: #fff; 
+    color: #000; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
+}
+
+.season-tabs { 
+    display: flex; 
+    gap: 8px; 
+}
+.season-tab { 
+    padding: 8px 16px; 
+    border: 1px solid var(--border-color); 
+    background: #fff; 
+    border-radius: 20px; 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    color: var(--text-muted);
+    transition: all 0.2s; 
+}
+.season-tab:hover {
+    border-color: #ddd;
+    color: var(--text-primary);
+}
+.season-tab.active { 
+    background: var(--kakao-pastel-yellow); 
+    color: var(--kakao-brown); 
+    border-color: var(--kakao-pastel-yellow); 
+    font-weight: 800;
+}
 
 /* Ranking cards */
 .ranking-card {
