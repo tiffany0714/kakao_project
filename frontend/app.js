@@ -7,11 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentData = null;
     let activeSubTab = localStorage.getItem('activeSubTab') || 'strategy';
     let activeSeason = '전체';
-    
-    // 캘린더 날짜 상태
     let viewDate = new Date(2026, 2, 1); 
 
-    // 탭 전환
+    const pastelPalette = [
+        '#D1E9FF', '#D1F2E1', '#FAD1E6', '#FFF9C4', '#E1D1F2', '#FFE4D1', '#E0F2F1', '#F1F8E9'
+    ];
+
+    const getPastelColor = (str) => {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        return pastelPalette[Math.abs(hash) % pastelPalette.length];
+    };
+
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             tabs.forEach(t => t.classList.remove('active'));
@@ -25,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTab = localStorage.getItem('activeTab') || 'tab1';
     document.querySelector(`[data-tab="${savedTab}"]`)?.click();
 
-    // 네비게이션
     document.getElementById('prev-month-btn')?.addEventListener('click', () => {
         viewDate.setMonth(viewDate.getMonth() - 1);
         renderCalendar();
@@ -39,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch(`data/current_data.json?v=${Date.now()}`);
             currentData = await response.json();
-            if (updateStatus) updateStatus.textContent = `마지막 업데이트: ${currentData.last_updated}`;
+            if (updateStatus) updateStatus.textContent = `Update Status: ${currentData.last_updated}`;
             renderCalendar();
             renderEventDetails();
             renderRanking();
@@ -49,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const parseDate = (str) => {
-        if (!str) return null;
+        if (!str || !str.includes('월')) return null;
         const mPart = str.split('월')[0];
         const dPart = str.split('월')[1]?.split('일')[0];
         if (!mPart || !dPart) return null;
@@ -95,10 +103,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const cell = document.createElement('div');
             cell.className = 'calendar-day';
             cell.innerHTML = `<div class="day-num">${day}</div>`;
-
             const eventWrapper = document.createElement('div');
             eventWrapper.className = 'event-wrapper';
 
+            // 마감 표시
             events.filter(e => e.deadline && e.deadline.includes(dateStr)).forEach(d => {
                 const bar = document.createElement('div');
                 bar.className = 'deadline-bar';
@@ -106,10 +114,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 eventWrapper.appendChild(bar);
             });
 
+            // 이벤트 바 (Google 스타일 Spanning logic)
             dayEvents.forEach(e => {
                 const bar = document.createElement('div');
                 bar.className = 'event-bar';
-                bar.textContent = e.name;
+                bar.style.backgroundColor = getPastelColor(e.name);
+                
+                if (e.schedule.includes('~')) {
+                    const parts = e.schedule.split('~').map(p => p.trim());
+                    const start = parseDate(parts[0]);
+                    const end = parseDate(parts[1]);
+                    
+                    const isStart = current.getTime() === start?.getTime();
+                    const isEnd = current.getTime() === end?.getTime();
+                    
+                    bar.classList.add('continued');
+                    if (isStart) {
+                        bar.classList.add('start');
+                        bar.textContent = e.name;
+                    }
+                    if (isEnd) bar.classList.add('end');
+                } else {
+                    bar.textContent = e.name;
+                    bar.classList.add('start', 'end'); // 단일 일정도 시작/끝 패딩/코너 적용
+                }
+
                 bar.addEventListener('mouseenter', (ev) => showTooltip(ev, e));
                 bar.addEventListener('mouseleave', hideTooltip);
                 eventWrapper.appendChild(bar);
@@ -129,12 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `
-                <strong>${e.area} - ${e.name}</strong>
-                <p>일정: ${e.schedule}</p>
-                <div style="background:#F9F9F9; padding:10px; font-size:12px; margin-top:10px;">
+                <div class="event-area">${e.area}</div>
+                <div class="event-title">${e.name}</div>
+                <p><strong>📅 일정:</strong> ${e.schedule}</p>
+                <div class="scheme-box">
                     ${e.scheme.replace(/\n/g, '<br>')}
                 </div>
-                <p style="color:#E74C3C; font-weight:bold; margin-top:10px;">마감기한: ${e.deadline}</p>
+                <div class="deadline-pill">⏰ 마감: ${e.deadline}</div>
             `;
             detailsGrid.appendChild(card);
         });
@@ -145,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rankingList.innerHTML = '';
 
         const getDiffHtml = (diff) => {
-            if (!diff || diff === 0) return '<span>-</span>';
+            if (!diff || diff === 0) return '<span class="stay">-</span>';
             return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
         };
 
@@ -166,14 +196,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
             card.innerHTML = `
-                <div class="rank-badge">${r.rank === 999 ? '권외' : r.rank}</div>
+                <div class="rank-badge">${r.rank === 999 ? '-' : r.rank}</div>
                 <div class="ranking-details">
-                    <span class="product-code">#${r.code}</span>
-                    <span class="season-badge ${r.season || 'default'}">${r.season || '기타'}</span>
-                    <div class="product-name">${r.name}</div>
-                    <div class="rank-fluctuations">
-                        <span>어제대비 ${getDiffHtml(r.diff)}</span>
-                        <span>지난주대비 ${getDiffHtml(r.week_diff || 0)}</span>
+                    <span class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</span>
+                    <div class="product-info">
+                        <div class="product-name">${r.name}</div>
+                        <div class="product-code">#${r.code || '000000'}</div>
+                    </div>
+                    <div class="rank-stats">
+                        <div class="stat-box">
+                            <span class="stat-label">DAILY DIFF</span>
+                            <span class="stat-val">${getDiffHtml(r.diff)}</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">WEEKLY DIFF</span>
+                            <span class="stat-val">${getDiffHtml(r.week_diff || 0)}</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -186,13 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(tooltip);
 
     function showTooltip(ev, data) {
-        tooltip.innerHTML = `<strong>${data.name}</strong><br>${data.schedule}`;
+        tooltip.innerHTML = `<strong>${data.name}</strong><br><small>${data.schedule}</small>`;
         tooltip.classList.remove('hidden');
         tooltip.style.left = (ev.pageX + 10) + 'px';
         tooltip.style.top = (ev.pageY + 10) + 'px';
     }
     function hideTooltip() { tooltip.classList.add('hidden'); }
 
+    // Sub-tabs handling
     document.querySelector('.sub-tabs-container').onclick = (e) => {
         if (e.target.dataset.sub) {
             document.querySelectorAll('.sub-tab-btn').forEach(b => b.classList.remove('active'));
