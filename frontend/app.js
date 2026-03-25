@@ -109,20 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dayEvents.forEach(e => {
                 const bar = document.createElement('div');
                 bar.className = 'event-bar';
-                
-                if (e.schedule.includes('~')) {
-                    const parts = e.schedule.split('~').map(p => p.trim());
-                    const start = parseDate(parts[0]);
-                    const end = parseDate(parts[1]);
-                    const isStart = current.getTime() === start?.getTime();
-                    const isEnd = current.getTime() === end?.getTime();
-                    bar.classList.add('continued');
-                    if (isStart) { bar.classList.add('start'); bar.textContent = e.name; }
-                    if (isEnd) bar.classList.add('end');
-                } else {
-                    bar.textContent = e.name;
-                }
-
+                bar.textContent = e.name;
                 bar.addEventListener('mouseenter', (ev) => showTooltip(ev, e));
                 bar.addEventListener('mouseleave', hideTooltip);
                 eventWrapper.appendChild(bar);
@@ -142,15 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `
-                <div class="event-area">${e.area}</div>
-                <div class="event-title">${e.name}</div>
-                <div class="event-info"><span class="info-label">일정:</span> ${e.schedule}</div>
-                <div class="scheme-text">
+                <strong>${e.area} - ${e.name}</strong>
+                <p>일정: ${e.schedule}</p>
+                <div style="background:#F9F9F9; padding:10px; font-size:12px; margin-top:10px;">
                     ${e.scheme.replace(/\n/g, '<br>')}
                 </div>
-                <div class="event-info" style="margin-top:10px; color:#e74b3c; font-weight:bold;">
-                    <span class="info-label">마감기한:</span> ${e.deadline}
-                </div>
+                <p style="color:#E74C3C; font-weight:bold; margin-top:10px;">마감기한: ${e.deadline}</p>
             `;
             detailsGrid.appendChild(card);
         });
@@ -161,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rankingList.innerHTML = '';
 
         const getDiffHtml = (diff) => {
-            if (!diff || diff === 0) return '<span class="stay">-</span>';
+            if (!diff || diff === 0) return '<span>-</span>';
             return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
         };
 
@@ -182,8 +166,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
             card.innerHTML = `
-                <div class="rank-badge">${r.rank === 999 ? '-' : r.rank}</div>
+                <div class="rank-badge">${r.rank === 999 ? '권외' : r.rank}</div>
                 <div class="ranking-details">
+                    <span class="product-code">#${r.code}</span>
                     <span class="season-badge ${r.season || 'default'}">${r.season || '기타'}</span>
                     <div class="product-name">${r.name}</div>
                     <div class="rank-fluctuations">

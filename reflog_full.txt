@@ -1,0 +1,27 @@
+19228ac HEAD@{0} Final: Restore Clean and Simple Step 531 Design
+70e20b7 HEAD@{1} Final Polish: Continuous bars and Ultra-Premium UI
+d7dcf32 HEAD@{2} Fix: Calendar ID mismatch and Restore Premium UI
+ea32bb7 HEAD@{3} Final Fix: Restore Premium UI and Calendar Month Switching
+4f88053 HEAD@{4} Feat: 3월 복구, 4월 데이터 반영, 랭킹 디자인 개편 및 3시간 자동화 적용
+4f88053 HEAD@{5} Feat: 3월 복구, 4월 데이터 반영, 랭킹 디자인 개편 및 3시간 자동화 적용
+715af24 HEAD@{6} Final Fix: Restore Premium UI, Calendar Month Switching, and Data Integrity
+0ae66a8 HEAD@{7} Final: Dashboard restoration with April events, UI redesign, and automation
+aaa9d6f HEAD@{8} 오전 9시 정기 업데이트
+4f88053 HEAD@{9} Feat: 3월 복구, 4월 데이터 반영, 랭킹 디자인 개편 및 3시간 자동화 적용
+074d7f3 HEAD@{10} 시스템 전체 교체 및 조카선물 기능 추가
+5acf91b HEAD@{11} 오늘자 최신 로봇 설정으로 업데이트
+7b17bb4 HEAD@{12} 화면 드롭다운 및 시즌별 랭킹 기능 추가
+01370ea HEAD@{13} 엑셀 파일 및 라이브러리 목록 추가
+d0ceda6 HEAD@{14} 진짜 랭킹 크롤링 기능 추가
+5575b00 HEAD@{15} 시스템 전체 경로 동기화 및 중복 코드 제거
+5ca90e7 HEAD@{16} 로봇 권한 및 로그 보강
+7193717 HEAD@{17} 안티 업그레이드: 구글폼 연동 및 낮 12시 자동 업데이트 적용
+5152007 HEAD@{18} 한국 시간 최종 수정
+5152007 HEAD@{19} 한국 시간 최종 수정
+5152007 HEAD@{20} 한국 시간 최종 수정
+e095745 HEAD@{21} 안티 수정 내용 최종 반영
+f010db4 HEAD@{22} 오즈키즈 추적 시스템 업데이트
+51e8c65 HEAD@{23} 매일 12시 자동 업데이트
+5152007 HEAD@{24} 한국 시간 최종 수정
+622a8db HEAD@{25} 최종 자동화 완료
+a453e97 HEAD@{26} 자동화 추가
