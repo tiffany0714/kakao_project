@@ -205,7 +205,20 @@ async def scrape_niece_ranking(page, url):
     ozkids_products = await page.evaluate(r'''() => {
         const results = [];
         // Recommendations use custom element <gc-link>
-        const items = document.querySelectorAll('gc-link, li[class*="item"], app-view-item, div[class*="product"]');
+        // Find all collection blocks on the page
+        const collections = document.querySelectorAll('app-view-collection, .wrap_list, [class*="collection"], [class*="component"]');
+        let container = document;
+        
+        // Find the last collection that actually contains products (the infinite scroll main grid)
+        for (let i = collections.length - 1; i >= 0; i--) {
+            const hasProducts = collections[i].querySelector('gc-link, li[class*="item"], app-view-item');
+            if (hasProducts) {
+                container = collections[i];
+                break;
+            }
+        }
+        
+        const items = container.querySelectorAll('gc-link, li[class*="item"], app-view-item, div[class*="product"]');
         let rankCounter = 1;
         
         items.forEach(li => {
@@ -223,39 +236,47 @@ async def scrape_niece_ranking(page, url):
                 href = li.getAttribute('href');
             }
             
-            if (brandName.includes('오즈키즈') || titleText.includes('오즈키즈') || 
-                fullText.includes('오즈키즈') || fullText.toUpperCase().includes('OZKIDS')) {
-                
-                const rankEl = li.querySelector('.num_rank, .num_badge, .badge_rank, [class*="rank"]');
-                const rank = rankEl ? rankEl.innerText.trim() : String(rankCounter);
-                
-                const imgEl = li.querySelector('img, [style*="background-image"]');
-                let img = "";
-                if (imgEl) {
-                    if (imgEl.tagName.toLowerCase() === 'img') {
-                        img = imgEl.src || imgEl.getAttribute('data-src') || imgEl.getAttribute('data-original') || "";
-                    } else {
-                        const style = imgEl.getAttribute('style') || "";
-                        const match = style.match(/url\((['"]?)(.*?)\1\)/);
-                        if (match) img = match[2];
+            let isProductCard = false;
+            if (titleText || brandName) isProductCard = true;
+            if (href && href.includes('/product/')) isProductCard = true;
+            
+            if (isProductCard) {
+                if (brandName.includes('오즈키즈') || titleText.includes('오즈키즈') || 
+                    fullText.includes('오즈키즈') || fullText.toUpperCase().includes('OZKIDS')) {
+                    
+                    const rankEl = li.querySelector('.num_rank, .num_badge, .badge_rank, [class*="rank"]');
+                    let adjustedRank = rankCounter - 95;
+                    if (adjustedRank < 1) adjustedRank = Math.max(1, rankCounter);
+                    const rank = rankEl ? rankEl.innerText.trim() : String(adjustedRank);
+                    
+                    const imgEl = li.querySelector('img, [style*="background-image"]');
+                    let img = "";
+                    if (imgEl) {
+                        if (imgEl.tagName.toLowerCase() === 'img') {
+                            img = imgEl.src || imgEl.getAttribute('data-src') || imgEl.getAttribute('data-original') || "";
+                        } else {
+                            const style = imgEl.getAttribute('style') || "";
+                            const match = style.match(/url\((['"]?)(.*?)\1\)/);
+                            if (match) img = match[2];
+                        }
                     }
+                    
+                    let productCode = "";
+                    if (href) {
+                        const match = href.match(/product\/(\d+)/);
+                        productCode = match ? match[1] : "";
+                    }
+                    
+                    let finalName = titleText || fullText.split('\n')[0].trim();
+                    // Clean up prefixes like "조카선물"
+                    finalName = finalName.replace(/^["'“”]*(조카선물|어린이선물)[^"”“]*["'“”]*\s*/, '').trim();
+                    finalName = finalName.replace(/^\[오즈키즈\]\s*/, '').replace(/^오즈키즈\s*/, '').trim();
+                    finalName = `[오즈키즈] ${finalName}`;
+                    
+                    results.push({ rank, name: finalName, img, product_code: productCode });
                 }
-                
-                let productCode = "";
-                if (href) {
-                    const match = href.match(/product\/(\d+)/);
-                    productCode = match ? match[1] : "";
-                }
-                
-                let finalName = titleText || fullText.split('\n')[0].trim();
-                // Clean up prefixes like "조카선물"
-                finalName = finalName.replace(/^["'“”]*(조카선물|어린이선물)[^"”“]*["'“”]*\s*/, '').trim();
-                finalName = finalName.replace(/^\[오즈키즈\]\s*/, '').replace(/^오즈키즈\s*/, '').trim();
-                finalName = `[오즈키즈] ${finalName}`;
-                
-                results.push({ rank, name: finalName, img, product_code: productCode });
+                rankCounter++;
             }
-            rankCounter++;
         });
         return results;
     }''')
