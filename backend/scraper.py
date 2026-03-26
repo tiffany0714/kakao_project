@@ -301,10 +301,47 @@ async def main():
                     existing_data = json.load(f)
         except: pass
 
-        data = {"last_updated": datetime.datetime.now().isoformat(), "events": [], "ranking": [], "niece_ranking": []}
+        data = {"last_updated": datetime.datetime.now().isoformat(), "events": [], "seasonal_ranking": [], "niece_ranking": []}
         
         try:
-            data["ranking"] = await scrape_kakao_ranking(page, kakao_ranking_url)
+            raw_ranking = await scrape_kakao_ranking(page, kakao_ranking_url)
+            
+            # 1-1. Map seasons from Excel
+            import pandas as pd
+            import os
+            try:
+                excel_path = os.path.join(project_root, 'strategy_items.xlsx')
+                df = pd.read_excel(excel_path)
+                season_map = {}
+                for _, row in df.iterrows():
+                    code = str(row.get('상품번호', '')).strip()
+                    name = str(row.get('상품명', '')).strip()
+                    season = str(row.get('계절', '기타')).strip()
+                    if code and code != 'nan':
+                        season_map[code] = season
+                    if name and name != 'nan':
+                        season_map[name] = season
+                
+                # 1-2. Apply seasons to raw ranking
+                for p in raw_ranking:
+                    p_code = str(p.get('product_code', ''))
+                    p_name = str(p.get('name', ''))
+                    clean_name = p_name.replace('[오즈키즈]', '').strip()
+                    
+                    if p_code in season_map:
+                        p['season'] = season_map[p_code]
+                    elif clean_name in season_map:
+                        p['season'] = season_map[clean_name]
+                    elif p_name in season_map:
+                        p['season'] = season_map[p_name]
+                    else:
+                        p['season'] = '기타'
+            except Exception as e:
+                print(f"Error reading strategy_items.xlsx: {e}")
+                for p in raw_ranking:
+                    p['season'] = '기타'
+                    
+            data["seasonal_ranking"] = raw_ranking
         except Exception as e:
             print(f"Error ranking: {e}")
             

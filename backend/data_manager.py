@@ -38,11 +38,11 @@ def update_history_and_calc_diffs(current_data):
     today_str = datetime.datetime.now().strftime("%Y-%m-%d")
     history = load_json(HISTORY_FILE)
     
-    if "ranking" not in history: history["ranking"] = {}
+    if "seasonal_ranking" not in history: history["seasonal_ranking"] = {}
     if "niece_ranking" not in history: history["niece_ranking"] = {}
     
     # Store today's rankings in history
-    for tab in ["ranking", "niece_ranking"]:
+    for tab in ["seasonal_ranking", "niece_ranking"]:
         hist_tab = history[tab]
         hist_tab[today_str] = {}
         for item in current_data.get(tab, []):
