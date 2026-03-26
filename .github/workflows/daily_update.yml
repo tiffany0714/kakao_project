@@ -1,28 +1,35 @@
-name: Automated Dashboard Update
+name: Automated Ozkiz Ranking Update
+
 on:
   schedule:
-    - cron: '0 */3 * * *' # 3시간마다 실행 (UTC 기준)
-  workflow_dispatch:
+    # 한국 시간 오후 12시는 UTC 기준 오전 3시입니다.
+    - cron: '0 3 * * *'
+  workflow_dispatch: # 관리자가 원할 때 언제든 'Run workflow' 버튼으로 실행 가능
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
+
       - name: Install dependencies
         run: |
-          pip install pandas openpyxl requests playwright
+          pip install pandas playwright openpyxl
           playwright install chromium
-      - name: Run Full Scraper (Events & Ranking)
+
+      - name: Run Scraper
         run: python backend/scraper.py
-      - name: Update Diffs and History
-        run: python backend/data_manager.py
+
       - name: Push updates
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Automated data update (3h schedule)" || exit 0
+          git commit -m "매일 12시 오즈키즈 랭킹 업데이트" || exit 0
           git push
