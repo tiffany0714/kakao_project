@@ -1,0 +1,17 @@
+Loaded auth state for scraping.
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep scroll...
+Scrolling... (0/25)
+Scrolling... (10/25)
+Scrolling... (20/25)
+Found 10 OzKids products: ['[오즈키즈] "조카선물여아" 유아 여아원피스 어린이 여아옷 3종 (택 1)', '[오즈키즈] "조카선물/어린이선물" 로벨리아 여아 여름 원피스 (가방세트)', '[오즈키즈] "여아조카선물" 방글이 유아 여아 레깅스']
+Scraping Niece/Nephew Ranking: https://gift.kakao.com/page/code/life_pregnancy?banner_id=1385&campaign_code=null
+Selecting '조카선물' category...
+Performing deep scroll on Niece/Nephew page...
+Scrolling... (0/25)
+Scrolling... (10/25)
+Scrolling... (20/25)
+Found 11 OzKids products in Niece/Nephew tab: ['[오즈키즈] 유아 여아원피스 어린이 여아옷 3종 (택 1)', '[오즈키즈] 유아 여아 여름 상하복 세트 11종 (택1)', '[오즈키즈] 어린이 유아 여아구두 공주 LED구두 BEST 6종 (택1)']
+Scraping Google Form: https://docs.google.com/forms/d/1jbIi_iNAhAIRWvB3v_d3rGi2kYvlRFoKom2fr5Dg_g4/viewform?edit_requested=true
+Successfully saved merged data to C:\Users\User\.gemini\antigravity\scratch\kakao_project\frontend\data\current_data.json
