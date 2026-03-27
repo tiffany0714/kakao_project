@@ -322,7 +322,8 @@ async def main():
                     existing_data = json.load(f)
         except: pass
 
-        data = {"last_updated": datetime.datetime.now().isoformat(), "events": [], "seasonal_ranking": [], "niece_ranking": []}
+        import datetime
+        data = {"last_updated": (datetime.datetime.now() + datetime.timedelta(hours=9)).isoformat(), "events": [], "seasonal_ranking": [], "niece_ranking": []}
         
         try:
             raw_ranking = await scrape_kakao_ranking(page, kakao_ranking_url)
