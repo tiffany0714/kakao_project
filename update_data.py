@@ -14,12 +14,17 @@ def main():
     prev_day = prev_dates[0] if prev_dates else None
 
     # Helper to find rank change
-    def get_diff(code, prev_ranking):
-        if not prev_ranking: return 0
-        prev_item = next((item for item in prev_ranking if str(item.get('code')) == code), None)
-        if prev_item:
-            return prev_item.get('rank', 999) - current_rank # prev - current: if 10 -> 5, diff is +5 (up)
-        return 0
+def get_diff(code, prev_list, current_rank):
+        if not prev_list: return "-" # 이전 데이터 없으면 대시 표시
+        p_item = next((item for item in prev_list if str(item.get('code')) == code), None)
+        if p_item:
+            p_rank = p_item.get('rank', 999)
+            if p_rank != 999:
+                change = p_rank - current_rank
+                if change > 0: return f"+{change}" # 순위 상승 (예: 10위 -> 8위 = +2)
+                if change < 0: return f"{change}"  # 순위 하락
+                return "-" # 변동 없음
+        return "신규" # 어제 기록에 없으면 신규 진입
 
     # 1. 전략 랭킹 (Strategy Ranking)
     # Target: https://gift.kakao.com/ranking/category/3

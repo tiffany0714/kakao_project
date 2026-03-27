@@ -202,23 +202,36 @@ document.addEventListener('DOMContentLoaded', () => {
             items = currentData.niece_ranking || [];
         }
 
-        items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
+             items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
             card.innerHTML = `
                 <div class="rank-num">${r.rank === 999 ? '-' : r.rank}</div>
                 <div class="product-info">
+                    <div style="font-size: 10px; color: #999; margin-bottom: 2px;">코드: ${r.code || '-'}</div>
                     <div class="name">${r.name}</div>
                     <div class="stats">
-                        <span>어제대비 ${getDiffHtml(r.diff)}</span>
-                        <span>지난주대비 ${getDiffHtml(r.week_diff || 0)}</span>
+                        <span>어제대비 <b style="color: ${getDiffColor(r.diff)}">${r.diff || '-'}</b></span>
+                        <span>지난주대비 -</span>
                     </div>
                 </div>
                 <div class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</div>
             `;
-            rankingList.appendChild(card);
-        });
-    }
+            // 아래 줄이 누락되면 화면에 카드가 안 나타납니다.
+            rankingList.appendChild(card); 
+             }); // forEach 닫기
+              } // 함수 닫기
+            /**
+             * 순위 변동 수치에 따른 색상을 반환하는 함수
+             */
+            function getDiffColor(diff) {
+                const d = String(diff);
+                if (d.includes('+')) return '#e53935'; // 순위 상승: 빨간색 [cite: 31, 32]
+                if (d.includes('-')) return '#1e88e5'; // 순위 하락: 파란색 [cite: 31, 32]
+                if (d === '신규') return '#ff9800';    // 신규 진입: 주황색 [cite: 31, 32]
+                return '#999';                         // 변동 없음: 회색 [cite: 31, 32]
+            }
+
 
     const tooltip = document.createElement('div');
     tooltip.className = 'tooltip hidden';
