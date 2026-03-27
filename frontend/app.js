@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="rank-num">${r.rank === 999 ? '-' : r.rank}</div>
                 <div class="product-info">
-                    <div style="font-size: 10px; color: #999; margin-bottom: 2px;">코드: ${r.code || '-'}</div>
+                    <div style="font-size: 10px; color: #999; margin-bottom: 2px;">코드: ${r.product_code || '-'}</div>
                     <div class="name">${r.name}</div>
                     <div class="stats">
                         <span>어제대비 <b style="color: ${getDiffColor(r.diff)}">${r.diff || '-'}</b></span>
