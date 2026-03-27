@@ -40,20 +40,21 @@ def main():
     prev_strat = history.get(prev_day, {}).get('category', []) if prev_day else []
     
 for _, row in df.iterrows():
-        code = str(row['상품번호'])
-        m_idx = next((i for i, item in enumerate(c_items) if str(item.get('productId')) == code), None)
-        current_rank = m_idx + 1 if m_idx is not None else 999
-        
-        # 2번 수정 포인트: 데이터 구조를 app.js와 맞추고 diff 계산 추가
-        seasonal.append({
-            "season": str(row['계절']),
-            "product_code": code, # 'code'에서 'product_code'로 변경
-            "name": str(row['상품명']),
-            "rank": current_rank,
-            "img": c_items[m_idx].get('imageUrl') if m_idx is not None else "",
-            "diff": get_diff(code, prev_list, 'category', current_rank),     # 어제 비교
-            "week_diff": get_diff(code, week_list, 'category', current_rank) # 지난주 비교
-        })
+    code = str(row['상품번호']) # 파니님의 엑셀 상품번호
+    season_name = str(row['계절']) # 파니님의 엑셀 계절 정보
+    
+    # 카카오 데이터(c_items)에서 해당 번호 찾기
+    m_idx = next((i for i, item in enumerate(c_items) if str(item.get('productId')) == code), None)
+    current_rank = m_idx + 1 if m_idx is not None else 999
+    
+    seasonal.append({
+        "season": season_name,   # 여기서 직접 엑셀 값을 넣어줘야 '기타'가 안 됩니다!
+        "product_code": code,
+        "name": str(row['상품명']),
+        "rank": current_rank,
+        "diff": get_diff(code, prev_list, 'category', current_rank),
+        "week_diff": get_diff(code, week_list, 'category', current_rank)
+    })
 
     # 2. 조카선물 랭킹 (Niece Gifts Ranking)
     # Target: https://gift.kakao.com/page/code/life_pregnancy
