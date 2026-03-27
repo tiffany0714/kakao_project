@@ -5,26 +5,30 @@ def main():
     h_path = 'frontend/data/history.json'
     history = json.load(open(h_path, 'r', encoding='utf-8')) if os.path.exists(h_path) else {}
     
-    # Calculate previous day for diff
+    # 날짜 설정
     today_str = datetime.now().strftime("%Y-%m-%d")
     yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-    
-    # Use the most recent available date if yesterday is not available
-    prev_dates = sorted([d for d in history.keys() if d < today_str], reverse=True)
-    prev_day = prev_dates[0] if prev_dates else None
+    last_week_str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d") # 7일 전 추가
 
-    # Helper to find rank change
-def get_diff(code, prev_list, current_rank):
-        if not prev_list: return "-" # 이전 데이터 없으면 대시 표시
-        p_item = next((item for item in prev_list if str(item.get('code')) == code), None)
+    # 비교용 데이터 추출
+    prev_list = history.get(yesterday_str, {})
+    week_list = history.get(last_week_str, {})
+
+    # 순위 변화 계산 함수 (이름을 product_code로 통일)
+    def get_diff(code, old_data_dict, category_key, current_rank):
+        old_list = old_data_dict.get(category_key, [])
+        if not old_list: return "-"
+        
+        # product_code로 비교
+        p_item = next((item for item in old_list if str(item.get('product_code')) == code), None)
         if p_item:
-            p_rank = p_item.get('rank', 999)
+            p_rank = int(p_item.get('rank', 999))
             if p_rank != 999:
                 change = p_rank - current_rank
-                if change > 0: return f"+{change}" # 순위 상승 (예: 10위 -> 8위 = +2)
-                if change < 0: return f"{change}"  # 순위 하락
-                return "-" # 변동 없음
-        return "신규" # 어제 기록에 없으면 신규 진입
+                if change > 0: return f"+{change}"
+                if change < 0: return f"{change}"
+                return "-"
+        return "신규"
 
     # 1. 전략 랭킹 (Strategy Ranking)
     # Target: https://gift.kakao.com/ranking/category/3
@@ -35,27 +39,20 @@ def get_diff(code, prev_list, current_rank):
     seasonal = []
     prev_strat = history.get(prev_day, {}).get('category', []) if prev_day else []
     
-    for _, row in df.iterrows():
+for _, row in df.iterrows():
         code = str(row['상품번호'])
         m_idx = next((i for i, item in enumerate(c_items) if str(item.get('productId')) == code), None)
         current_rank = m_idx + 1 if m_idx is not None else 999
         
-        # Calculate diff
-        diff = 0
-        if prev_strat:
-            p_item = next((item for item in prev_strat if str(item.get('code')) == code), None)
-            if p_item:
-                p_rank = p_item.get('rank', 999)
-                if p_rank != 999 and current_rank != 999:
-                    diff = p_rank - current_rank
-        
+        # 2번 수정 포인트: 데이터 구조를 app.js와 맞추고 diff 계산 추가
         seasonal.append({
             "season": str(row['계절']),
-            "code": code,
+            "product_code": code, # 'code'에서 'product_code'로 변경
             "name": str(row['상품명']),
             "rank": current_rank,
             "img": c_items[m_idx].get('imageUrl') if m_idx is not None else "",
-            "diff": diff
+            "diff": get_diff(code, prev_list, 'category', current_rank),     # 어제 비교
+            "week_diff": get_diff(code, week_list, 'category', current_rank) # 지난주 비교
         })
 
     # 2. 조카선물 랭킹 (Niece Gifts Ranking)
@@ -86,28 +83,21 @@ def get_diff(code, prev_list, current_rank):
                             brand = p.get('brandName', '') or ''
                             p_name = p.get('productName', '') or ''
                             if "오즈키즈" in brand or "오즈키즈" in p_name:
-                                code = str(p.get('productId'))
-                                current_rank = global_idx
-                                
-                                # Calculate diff
-                                diff = 0
-                                if prev_niece:
-                                    p_item = next((item for item in prev_niece if str(item.get('code')) == code), None)
-                                    if p_item:
-                                        p_rank = p_item.get('rank', 999)
-                                        diff = p_rank - current_rank
-                                
-                                niece.append({
-                                    "code": code,
-                                    "name": p_name,
-                                    "rank": current_rank,
-                                    "img": p.get('imageUrl'),
-                                    "diff": diff
-                                })
-                            global_idx += 1
-
-    except Exception as e:
-        print(f"Error fetching Niece ranking: {e}")
+                                                code = str(p.get('productId'))
+                                                current_rank = global_idx
+                                                
+                                                # 2번 수정 포인트: 변수명 통일 및 지난주 대비 추가
+                                                niece.append({
+                                                    "product_code": code,
+                                                    "name": p_name,
+                                                    "rank": current_rank,
+                                                    "img": p.get('imageUrl'),
+                                                    "diff": get_diff(code, prev_list, 'niece', current_rank),     # 어제 비교
+                                                    "week_diff": get_diff(code, week_list, 'niece', current_rank) # 지난주 비교
+                                                })
+                                            global_idx += 1
+                                except Exception as e:
+                                    print(f"Error fetching Niece ranking: {e}")
 
 
     # Update history
