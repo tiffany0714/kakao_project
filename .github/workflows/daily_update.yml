@@ -28,10 +28,15 @@ jobs:
       
       - name: Push updates
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # 깃허브 액션이 저장소에 쓸 수 있도록 권한을 부여합니다.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # 현재 브랜치의 최신 상태를 반영한 뒤 원격 주소를 재설정합니다.
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          
           git add data/current_data.json
           git commit -m "Automated Update: $(date)" || exit 0
           git push origin main
