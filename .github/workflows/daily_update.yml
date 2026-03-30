@@ -36,8 +36,12 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 안전하게 모든 변경사항 추가
-          git add data/current_data.json || echo "No changes to add"
+          # 1. 파일이 어디에 생성되었는지 터미널 로그로 강제 확인 (디버깅용)
+          find . -name "current_data.json"
           
+          # 2. 모든 변경된 파일을 강제로 추가
+          git add . 
+          
+          # 3. 변경사항이 있으면 커밋 후 푸시
           git commit -m "Automated Update: $(date)" || exit 0
           git push origin main
