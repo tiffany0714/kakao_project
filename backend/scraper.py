@@ -300,35 +300,19 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         
-        import os
+        # 1. 경로 설정
         backend_dir = os.path.dirname(os.path.abspath(__file__))
-        state_path = os.path.join(backend_dir, "auth_state.json")
-        if os.path.exists(state_path):
-            context = await browser.new_context(storage_state=state_path)
-            print(f"Loaded auth state for scraping.")
-        else:
-            context = await browser.new_context()
-            
+        project_root = os.path.dirname(backend_dir)
+        output_dir = os.path.join(project_root, "frontend", "data")
+        os.makedirs(output_dir, exist_ok=True)
+        
+        output_file = os.path.join(output_dir, "current_data.json")
+        history_file = os.path.join(output_dir, "history_data.json")
+
+        context = await browser.new_context()
         page = await context.new_page()
         
-        # Load existing data to preserve events if they are already polished
-        existing_data = {}
-        try:
-            backend_dir = os.path.dirname(os.path.abspath(__file__))
-            project_root = os.path.dirname(backend_dir)
-            output_file = os.path.join(project_root, "frontend", "data", "current_data.json")
-            if os.path.exists(output_file):
-                with open(output_file, "r", encoding='utf-8') as f:
-                    existing_data = json.load(f)
-        except: pass
-
-        import datetime
-        # 1. 파일 경로 설정
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        output_file = os.path.join(project_root, "frontend", "data", "current_data.json")
-        history_file = os.path.join(project_root, "frontend", "data", "history_data.json")
-
-        # 2. 기존 데이터 로드 (과거 기록을 보존하기 위함)
+        # 2. 기존 데이터 로드 (이벤트 및 히스토리 보존)
         existing_data = {}
         if os.path.exists(output_file):
             try:
@@ -336,113 +320,80 @@ async def main():
                     existing_data = json.load(f)
             except: pass
 
-        # 3. 데이터 저장용 그릇 생성 (초기화)
-        data = {
-            "last_updated": (datetime.datetime.now() + datetime.timedelta(hours=9)).isoformat(),
-            "events": existing_data.get("events", []),
-            "seasonal_ranking": [],
-            "niece_ranking": [],
-            "history": []
-        }
-        
+        # 3. 데이터 수집 (각각 한 번씩만 수행)
+        seasonal_ranking = []
+        niece_ranking = []
+        new_events = []
+
         try:
-            raw_ranking = await scrape_kakao_ranking(page, kakao_ranking_url)
-            
-            # 1-1. Map seasons from Excel
+            seasonal_ranking = await scrape_kakao_ranking(page, kakao_ranking_url)
+            niece_ranking = await scrape_niece_ranking(page, kakao_niece_url)
+            new_events = await scrape_google_form(page, google_form_url)
+        except Exception as e:
+            print(f"데이터 수집 중 에러: {e}")
+
+        # 4. 엑셀 파일 매칭 및 계절 데이터 부여
+        try:
             import pandas as pd
-            import os
-            try:
-                excel_path = os.path.join(project_root, 'strategy_items.xlsx')
+            excel_path = os.path.join(project_root, 'strategy_items.xlsx')
+            season_map = {}
+            
+            if os.path.exists(excel_path):
                 df = pd.read_excel(excel_path)
-                season_map = {}
                 for _, row in df.iterrows():
                     code = str(row.get('상품번호', '')).strip()
                     name = str(row.get('상품명', '')).strip()
                     season = str(row.get('계절', '기타')).strip()
-                    if code and code != 'nan':
-                        season_map[code] = season
-                    if name and name != 'nan':
-                        season_map[name] = season
-                
-                # 1-2. Apply seasons to raw ranking
-                for p in raw_ranking:
+                    if code and code != 'nan': season_map[code] = season
+                    if name and name != 'nan': season_map[name] = season
+
+            # 계절 매칭 공통 함수
+            def apply_season(item_list):
+                for p in item_list:
                     p_code = str(p.get('product_code', ''))
                     p_name = str(p.get('name', ''))
                     clean_name = p_name.replace('[오즈키즈]', '').strip()
-                    
-                    if p_code in season_map:
-                        p['season'] = season_map[p_code]
-                    elif clean_name in season_map:
-                        p['season'] = season_map[clean_name]
-                    elif p_name in season_map:
-                        p['season'] = season_map[p_name]
-                    else:
-                        p['season'] = '기타'
-            except Exception as e:
-                print(f"Error reading strategy_items.xlsx: {e}")
-                for p in raw_ranking:
-                    p['season'] = '기타'
-                    
-            data["seasonal_ranking"] = raw_ranking
+                    if p_code in season_map: p['season'] = season_map[p_code]
+                    elif clean_name in season_map: p['season'] = season_map[clean_name]
+                    elif p_name in season_map: p['season'] = season_map[p_name]
+                    else: p['season'] = '기타'
+
+            # 두 리스트 모두에 계절 적용
+            apply_season(seasonal_ranking)
+            apply_season(niece_ranking)
         except Exception as e:
-            print(f"Error ranking: {e}")
-            
-           
-        # 3. Handle Events (Merge new with existing to preserve history/formatting)
-        new_events = []
-        try:
-            new_events = await scrape_google_form(page, google_form_url)
-        except Exception as e:
-            print(f"Error scraping Google Form: {e}")
+            print(f"계절 매칭 중 에러: {e}")
+            for p in (seasonal_ranking + niece_ranking): p['season'] = '기타'
 
-        # Merge logic: Keep existing ones (they have manual formatting), add new ones
-        existing_events = existing_data.get("events", [])
-        existing_event_names = {e["name"] for e in existing_events}
+        # 5. 이벤트 병합 및 히스토리 업데이트
+        today_str = (datetime.datetime.now() + datetime.timedelta(hours=9)).strftime("%Y-%m-%d")
+        history = existing_data.get("history", [])
         
-        merged_events = list(existing_events)
-        for ne in new_events:
-            if ne["name"] not in existing_event_names:
-                print(f"Adding new event: {ne['name']}")
-                merged_events.append(ne)
-        
-        data["events"] = merged_events
+        today_record = {
+            "date": today_str,
+            "seasonal_ranking": seasonal_ranking,
+            "niece_ranking": niece_ranking
+        }
+        history = [r for r in history if r.get('date') != today_str]
+        history.append(today_record)
+
+        final_data = {
+            "last_updated": (datetime.datetime.now() + datetime.timedelta(hours=9)).isoformat(),
+            "events": existing_data.get("events", []), # 기존 이벤트 유지
+            "seasonal_ranking": seasonal_ranking,
+            "niece_ranking": niece_ranking,
+            "history": history[-30:] # 최근 30일 데이터 유지
+        }
+
+        # 6. 파일 저장
         try:
-            # Construct relative path to frontend/data
-            project_root = os.path.dirname(backend_dir)
-            output_dir = os.path.join(project_root, "frontend", "data")
-            os.makedirs(output_dir, exist_ok=True)
-            output_file = os.path.join(output_dir, "current_data.json")
-            
-            # 1. 오늘 날짜 기록 생성
-            today_str = (datetime.datetime.now() + datetime.timedelta(hours=9)).strftime("%Y-%m-%d")
-            today_record = {
-                "date": today_str,
-                "seasonal_ranking": data.get("seasonal_ranking", []),
-                "niece_ranking": data.get("niece_ranking", [])
-            }
-
-            # 2. 히스토리 업데이트 (기존 기록 + 오늘 기록)
-            # 기존에 있던 history를 가져와서 오늘 날짜와 겹치는 게 있다면 지우고 새로 추가합니다.
-            history = data.get("history", [])
-            history = [r for r in history if r.get('date') != today_str]
-            history.append(today_record)
-            
-            # 최근 30일 데이터만 남기고 저장 (용량 관리)
-            data["history"] = history[-30:]
-
-            # 3. 최종 파일 저장 (current_data.json)
             with open(output_file, "w", encoding='utf-8') as f:
-                json.dump(data, f, ensure_ascii=False, indent=2)
-                
-            # 4. 별도의 백업용 히스토리 파일도 저장 (선택 사항이지만 안전함)
-            history_file = os.path.join(os.path.dirname(output_file), "history_data.json")
+                json.dump(final_data, f, ensure_ascii=False, indent=2)
             with open(history_file, "w", encoding='utf-8') as f:
-                json.dump(data["history"], f, ensure_ascii=False, indent=2)
-
-            print(f"데이터 업데이트 및 히스토리 누적 완료: {today_str}")
-            print(f"Successfully saved merged data to {output_file}")
+                json.dump(final_data["history"], f, ensure_ascii=False, indent=2)
+            print(f"업데이트 완료: {today_str}")
         except Exception as e:
-            print(f"Error saving: {e}")
+            print(f"파일 저장 중 에러: {e}")
         finally:
             await browser.close()
 
