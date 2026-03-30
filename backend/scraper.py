@@ -387,11 +387,7 @@ async def main():
         except Exception as e:
             print(f"Error ranking: {e}")
             
-        try:
-            data["niece_ranking"] = await scrape_niece_ranking(page, kakao_niece_url)
-        except Exception as e:
-            print(f"Error niece ranking: {e}")
-            
+           
         # 3. Handle Events (Merge new with existing to preserve history/formatting)
         new_events = []
         try:
