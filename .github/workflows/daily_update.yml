@@ -2,9 +2,12 @@ name: Automated Ozkiz Ranking Update
 
 on:
   schedule:
-    # 한국 시간 오후 12시는 UTC 기준 오전 3시입니다.
     - cron: '0 3 * * *'
-  workflow_dispatch: # 관리자가 원할 때 언제든 'Run workflow' 버튼으로 실행 가능
+  workflow_dispatch:
+
+# 128 에러를 해결하는 핵심 설정: 저장소 쓰기 권한 부여
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -12,6 +15,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,18 +30,14 @@ jobs:
 
       - name: Run Scraper
         run: python backend/scraper.py
-      
+
       - name: Push updates
-        env:
-          # 깃허브 액션이 저장소에 쓸 수 있도록 권한을 부여합니다.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 현재 브랜치의 최신 상태를 반영한 뒤 원격 주소를 재설정합니다.
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          # 안전하게 모든 변경사항 추가
+          git add data/current_data.json || echo "No changes to add"
           
-          git add data/current_data.json
           git commit -m "Automated Update: $(date)" || exit 0
           git push origin main
