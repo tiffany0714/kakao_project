@@ -267,11 +267,10 @@ async def scrape_niece_ranking(page, url):
                         productCode = match ? match[1] : "";
                     }
                     
-                    let finalName = titleText || fullText.split('\n')[0].trim();
-                    // Clean up prefixes like "조카선물"
-                    finalName = finalName.replace(/^["'“”]*(조카선물|어린이선물)[^"”“]*["'“”]*\s*/, '').trim();
-                    finalName = finalName.replace(/^\[오즈키즈\]\s*/, '').replace(/^오즈키즈\s*/, '').trim();
-                    finalName = `[오즈키즈] ${finalName}`;
+                    let finalName = titleText || fullText.split('\n')[0].strip();
+                    // '오즈키즈' 단어 뒤의 핵심 이름만 추출하여 중복 및 수식어 방지
+                    const parts = finalName.split(/오즈키즈\]|오즈키즈/);
+                    finalName = `[오즈키즈] ${parts.pop().trim()}`;
                     
                     results.push({ rank, name: finalName, img, product_code: productCode });
                 }
