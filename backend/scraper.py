@@ -347,16 +347,36 @@ async def main():
                     if code and code != 'nan': season_map[code] = season
                     if name and name != 'nan': season_map[name] = season
 
-            # 계절 매칭 공통 함수
+# 계절 매칭 공통 함수 (수식어 제거 강화 버전)
             def apply_season(item_list):
                 for p in item_list:
-                    p_code = str(p.get('product_code', ''))
-                    p_name = str(p.get('name', ''))
-                    clean_name = p_name.replace('[오즈키즈]', '').strip()
-                    if p_code in season_map: p['season'] = season_map[p_code]
-                    elif clean_name in season_map: p['season'] = season_map[clean_name]
-                    elif p_name in season_map: p['season'] = season_map[p_name]
-                    else: p['season'] = '기타'
+                    p_code = str(p.get('product_code', '')).strip()
+                    p_name = str(p.get('name', '')).strip()
+                    
+                    # 1. 비교를 위해 이름을 아주 깔끔하게 정리
+                    # [오즈키즈], 각종 따옴표(" “ ”), 카카오용 수식어 제거
+                    clean_name = p_name.replace('[오즈키즈]', '')
+                    for target in ['"', '“', '”', '조카선물여아', '조카선물', '어린이선물']:
+                        clean_name = clean_name.replace(target, '')
+                    clean_name = clean_name.strip()
+                    
+                    # 2. 매칭 시도
+                    if p_code in season_map:
+                        p['season'] = season_map[p_code]
+                    elif clean_name in season_map:
+                        p['season'] = season_map[clean_name]
+                    elif p_name in season_map:
+                        p['season'] = season_map[p_name]
+                    else:
+                        # 3. 부분 일치 확인 (엑셀 이름이 상품명에 포함되어 있는지)
+                        matched = False
+                        for ex_name, ex_season in season_map.items():
+                            if len(ex_name) > 5 and (ex_name in clean_name or clean_name in ex_name):
+                                p['season'] = ex_season
+                                matched = True
+                                break
+                        if not matched:
+                            p['season'] = '기타'
 
             # 두 리스트 모두에 계절 적용
             apply_season(seasonal_ranking)
