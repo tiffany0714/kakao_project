@@ -254,10 +254,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(tooltip);
 
     function showTooltip(ev, data) {
-        tooltip.innerHTML = `<strong>${data.name}</strong><br>${data.schedule}`;
-        tooltip.classList.remove('hidden');
-        tooltip.style.left = (ev.pageX + 10) + 'px';
-        tooltip.style.top = (ev.pageY + 10) + 'px';
+    // 줄바꿈(\n)이 있다면 브라우저에서 보이도록 <br>로 바꿔서 넣어줍니다.
+    const schemeText = data.scheme ? data.scheme.replace(/\n/g, '<br>') : "등록된 스킴 정보가 없습니다.";
+    
+    tooltip.innerHTML = schemeText; 
+    tooltip.classList.remove('hidden');
+    
+    // 툴팁 위치 설정
+    tooltip.style.left = (ev.pageX + 10) + 'px';
+    tooltip.style.top = (ev.pageY + 10) + 'px';
     }
     function hideTooltip() { tooltip.classList.add('hidden'); }
 
