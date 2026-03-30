@@ -182,55 +182,71 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!currentData || !rankingList) return;
         rankingList.innerHTML = '';
 
-        const getDiffHtml = (diff) => {
-            if (!diff || diff === 0) return '<span class="stay">-</span>';
-            return diff > 0 ? `<span class="up">▲${diff}</span>` : `<span class="down">▼${Math.abs(diff)}</span>`;
+        // 1. 비교할 날짜 설정 (어제, 7일 전)
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        const lastWeek = new Date(today);
+        lastWeek.setDate(today.getDate() - 7);
+
+        const formatDate = (d) => d.toISOString().split('T')[0];
+        const yesterdayStr = formatDate(yesterday);
+        const lastWeekStr = formatDate(lastWeek);
+
+        // 2. 히스토리에서 과거 기록 찾기
+        const history = currentData.history || [];
+        const yesterdayData = history.find(h => h.date === yesterdayStr);
+        const lastWeekData = history.find(h => h.date === lastWeekStr);
+
+        // 3. 등수 차이 계산 함수
+        const getDiffHtml = (currentRank, productCode, pastRecord) => {
+            if (!pastRecord) return '<span style="color:#999">-</span>';
+            
+            const listName = activeSubTab === 'strategy' ? 'seasonal_ranking' : 'niece_ranking';
+            const pastItem = pastRecord[listName]?.find(p => p.product_code === productCode);
+            
+            if (!pastItem) return '<span style="color:#ff9800">신규</span>';
+            
+            const diff = parseInt(pastItem.rank) - parseInt(currentRank);
+            if (diff > 0) return `<span style="color:#e53935">▲${diff}</span>`;
+            if (diff < 0) return `<span style="color:#1e88e5">▼${Math.abs(diff)}</span>`;
+            return '<span style="color:#999">-</span>';
         };
 
+        // 4. 아이템 필터링 및 화면 표시
         let items = [];
-        const filterTabs = document.getElementById('strategy-filter-tabs');
-
         if (activeSubTab === 'strategy') {
-            if (filterTabs) filterTabs.style.display = 'flex';
             items = (currentData.seasonal_ranking || []).filter(r => {
                 if (activeSeason === '전체') return true;
                 if (activeSeason === '봄/가을') return r.season === '봄' || r.season === '가을' || r.season === '봄/가을';
                 return r.season === activeSeason;
             });
         } else {
-            if (filterTabs) filterTabs.style.display = 'none';
             items = currentData.niece_ranking || [];
         }
 
-             items.sort((a,b) => (a.rank || 999) - (b.rank || 999)).forEach(r => {
+        items.sort((a, b) => (parseInt(a.rank) || 999) - (parseInt(b.rank) || 999)).forEach(r => {
             const card = document.createElement('div');
             card.className = 'ranking-card';
+            
+            const dailyDiff = getDiffHtml(r.rank, r.product_code, yesterdayData);
+            const weeklyDiff = getDiffHtml(r.rank, r.product_code, lastWeekData);
+
             card.innerHTML = `
-                <div class="rank-num">${r.rank === 999 ? '-' : r.rank}</div>
+                <div class="rank-num">${r.rank || '-'}</div>
                 <div class="product-info">
                     <div style="font-size: 10px; color: #999; margin-bottom: 2px;">코드: ${r.product_code || '-'}</div>
                     <div class="name">${r.name}</div>
                     <div class="stats">
-                        <span>어제대비 <b style="color: ${getDiffColor(r.diff)}">${r.diff || '-'}</b></span>
-                        <span>지난주대비 -</span>
+                        <span>어제대비 <b>${dailyDiff}</b></span>
+                        <span style="margin-left:10px;">지난주대비 <b>${weeklyDiff}</b></span>
                     </div>
                 </div>
-                <div class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</div>
+                ${activeSubTab === 'strategy' ? `<div class="season-badge" style="background:${getPastelColor(r.season || '기타')}">${r.season || '기타'}</div>` : ''}
             `;
-            // 아래 줄이 누락되면 화면에 카드가 안 나타납니다.
-            rankingList.appendChild(card); 
-             }); // forEach 닫기
-              } // 함수 닫기
-            /**
-             * 순위 변동 수치에 따른 색상을 반환하는 함수
-             */
-            function getDiffColor(diff) {
-                const d = String(diff);
-                if (d.includes('+')) return '#e53935'; // 순위 상승: 빨간색 [cite: 31, 32]
-                if (d.includes('-')) return '#1e88e5'; // 순위 하락: 파란색 [cite: 31, 32]
-                if (d === '신규') return '#ff9800';    // 신규 진입: 주황색 [cite: 31, 32]
-                return '#999';                         // 변동 없음: 회색 [cite: 31, 32]
-            }
+            rankingList.appendChild(card);
+        });
+    }
 
 
     const tooltip = document.createElement('div');

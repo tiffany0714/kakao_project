@@ -323,7 +323,27 @@ async def main():
         except: pass
 
         import datetime
-        data = {"last_updated": (datetime.datetime.now() + datetime.timedelta(hours=9)).isoformat(), "events": [], "seasonal_ranking": [], "niece_ranking": []}
+        # 1. 파일 경로 설정
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        output_file = os.path.join(project_root, "frontend", "data", "current_data.json")
+        history_file = os.path.join(project_root, "frontend", "data", "history_data.json")
+
+        # 2. 기존 데이터 로드 (과거 기록을 보존하기 위함)
+        existing_data = {}
+        if os.path.exists(output_file):
+            try:
+                with open(output_file, "r", encoding='utf-8') as f:
+                    existing_data = json.load(f)
+            except: pass
+
+        # 3. 데이터 저장용 그릇 생성 (초기화)
+        data = {
+            "last_updated": (datetime.datetime.now() + datetime.timedelta(hours=9)).isoformat(),
+            "events": existing_data.get("events", []),
+            "seasonal_ranking": [],
+            "niece_ranking": [],
+            "history": []
+        }
         
         try:
             raw_ranking = await scrape_kakao_ranking(page, kakao_ranking_url)
@@ -397,8 +417,33 @@ async def main():
             os.makedirs(output_dir, exist_ok=True)
             output_file = os.path.join(output_dir, "current_data.json")
             
+            # 1. 오늘 날짜 기록 생성
+            today_str = (datetime.datetime.now() + datetime.timedelta(hours=9)).strftime("%Y-%m-%d")
+            today_record = {
+                "date": today_str,
+                "seasonal_ranking": data.get("seasonal_ranking", []),
+                "niece_ranking": data.get("niece_ranking", [])
+            }
+
+            # 2. 히스토리 업데이트 (기존 기록 + 오늘 기록)
+            # 기존에 있던 history를 가져와서 오늘 날짜와 겹치는 게 있다면 지우고 새로 추가합니다.
+            history = data.get("history", [])
+            history = [r for r in history if r.get('date') != today_str]
+            history.append(today_record)
+            
+            # 최근 30일 데이터만 남기고 저장 (용량 관리)
+            data["history"] = history[-30:]
+
+            # 3. 최종 파일 저장 (current_data.json)
             with open(output_file, "w", encoding='utf-8') as f:
                 json.dump(data, f, ensure_ascii=False, indent=2)
+                
+            # 4. 별도의 백업용 히스토리 파일도 저장 (선택 사항이지만 안전함)
+            history_file = os.path.join(os.path.dirname(output_file), "history_data.json")
+            with open(history_file, "w", encoding='utf-8') as f:
+                json.dump(data["history"], f, ensure_ascii=False, indent=2)
+
+            print(f"데이터 업데이트 및 히스토리 누적 완료: {today_str}")
             print(f"Successfully saved merged data to {output_file}")
         except Exception as e:
             print(f"Error saving: {e}")
