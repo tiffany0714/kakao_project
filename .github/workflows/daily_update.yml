@@ -30,7 +30,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
+          git fetch origin main
+          git reset --hard origin/main  
           git add .
           git commit -m "매일 12시 오즈키즈 랭킹 업데이트" || exit 0
           git push
