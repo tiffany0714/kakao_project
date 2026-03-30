@@ -25,13 +25,12 @@ jobs:
 
       - name: Run Scraper
         run: python backend/scraper.py
-
+      
       - name: Push updates
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --hard origin/main  
-          git add .
+          # 아래의 fetch와 reset 줄을 삭제하고 바로 add를 진행합니다.
+          git add data/current_data.json
           git commit -m "매일 12시 오즈키즈 랭킹 업데이트" || exit 0
-          git push
+          git push origin main
