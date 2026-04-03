@@ -1,25 +1,33 @@
-import requests, pandas as pd, json, os
+import requests
+import pandas as pd
+import json
+import os
+import subprocess
 from datetime import datetime, timedelta
 
 def main():
+    # 1. 스크래퍼 먼저 실행
+    try:
+        print("실시간 스크래퍼 실행 중...")
+        subprocess.run(["python", os.path.join('backend', 'scraper.py')], check=False)
+        print("스크래퍼 완료")
+    except Exception as e:
+        print("스크래퍼 실행 오류:", e)
+
     h_path = 'frontend/data/history.json'
     history = json.load(open(h_path, 'r', encoding='utf-8')) if os.path.exists(h_path) else {}
-    
-    # 날짜 설정
+
     today_str = datetime.now().strftime("%Y-%m-%d")
     yesterday_str = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
-    last_week_str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d") # 7일 전 추가
+    last_week_str = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
 
-    # 비교용 데이터 추출
     prev_list = history.get(yesterday_str, {})
     week_list = history.get(last_week_str, {})
 
-    # 순위 변화 계산 함수 (이름을 product_code로 통일)
     def get_diff(code, old_data_dict, category_key, current_rank):
         old_list = old_data_dict.get(category_key, [])
-        if not old_list: return "-"
-        
-        # product_code로 비교
+        if not old_list:
+            return "-"
         p_item = next((item for item in old_list if str(item.get('product_code')) == code), None)
         if p_item:
             p_rank = int(p_item.get('rank', 999))
@@ -30,92 +38,112 @@ def main():
                 return "-"
         return "신규"
 
-    # 1. 전략 랭킹 (Strategy Ranking)
-    # Target: https://gift.kakao.com/ranking/category/3
-    df = pd.read_excel('strategy_items.xlsx')
-    c_res = requests.get("https://gift.kakao.com/a/v1/rank/category/3?page=0&size=100").json()
-    c_items = c_res.get('contents', [])
-    
-    seasonal = []
-    prev_strat = history.get(prev_day, {}).get('category', []) if prev_day else []
-    
-for _, row in df.iterrows():
-    code = str(row['상품번호']) # 파니님의 엑셀 상품번호
-    season_name = str(row['계절']) # 파니님의 엑셀 계절 정보
-    
-    # 카카오 데이터(c_items)에서 해당 번호 찾기
-    m_idx = next((i for i, item in enumerate(c_items) if str(item.get('productId')) == code), None)
-    current_rank = m_idx + 1 if m_idx is not None else 999
-    
-    seasonal.append({
-        "season": season_name,   # 여기서 직접 엑셀 값을 넣어줘야 '기타'가 안 됩니다!
-        "product_code": code,
-        "name": str(row['상품명']),
-        "rank": current_rank,
-        "diff": get_diff(code, prev_list, 'category', current_rank),
-        "week_diff": get_diff(code, week_list, 'category', current_rank)
-    })
-
-    # 2. 조카선물 랭킹 (Niece Gifts Ranking)
-    # Target: https://gift.kakao.com/page/code/life_pregnancy
-    # New API found via browser: https://gift.kakao.com/a/content-builder/v2/pages/codes/life_pregnancy?page=1&size=20
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Referer": "https://gift.kakao.com/page/code/life_pregnancy"
+    headers_kakao = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": "https://gift.kakao.com",
+        "Content-Type": "application/json"
     }
+
+    # 2. 전략상품 랭킹
+    print("전략상품 랭킹 수집 중...")
+
+    # 카카오 API로 전체 순위 가져오기
+    c_items = []
+    for page_num in range(25):
+        c_res = requests.post(
+            "https://gift.kakao.com/a/rank/v1/gift-rank/ranking-tab/category-tab/search",
+            headers=headers_kakao,
+            json={"navId": 1, "page": page_num, "size": 20, "subNavId": 11100}
+        ).json()
+        products = c_res.get('products', [])
+        if not products:
+            break
+        c_items.extend(products)
+        if c_res.get('last', True):
+            break
+    print(f"카카오 랭킹 총 {len(c_items)}개 수집")
+
+    # API 순위 맵 (product_code → rank)
+    api_rank_map = {str(item.get('productId', '')): idx + 1 for idx, item in enumerate(c_items)}
+    api_name_map = {str(item.get('productId', '')): item.get('name', '') for item in c_items}
+    api_img_map  = {str(item.get('productId', '')): (item.get('image') or {}).get('imageUrl', '') for item in c_items}
+
+    # 스크래퍼 결과에서 상품 코드 가져오기
+    seasonal = []
+    cd_path = 'frontend/data/current_data.json'
+    if os.path.exists(cd_path):
+        try:
+            cd = json.load(open(cd_path, 'r', encoding='utf-8'))
+            scraped = cd.get('seasonal_ranking', [])
+            for s in scraped:
+                code = str(s.get('product_code', ''))
+                if not code:
+                    continue
+                # API에서 실제 순위 찾기
+                real_rank = api_rank_map.get(code)
+                if not real_rank:
+                    # API 500위 밖이면 scraper 순위 사용
+                    scraper_rank = s.get('rank')
+                    if scraper_rank and str(scraper_rank).isdigit():
+                        real_rank = int(scraper_rank)
+                    else:
+                        continue
+                seasonal.append({
+                    "season": s.get('season', '기타'),
+                    "product_code": code,
+                    "name": api_name_map.get(code) or s.get('name', ''),
+                    "img": api_img_map.get(code) or s.get('img', ''),
+                    "rank": real_rank,
+                    "diff": get_diff(code, prev_list, 'category', real_rank),
+                    "week_diff": get_diff(code, week_list, 'category', real_rank)
+                })
+            seasonal.sort(key=lambda x: x['rank'])
+            print(f"전략상품 {len(seasonal)}개 완료")
+        except Exception as e:
+            print("전략상품 처리 오류:", e)
+
+    # 3. 조카선물 랭킹
+    print("조카선물 랭킹 수집 중...")
     niece = []
-    prev_niece = history.get(prev_day, {}).get('niece', []) if prev_day else []
-    
-    try:
-        n_res = requests.get("https://gift.kakao.com/a/content-builder/v2/pages/codes/life_pregnancy?page=1&size=200", headers=headers).json()
-        global_idx = 1
-        # New structure: components -> contents -> property -> collections -> products
-        for comp in n_res.get('components', []):
-            if not isinstance(comp, dict): continue
-            for content in comp.get('contents', []):
-                if not isinstance(content, dict): continue
-                if content.get('type') == "PRODUCT_GROUP":
-                    prop = content.get('property', {})
-                    if not isinstance(prop, dict): continue
-                    for coll in prop.get('collections', []):
-                        if not isinstance(coll, dict): continue
-                        for p in coll.get('products', []):
-                            if not isinstance(p, dict): continue
-                            brand = p.get('brandName', '') or ''
-                            p_name = p.get('productName', '') or ''
-                            if "오즈키즈" in brand or "오즈키즈" in p_name:
-                                                code = str(p.get('productId'))
-                                                current_rank = global_idx
-                                                
-                                                # 2번 수정 포인트: 변수명 통일 및 지난주 대비 추가
-                                                niece.append({
-                                                    "product_code": code,
-                                                    "name": p_name,
-                                                    "rank": current_rank,
-                                                    "img": p.get('imageUrl'),
-                                                    "diff": get_diff(code, prev_list, 'niece', current_rank),     # 어제 비교
-                                                    "week_diff": get_diff(code, week_list, 'niece', current_rank) # 지난주 비교
-                                                })
-                                            global_idx += 1
-                                except Exception as e:
-                                    print(f"Error fetching Niece ranking: {e}")
+    if os.path.exists(cd_path):
+        try:
+            cd = json.load(open(cd_path, 'r', encoding='utf-8'))
+            scraped_niece = cd.get('niece_ranking', [])
+            for s in scraped_niece:
+                code = str(s.get('product_code', ''))
+                rank = s.get('rank')
+                if not rank or not str(rank).isdigit():
+                    continue
+                # 상단 고정 섹션(산모를 위한 선물 10개 + 아이를 위한 선물 8개 = 18개) 제외
+                rank = max(1, int(rank) - 20)
+                niece.append({
+                    "product_code": code,
+                    "name": s.get('name', ''),
+                    "rank": rank,
+                    "img": s.get('img', ''),
+                    "season": s.get('season', '기타'),
+                    "diff": get_diff(code, prev_list, 'niece', rank),
+                    "week_diff": get_diff(code, week_list, 'niece', rank)
+                })
+            niece.sort(key=lambda x: x['rank'])
+            print(f"조카선물 {len(niece)}개 완료")
+        except Exception as e:
+            print("조카선물 처리 오류:", e)
 
-
-    # Update history
+    # 4. 히스토리 저장
     history[today_str] = {"category": seasonal, "niece": niece}
-    # Keep only last 30 days to avoid bloat
     if len(history) > 30:
-        sorted_keys = sorted(history.keys())
-        for k in sorted_keys[:-30]: del history[k]
-        
+        for k in sorted(history.keys())[:-30]:
+            del history[k]
+
     os.makedirs('frontend/data', exist_ok=True)
     with open(h_path, 'w', encoding='utf-8') as f:
         json.dump(history, f, indent=4, ensure_ascii=False)
 
-    # Update current_data.json
+    # 5. current_data.json 업데이트
     curr_path = 'frontend/data/current_data.json'
     old = json.load(open(curr_path, 'r', encoding='utf-8')) if os.path.exists(curr_path) else {"events": []}
-    
+
     final = {
         "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "events": old.get("events", []),
@@ -124,8 +152,8 @@ for _, row in df.iterrows():
     }
     with open(curr_path, 'w', encoding='utf-8') as f:
         json.dump(final, f, indent=4, ensure_ascii=False)
-    
-    print(f"Update complete: {today_str}")
+
+    print(f"업데이트 완료: {today_str}")
 
 if __name__ == "__main__":
     main()

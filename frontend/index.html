@@ -8,9 +8,20 @@
 </head>
 <body>
     <div class="container">
-        <header>
+        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h1>카카오 선물하기 대시보드</h1>
-            <div id="update-status" class="update-status">Loading...</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div id="update-status" class="update-status" style="font-size: 0.9rem; color: #666;">Loading...</div>
+                <button id="update-btn" style="
+                    padding: 6px 12px;
+                    background-color: #fee500;
+                    border: 1px solid #ddd;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 0.85rem;
+                ">🔄 업데이트</button>
+            </div>
         </header>
 
         <nav class="tabs">
@@ -25,6 +36,7 @@
                     <h2 id="current-month-display">2026년 3월</h2>
                     <div class="calendar-nav">
                         <button id="prev-month-btn" class="nav-btn">이전달</button>
+                        <button id="today-btn" class="nav-btn today-btn">오늘</button>
                         <button id="next-month-btn" class="nav-btn">다음달</button>
                     </div>
                 </div>

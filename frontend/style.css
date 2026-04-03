@@ -4,49 +4,37 @@
     --text-primary: #333333;
     --text-muted: #888888;
     --border-color: #EEEEEE;
-    
-    /* Kakao Pastel Yellow */
     --kakao-pastel-yellow: #FFFBE6;
     --kakao-yellow: #FFEB3B;
     --kakao-brown: #3C1E1E;
-    
-    /* Event Pastel Colors */
     --p-mint: #E0F2F1;
     --p-blue: #E3F2FD;
     --p-pink: #FCE4EC;
     --p-purple: #F3E5F5;
     --p-orange: #FFF3E0;
     --p-yellow: #FFF9C4;
-    
     --radius-md: 12px;
     --radius-sm: 4px;
-    --container-width: 95%;
-    --max-width: 1200px;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-    font-family: 'Pretendard', -apple-system, sans-serif; 
-    background-color: var(--bg-main); 
+body {
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    background-color: var(--bg-main);
     color: var(--text-primary);
     line-height: 1.6;
 }
 
-.container { 
-    /* PC에서는 최대 1200px, 그보다 작은 화면(모바일)에서는 화면 너비의 95% 차지 */
-    width: 95%;
-    max-width: 1200px; 
-    
-    margin: 0 auto; 
-    /* 위 0, 오른쪽 20px, 아래 80px, 왼쪽 20px 여백 */
-    padding: 0 20px 80px 20px; 
-    /* 박스 크기 계산 방식 고정 (여백 때문에 삐져나가지 않게) */
-    box-sizing: border-box; 
+.container {
+    max-width: 1400px;
+    margin: 40px auto;
+    padding: 0 40px;
+    box-sizing: border-box;
 }
 
-/* Header & Tab Menu (Pastel Yellow) */
-header { 
-    padding: 60px 0 40px 0; 
+/* Header */
+header {
+    padding: 60px 0 40px 0;
     text-align: left;
     display: flex;
     justify-content: space-between;
@@ -54,36 +42,35 @@ header {
 }
 h1 { font-size: 28px; font-weight: 800; color: #000; letter-spacing: -1px; }
 
-.tabs { 
-    display: flex; 
-    gap: 8px; 
-    background: var(--kakao-pastel-yellow); 
-    padding: 8px; 
+/* Tabs */
+.tabs {
+    display: flex;
+    gap: 8px;
+    background: var(--kakao-pastel-yellow);
+    padding: 8px;
     border-radius: 20px;
     width: fit-content;
     margin-bottom: 40px;
 }
-.tab-btn { 
-    padding: 12px 24px; 
-    border: none; 
-    background: transparent; 
-    border-radius: 15px; 
-    cursor: pointer; 
-    font-weight: 700; 
+.tab-btn {
+    padding: 12px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: 700;
     color: #666;
     font-size: 15px;
     transition: all 0.2s;
 }
 .tab-btn.active { background: #fff; color: #000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
 
-/* Main layout */
 .tab-content { display: none; }
 .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Calendar Body */
+/* Calendar */
 .calendar-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-.month-display { font-size: 22px; font-weight: 800; }
 .nav-btn {
     padding: 8px 20px;
     border: 1px solid var(--border-color);
@@ -96,19 +83,20 @@ h1 { font-size: 28px; font-weight: 800; color: #000; letter-spacing: -1px; }
     transition: all 0.2s;
 }
 .nav-btn:hover { background: var(--bg-gray); border-color: #ddd; }
+.today-btn { background: #FEE500; border-color: #FEE500; font-weight: 800; }
 
-.calendar-labels { 
-    display: grid; 
-    grid-template-columns: repeat(7, 1fr); 
+.calendar-labels {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
     border-top: 1px solid var(--border-color);
     border-left: 1px solid var(--border-color);
 }
-.day-label { 
-    padding: 12px; 
-    text-align: center; 
-    font-size: 13px; 
-    font-weight: 700; 
-    color: var(--text-muted); 
+.day-label {
+    padding: 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-muted);
     border-right: 1px solid var(--border-color);
     background: #fafafa;
 }
@@ -121,219 +109,261 @@ h1 { font-size: 28px; font-weight: 800; color: #000; letter-spacing: -1px; }
 }
 
 .calendar-week {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    min-height: 120px;
+    display: flex;
+    min-height: 200px;
     position: relative;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #eee;
 }
 
 .calendar-day-cell {
-    border-right: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 200px;
     padding: 10px;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #eee;
     background: #fff;
-    z-index: 1;
+    position: relative;
+    overflow: visible;
 }
 .day-number { font-size: 14px; font-weight: 700; color: #ccc; margin-bottom: 8px; }
+.day-number.today-num {
+    background: #FEE500;
+    color: #3C1E1E;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+.calendar-day-cell.today { background: #FFFDE7; }
+.calendar-day-cell.other-month { background: #fafafa; }
+.calendar-day-cell.other-month .day-number { color: #ddd; }
 
-/* Timeline Overlay for Bars */
+.deadline-badge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: #fff0f0;
+    color: #e53935;
+    border: 1px solid #ffcdd2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .week-events-layer {
     position: absolute;
-    top: 35px; /* Offset for day numbers */
+    top: 35px;
     left: 0;
-    width: 100%;
-    height: calc(100% - 35px);
+    right: 0;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: 28px; /* Height of an event bar */
+    grid-auto-rows: 26px;
     gap: 4px 0;
     pointer-events: none;
     z-index: 2;
 }
 
 .event-bar {
-    grid-row: auto;
-    pointer-events: auto;
-    cursor: pointer;
     font-size: 11px;
-    font-weight: 700;
-    color: rgba(0,0,0,0.7);
     padding: 4px 8px;
     border-radius: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    border: 1px solid rgba(0,0,0,0.05);
-    margin: 0 2px;
-    display: flex;
-    align-items: center;
+    z-index: 2;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 .event-bar:hover { filter: brightness(0.96); z-index: 10; }
-
 .event-bar.continued-right { border-top-right-radius: 0; border-bottom-right-radius: 0; margin-right: 0; border-right: none; }
 .event-bar.continued-left { border-top-left-radius: 0; border-bottom-left-radius: 0; margin-left: 0; border-left: none; }
 
-.deadline-pill {
-    background: #FFEBEB;
-    color: #E53935;
-    font-size: 10px;
-    font-weight: 800;
-    padding: 3px 6px;
-    border-radius: 4px;
+/* Event Details Month Nav */
+.detail-month-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.detail-month-arrow {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+.detail-month-arrow:hover { background: var(--bg-gray); color: var(--text-primary); }
+.detail-month-arrow:disabled { opacity: 0.3; cursor: not-allowed; }
+.detail-month-label { font-size: 22px; font-weight: 800; color: #333; }
+
+.detail-month-header {
+    font-size: 18px;
+    font-weight: 900;
+    color: #333;
+    padding: 8px 0 12px 0;
+    border-bottom: 2px solid var(--kakao-yellow);
     margin-bottom: 4px;
-    border: 1px solid #FFCDD2;
 }
 
-/* Wide Cards but capped at 1200px */
-/* Wide Event Details */
-.details-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.event-card { 
-    background: #fff; 
-    border: 1px solid var(--border-color); 
-    border-radius: 15px; 
-    padding: 20px; 
-    box-shadow: 0 2px 15px rgba(0,0,0,0.02);
+.detail-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
-.event-card .title-text { font-size: 18px; font-weight: 900; color: #000; display: block; margin-bottom: 10px; }
-.scheme-box { background: #fdfdfd; padding: 15px; border-radius: 10px; border: 1px solid #f2f2f2; font-size: 13.5px; line-height: 1.8; color: #555; margin: 10px 0; }
 
-/* Ranking Tabs & Filters */
+.event-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+}
+.card-color-bar { height: 6px; width: 100%; }
+.card-body { padding: 18px 20px 16px; display: flex; flex-direction: column; flex: 1; }
+.card-area { font-size: 11px; color: #aaa; font-weight: 800; letter-spacing: 0.5px; }
+.card-title { font-size: 16px; font-weight: 900; color: #111; margin: 6px 0 8px; }
+.card-schedule { font-size: 13px; color: #555; margin-bottom: 10px; }
+.card-deadline { color: #E53935; font-size: 13px; font-weight: 800; margin-top: 12px; }
+
+.scheme-box {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.8;
+    color: #555;
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+.scheme-box.collapsed {
+    max-height: 60px;
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+.scheme-box:not(.collapsed) { max-height: 600px; }
+.scheme-toggle {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 0;
+    text-align: left;
+    margin-top: 4px;
+}
+.scheme-toggle:hover { color: #555; }
+
+/* Ranking */
 .ranking-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-
-.sub-tabs-container { 
-    display: flex; 
-    background: #f1f2f6; 
-    padding: 6px; 
-    border-radius: 12px; 
-}
-.sub-tab-btn { 
-    padding: 8px 20px; 
-    border: none; 
-    background: transparent; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    font-weight: 700; 
-    color: var(--text-muted); 
+.sub-tabs-container { display: flex; background: #f1f2f6; padding: 6px; border-radius: 12px; }
+.sub-tab-btn {
+    padding: 8px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--text-muted);
     font-size: 14px;
     transition: all 0.2s;
 }
-.sub-tab-btn.active { 
-    background: #fff; 
-    color: #000; 
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
-}
+.sub-tab-btn.active { background: #fff; color: #000; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 
-.season-tabs { 
-    display: flex; 
-    gap: 8px; 
-}
-.season-tab { 
-    padding: 8px 16px; 
-    border: 1px solid var(--border-color); 
-    background: #fff; 
-    border-radius: 20px; 
-    font-size: 13px; 
-    font-weight: 600; 
-    cursor: pointer; 
+.season-tabs { display: flex; gap: 8px; }
+.season-tab {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: #fff;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
     color: var(--text-muted);
-    transition: all 0.2s; 
+    transition: all 0.2s;
 }
-.season-tab:hover {
-    border-color: #ddd;
-    color: var(--text-primary);
-}
-.season-tab.active { 
-    background: var(--kakao-pastel-yellow); 
-    color: var(--kakao-brown); 
-    border-color: var(--kakao-pastel-yellow); 
+.season-tab:hover { border-color: #ddd; color: var(--text-primary); }
+.season-tab.active {
+    background: var(--kakao-pastel-yellow);
+    color: var(--kakao-brown);
+    border-color: var(--kakao-pastel-yellow);
     font-weight: 800;
 }
 
-/* Ranking cards */
-.ranking-card {
-    display: flex;
-    align-items: center;
-    padding: 20px 30px;
-    background: #fff;
-    border-bottom: 1px solid var(--border-color);
+/* Ranking Table */
+#ranking-list { overflow-x: auto; }
+
+.ranking-table {
+    width: 100%;
+    min-width: 1400px;
+    border-collapse: collapse;
+    font-size: 14px;
+    table-layout: fixed;
 }
-.rank-num { width: 50px; font-size: 24px; font-weight: 900; color: var(--kakao-brown); }
-.product-info { flex: 1; margin-left: 20px; }
-.name { font-size: 16px; font-weight: 700; }
-.stats { display: flex; gap: 30px; font-size: 12px; color: #999; }
+.ranking-table thead tr { background: #fafafa; border-bottom: 2px solid #eee; }
+.ranking-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+.ranking-table tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+.ranking-table tbody tr:hover { background: #fafafa; }
+.ranking-table td { padding: 14px 16px; vertical-align: top; }
+
+.ranking-table th:nth-child(1) { width: 100px; }  /* 순위 */
+.ranking-table th:nth-child(2) { width: 80px; }   /* 계절 */
+.ranking-table th:nth-child(3) { width: 100px; }  /* 상품코드 */
+.ranking-table th:nth-child(4) { width: 600px; }  /* 상품명 */
+.ranking-table th:nth-child(5) { width: 300px; }  /* 전략 */
+
+.rank-cell { font-size: 18px; font-weight: 900; color: var(--kakao-brown); }
+.name-cell { font-weight: 600; color: #222; line-height: 1.5; word-break: keep-all; }
+.code-cell { font-size: 12px; color: #aaa; font-family: monospace; white-space: nowrap; }
+.strategy-cell { font-size: 12px; color: #444; }
+.strategy-result { font-size: 12px; color: #444; line-height: 1.7; white-space: normal; word-break: keep-all; }
+
+.season-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
 
 /* Tooltip */
-.tooltip { position: absolute; background: #333; color: #fff; padding: 10px 15px; border-radius: 8px; font-size: 12px; z-index: 1000; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-.hidden { display: none; }
-
-/* 1. 테이블 전체 너비 강제 조정 */
-table {
-    width: 100% !important;
-    table-layout: fixed; /* 칸 너비를 고정 비율로 유지 */
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-/* 2. 각 칸(열)의 너비 비율 설정 (합쳐서 100%) */
-th:nth-child(1), td:nth-child(1) { width: 10%; } /* 순위 */
-th:nth-child(2), td:nth-child(2) { width: 20%; } /* 이미지 */
-th:nth-child(3), td:nth-child(3) { width: 50%; } /* 상품명 */
-th:nth-child(4), td:nth-child(4) { width: 20%; } /* 계절 */
-
-/* 3. 이미지 크기 최적화 */
-td img {
-    width: 100%;       /* 칸 너비에 맞춤 */
-    max-width: 60px;   /* 너무 커지지 않게 제한 */
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    border-radius: 6px;
-}
-
-/* 4. 모바일 전용 폰트 및 간격 조절 */
-@media screen and (max-width: 600px) {
-    header {
-        flex-direction: column; /* 제목과 메뉴를 위아래로 배치 */
-        align-items: flex-start;
-        padding: 30px 0 20px 0;
-    }
-    
-    h1 {
-        font-size: 20px; /* 제목 크기 축소 */
-        margin-bottom: 15px;
-    }
-
-    .tabs {
-        width: 100%; /* 탭 메뉴를 화면 가득 채움 */
-        overflow-x: auto; /* 메뉴가 많으면 옆으로 밀어서 보게 함 */
-    }
-
-    th, td {
-        font-size: 11px;    /* 글자 크기를 살짝 줄임 */
-        padding: 8px 2px;   /* 좌우 간격을 좁혀서 더 넓게 보이게 함 */
-        word-break: break-all; /* 긴 상품명 자동 줄바꿈 */
-    }
-
-    /* 이미지가 너무 커서 행 높이가 길어지는 것 방지 */
-    td img {
-        max-width: 45px; 
-    }
-}
-
 .tooltip {
     position: absolute;
-    background: rgba(0, 0, 0, 0.85); /* 배경을 약간 투명한 검정으로 */
+    background: rgba(0, 0, 0, 0.85);
     color: white;
     padding: 12px 16px;
     border-radius: 8px;
     font-size: 13px;
     z-index: 1000;
-    pointer-events: none; /* 마우스가 툴팁을 방해하지 않게 함 */
-    
-    /* 여기서부터 중요! */
-    max-width: 280px;      /* 가로 폭 제한 */
-    white-space: pre-wrap; /* 줄바꿈 허용 */
-    line-height: 1.6;      /* 줄 간격 조절 */
+    pointer-events: none;
+    max-width: 280px;
+    white-space: pre-wrap;
+    line-height: 1.6;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.hidden { display: none; }
+
+/* Mobile */
+@media screen and (max-width: 600px) {
+    header { flex-direction: column; align-items: flex-start; padding: 30px 0 20px 0; }
+    h1 { font-size: 20px; margin-bottom: 15px; }
+    .tabs { width: 100%; overflow-x: auto; }
 }

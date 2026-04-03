@@ -1,0 +1,163 @@
+[2026-03-31 14:33:02] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 14:33:02]   ├─ Current status: idle
+[2026-03-31 14:33:02]   ├─ Starting background thread...
+[2026-03-31 14:33:02] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 14:33:02]   └─ Background thread started
+[2026-03-31 14:33:02]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 14:33:04]   ├─ Subprocess error (code 1)
+[2026-03-31 14:33:04]   └─ Error: Traceback (most recent call last):
+  File "C:\Users\User\.gemini\antigravity\scratch\kakao_project\update_data.py", line 136, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\User\.gemini\antigravit
+[2026-03-31 14:33:04] ✓ Actual update took: 2초
+[2026-03-31 14:33:04]   ├─ Simulating remaining 178초...
+[2026-03-31 14:36:02] ✓ Update process completed successfully
+[2026-03-31 14:37:11] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 14:37:11]   ├─ Current status: completed
+[2026-03-31 14:37:11]   ├─ Starting background thread...
+[2026-03-31 14:37:11] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 14:37:11]   └─ Background thread started
+[2026-03-31 14:37:11]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 14:37:14]   ├─ Subprocess error (code 1)
+[2026-03-31 14:37:14]   └─ Error: Traceback (most recent call last):
+  File "C:\Users\User\.gemini\antigravity\scratch\kakao_project\update_data.py", line 136, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\User\.gemini\antigravit
+[2026-03-31 14:37:14] ✓ Actual update took: 3초
+[2026-03-31 14:37:14]   ├─ Simulating remaining 177초...
+[2026-03-31 14:40:11] ✓ Update process completed successfully
+[2026-03-31 14:40:32] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 14:40:32]   ├─ Current status: completed
+[2026-03-31 14:40:32]   ├─ Starting background thread...
+[2026-03-31 14:40:32]   └─ Background thread started
+ubprocess...
+[2026-03-31 14:40:32]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 14:40:34]   ├─ Subprocess error (code 1)
+[2026-03-31 14:40:34]   └─ Error: Traceback (most recent call last):
+  File "C:\Users\User\.gemini\antigravity\scratch\kakao_project\update_data.py", line 136, in <module>
+    main()
+    ~~~~^^
+  File "C:\Users\User\.gemini\antigravit
+[2026-03-31 14:40:34] ✓ Actual update took: 2초
+[2026-03-31 14:40:34]   ├─ Simulating remaining 178초...
+[2026-03-31 14:43:32] ✓ Update process completed successfully
+[2026-03-31 15:20:13] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 15:20:13]   ├─ Current status: completed
+[2026-03-31 15:20:13]   ├─ Starting background thread...
+[2026-03-31 15:20:13] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 15:20:13]   └─ Background thread started
+[2026-03-31 15:20:13]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 15:21:25]   ├─ Subprocess completed successfully
+[2026-03-31 15:21:25]   └─ Output: [INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep scroll...
+Scrolling... (0/25)
+Scrolling..
+[2026-03-31 15:21:25] ✓ Actual update took: 72초
+[2026-03-31 15:21:25]   ├─ Simulating remaining 108초...
+[2026-03-31 15:23:13] ✓ Update process completed successfully
+[2026-03-31 15:42:08] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 15:42:08]   ├─ Current status: completed
+[2026-03-31 15:42:08]   ├─ Starting background thread...
+[2026-03-31 15:42:08] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 15:42:08]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 15:43:22]   ├─ Subprocess completed successfully
+[2026-03-31 15:43:22]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-03-31 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-03-31 15:43:22] ✓ Actual update took: 74초
+[2026-03-31 15:43:22]   ├─ Simulating remaining 106초...
+[2026-03-31 15:45:08] ✓ Update process completed successfully
+[2026-03-31 15:56:06] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 15:56:06]   ├─ Current status: completed
+[2026-03-31 15:56:06]   ├─ Starting background thread...
+[2026-03-31 15:56:06] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 15:56:06]   └─ Background thread started
+[2026-03-31 15:56:06]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 15:56:51] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 15:56:51]   ├─ Current status: updating
+[2026-03-31 15:56:51]   └─ ❌ Update already in progress
+[2026-03-31 15:57:19]   ├─ Subprocess completed successfully
+[2026-03-31 15:57:19]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-03-31 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-03-31 15:57:19] ✓ Actual update took: 72초
+[2026-03-31 15:57:19]   ├─ Simulating remaining 108초...
+[2026-03-31 15:59:07] ✓ Update process completed successfully
+[2026-03-31 17:24:19] 🔔 [API] /api/update-ranking POST request received
+[2026-03-31 17:24:19]   ├─ Current status: idle
+[2026-03-31 17:24:19]   ├─ Starting background thread...
+[2026-03-31 17:24:19]   └─ Background thread started
+[2026-03-31 17:24:19] 
+📊 Starting ranking update via subprocess...
+[2026-03-31 17:24:19]   ├─ Launching subprocess: python update_data.py
+[2026-03-31 17:25:33]   ├─ Subprocess completed successfully
+[2026-03-31 17:25:33]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-03-31 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-03-31 17:25:33] ✓ Actual update took: 74초
+[2026-03-31 17:25:33]   ├─ Simulating remaining 106초...
+[2026-03-31 17:27:19] ✓ Update process completed successfully
+[2026-04-01 17:00:21] 🔔 [API] /api/update-ranking POST request received
+[2026-04-01 17:00:21]   ├─ Current status: idle
+[2026-04-01 17:00:21]   ├─ Starting background thread...
+[2026-04-01 17:00:21] 
+📊 Starting ranking update via subprocess...
+[2026-04-01 17:00:21]   └─ Background thread started
+[2026-04-01 17:00:21]   ├─ Launching subprocess: python update_data.py
+[2026-04-01 17:01:43]   ├─ Subprocess completed successfully
+[2026-04-01 17:01:43]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-03-31 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-04-01 17:01:43] ✓ Actual update took: 81초
+[2026-04-01 17:01:43]   ├─ Simulating remaining 99초...
+[2026-04-01 17:03:22] ✓ Update process completed successfully
+[2026-04-02 09:54:19] 🔔 [API] /api/update-ranking POST request received
+[2026-04-02 09:54:19]   ├─ Current status: completed
+[2026-04-02 09:54:19]   ├─ Starting background thread...
+[2026-04-02 09:54:19] 
+📊 Starting ranking update via subprocess...
+[2026-04-02 09:54:19]   └─ Background thread started
+[2026-04-02 09:54:19]   ├─ Launching subprocess: python update_data.py
+[2026-04-02 09:55:41]   ├─ Subprocess completed successfully
+[2026-04-02 09:55:41]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-04-01 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-04-02 09:55:41] ✓ Actual update took: 81초
+[2026-04-02 09:55:41]   ├─ Simulating remaining 99초...
+[2026-04-02 09:57:20] ✓ Update process completed successfully
+[2026-04-02 09:58:49] 🔔 [API] /api/update-ranking POST request received
+[2026-04-02 09:58:49]   ├─ Current status: completed
+[2026-04-02 09:58:49]   ├─ Starting background thread...
+[2026-04-02 09:58:49] 
+📊 Starting ranking update via subprocess...
+[2026-04-02 09:58:49]   └─ Background thread started
+[2026-04-02 09:58:49]   ├─ Launching subprocess: python update_data.py
+[2026-04-02 10:00:01]   ├─ Subprocess completed successfully
+[2026-04-02 10:00:01]   └─ Output: [INFO] 7일 전 데이터 없음, 대신 2026-04-02 데이터 사용
+[INFO] Loaded 602 products with season info
+Scraping Kakao Ranking: https://gift.kakao.com/ranking/category/3
+Selecting '베이비·키즈패션' category...
+Performing deep 
+[2026-04-02 10:00:01] ✓ Actual update took: 72초
+[2026-04-02 10:00:01]   ├─ Simulating remaining 108초...
+[2026-04-02 10:01:49] ✓ Update process completed successfully
+[2026-04-02 10:16:31] [TEST] /api/set-state -> failed (manual_test)
