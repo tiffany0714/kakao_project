@@ -112,7 +112,6 @@ async def scrape_kakao_ranking(page, url):
                     uniqueLinks.push(code);
                 }
             });
-            // 오즈키즈 상품 인덱스 찾기
             const ozCodes = ['11387692', '11446625', '12093091', '11239447', '12070123'];
             const ozIndices = ozCodes.map(c => ({ code: c, idx: uniqueLinks.indexOf(c) })).filter(x => x.idx >= 0);
             return {
@@ -142,17 +141,14 @@ async def scrape_kakao_ranking(page, url):
             if (txt.includes('오즈키즈') || txt.toUpperCase().includes('OZKIDS')) {
                 seenCodes.add(code);
 
-                // 순위 숫자를 li 안에서 직접 찾기
                 let rank = null;
 
-                // 방법 1: 순위 전용 엘리먼트
                 const rankEl = li && li.querySelector('.num_rank, .num_badge, .badge_rank, [class*="rank_num"], [class*="ranknum"]');
                 if (rankEl) {
                     const t = rankEl.innerText.trim();
                     if (/^\d+$/.test(t)) rank = parseInt(t);
                 }
 
-                // 방법 2: li 텍스트에서 맨 앞 숫자 추출
                 if (!rank) {
                     const lines = txt.split('\n').map(l => l.trim()).filter(l => l);
                     for (const line of lines) {
@@ -163,7 +159,6 @@ async def scrape_kakao_ranking(page, url):
                     }
                 }
 
-                // 방법 3: 부모 요소에서 순위 찾기
                 if (!rank) {
                     let parent = li && li.parentElement;
                     for (let i = 0; i < 3 && parent; i++) {
@@ -254,11 +249,8 @@ async def scrape_niece_ranking(page, url):
     except Exception as e:
         print("DEBUG diag error (niece):", e)
 
-    # 상단 고정 섹션 상품 수 파악
     fixed_count = await page.evaluate(r'''() => {
-        // 산모를 위한 선물 + 아이를 위한 선물 섹션 링크 수집
         const fixedCodes = new Set();
-        const allText = document.body.innerText;
         const sections = document.querySelectorAll('[class*="component"], [class*="section"], [class*="collection"]');
         sections.forEach(sec => {
             const txt = sec.innerText || '';
@@ -276,7 +268,6 @@ async def scrape_niece_ranking(page, url):
     ozkids_products = await page.evaluate(r'''() => {
         const results = [];
 
-        // 상단 고정 섹션 상품 코드 수집
         const fixedCodes = new Set();
         const sections = document.querySelectorAll('[class*="component"], [class*="section"], [class*="collection"]');
         sections.forEach(sec => {
