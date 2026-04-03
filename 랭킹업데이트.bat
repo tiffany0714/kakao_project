@@ -6,7 +6,7 @@ cd /d "%~dp0"
 :: 2. 설정 정보 (파니님 정보로 세팅됨)
 set GITHUB_USER=tiffany0714
 set REPO_NAME=kakao_project
-set TOKEN=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
+set TOKEN=YOUR_TOKEN_HERE
 set WORKFLOW_ID=daily_update.yml
 
 echo ==========================================
