@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-07-15T14:23:43.650253",
+  "last_updated": "2026-07-16T14:32:34.953926",
   "events": [
     {
       "area": "유아동 / 패션",
@@ -95,93 +95,107 @@
   ],
   "seasonal_ranking": [
     {
-      "rank": 20,
+      "rank": 28,
       "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260526133058_33aee25e9004411ba7a8058f52752ec4.jpg",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "11387692",
       "season": "여름"
     },
     {
-      "rank": 59,
+      "rank": 52,
+      "name": "[오즈키즈] 조카선물여아 샤인하트 유아 여아 샤 원피스",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "product_code": "12819540",
+      "season": "봄/가을"
+    },
+    {
+      "rank": 72,
       "name": "[오즈키즈] 조카선물남아 유아 아동복 어린이 남아 상하복 세트 5종 (택1)",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260508155613_ae006936c7d649f09d242069294f6fcf.jpg",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13566155",
       "season": "기타"
     },
     {
-      "rank": 99,
-      "name": "[오즈키즈] 세라픽 유아 여아 원피스",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260528133636_d1301cd147894041ab38e20fe92f2941.jpg",
-      "product_code": "13667562",
-      "season": "기타"
-    },
-    {
-      "rank": 122,
-      "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260709150416_6707a9e7463f44279a0f6de165c6d7c2.jpg",
-      "product_code": "11446625",
-      "season": "여름"
-    },
-    {
-      "rank": 162,
-      "name": "[오즈키즈] 조카선물/어린이선물 쿨썸머 유아 남아여아 매쉬 아쿠아 슬립온",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240523091232_2995d6772a974104b6d667e9cc63befd.jpg",
-      "product_code": "9852987",
-      "season": "여름"
-    },
-    {
-      "rank": 212,
+      "rank": 83,
       "name": "[오즈키즈] 조카선물 유아 아동 여아 남아 레인코드 우비 4종 (택1)",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13550332",
       "season": "기타"
     },
     {
-      "rank": 260,
+      "rank": 121,
       "name": "[오즈키즈] 조카선물여아 [선물포장] 유아 여아 여름 말랑말랑 젤리슈즈 BEST 6종 (택1)",
       "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260703113034_ff1f0454b740422fba67a54f12883117.jpg",
       "product_code": "9829259",
       "season": "여름"
     },
     {
-      "rank": 297,
-      "name": "[오즈키즈] 조카선물/어린이선물 블루리프 아동 여아 원피스",
+      "rank": 122,
+      "name": "[오즈키즈] 조카선물여아 유아 여아 어린이 원피스 가방세트 4종 (택1)",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260702113556_9c0608916e7e4bc5a15dc52d8df0b06c.jpg",
+      "product_code": "13479918",
+      "season": "기타"
+    },
+    {
+      "rank": 129,
+      "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-      "product_code": "11387748",
+      "product_code": "11446625",
       "season": "여름"
     },
     {
-      "rank": 436,
-      "name": "[오즈키즈] 조카선물/어린이선물 모기장옷 남아 여아 상하복 세트",
-      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-      "product_code": "7115361",
+      "rank": 219,
+      "name": "[오즈키즈] 조카선물/여아선물 바다공주LED 유아 여아 젤리슈즈",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250701173154_67eb30f900a644e8a40f42eba100341d.jpg",
+      "product_code": "2065190",
       "season": "여름"
     },
     {
-      "rank": 473,
+      "rank": 301,
+      "name": "[오즈키즈] 조카선물/어린이선물 로벨리아 여아 여름 원피스 (가방세트)",
+      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240508154149_c8ead97870a1421189e55558bfff802b.jpg",
+      "product_code": "9782673",
+      "season": "여름"
+    },
+    {
+      "rank": 330,
+      "name": "[오즈키즈] 조카선물여아 [어린이선물] 블룸 유아 여아 슬립온",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "product_code": "11494581",
+      "season": "봄/가을"
+    },
+    {
+      "rank": 349,
+      "name": "[오즈키즈] 여아조카선물 매직캐슬LED 유아 여름 샌들",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "product_code": "7141756",
+      "season": "여름"
+    },
+    {
+      "rank": 375,
+      "name": "[오즈키즈] 조카선물 [카카오단독] 썸머프렌즈 유아 여아 남아 반팔 아트웍 링거 티셔츠",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "product_code": "13762541",
+      "season": "기타"
+    },
+    {
+      "rank": 448,
+      "name": "[오즈키즈] 조카선물/어린이선물 오즈키즈 신발 운동화 유아신발 슬립온 5종 (택1)",
+      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+      "product_code": "11390217",
+      "season": "봄/가을"
+    },
+    {
+      "rank": 463,
       "name": "[오즈키즈] 조카선물여아 리본튜튜 유아 여아 원피스",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13213223",
-      "season": "여름"
-    },
-    {
-      "rank": 481,
-      "name": "[오즈키즈] 조카선물 에어로 유아 아동 어린이 키즈 아쿠아 메쉬 운동화",
-      "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260624152744_ad91a3d9741d46f6b9c556f5786516f4.jpg",
-      "product_code": "2486233",
-      "season": "여름"
-    },
-    {
-      "rank": 487,
-      "name": "[오즈키즈] 조카선물/어린이선물 모비아쿠아 유아 남아 여아 메쉬 샌들",
-      "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-      "product_code": "2026325",
       "season": "여름"
     }
   ],
   "niece_ranking": [
     {
-      "rank": 70,
+      "rank": 68,
       "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "11387692",
@@ -209,63 +223,63 @@
       "season": "기타"
     },
     {
-      "rank": 219,
+      "rank": 218,
       "name": "[오즈키즈] 조카선물/어린이선물 모기장옷 남아 여아 상하복 세트",
       "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250415151705_14f552b4062b42f39b41e87448bdb36a.jpg",
       "product_code": "7115361",
       "season": "여름"
     },
     {
-      "rank": 243,
+      "rank": 242,
       "name": "[오즈키즈] 조카선물/어린이선물 [선물포장] 브리드 여아 남아 편안한 매쉬 샌들",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "2518473",
       "season": "여름"
     },
     {
-      "rank": 253,
+      "rank": 252,
       "name": "[오즈키즈] 조카선물/어린이선물 여아 남아 물놀이 시원한 아쿠아슈즈 11종 (택1)",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "9923281",
       "season": "여름"
     },
     {
-      "rank": 277,
+      "rank": 276,
       "name": "[오즈키즈] 조카선물 [카카오단독] 썸머프렌즈 유아 여아 남아 반팔 아트웍 링거 티셔츠",
       "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260619105420_87a0a1d6cee64688a5792a623d1b919b.jpg",
       "product_code": "13762541",
       "season": "기타"
     },
     {
-      "rank": 278,
+      "rank": 277,
       "name": "[오즈키즈] 조카선물/어린이선물 [카카오단독] 포에버홀스 유아 여아 남아 아기 링거 티셔츠",
       "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260625175819_ba494a90a9ca4876b81df3e5453bda82.jpg",
       "product_code": "13802588",
       "season": "기타"
     },
     {
-      "rank": 280,
+      "rank": 279,
       "name": "[오즈키즈] 조카선물 [카카오단독] 르구떼썸머 유아 여아 남아 반팔 아트웍 링거 티셔츠",
       "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260619104539_06f5dad22cd947408be6cdc73f4aef0b.jpg",
       "product_code": "13762527",
       "season": "기타"
     },
     {
-      "rank": 281,
+      "rank": 280,
       "name": "[오즈키즈] 조카선물/어린이선물 [카카오단독] 보더토끼 유아 남아 여아 아기 링거 티셔츠",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13802604",
       "season": "기타"
     },
     {
-      "rank": 287,
+      "rank": 285,
       "name": "[오즈키즈] 조카선물 유아 여아 아동 여아 남아 수영복 5종 (택1)",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13801670",
       "season": "기타"
     },
     {
-      "rank": 288,
+      "rank": 286,
       "name": "[오즈키즈] 조카선물 퐁퐁에어 유아 아동 어린이 아쿠아 운동화",
       "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
       "product_code": "13791586",
@@ -273,118 +287,6 @@
     }
   ],
   "history": [
-    {
-      "date": "2026-06-16",
-      "seasonal_ranking": [
-        {
-          "rank": 19,
-          "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
-          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260526133058_33aee25e9004411ba7a8058f52752ec4.jpg",
-          "product_code": "11387692",
-          "season": "여름"
-        },
-        {
-          "rank": 40,
-          "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
-          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260319155726_bf6095a6690146a481b3e05d974c1ac5.jpg",
-          "product_code": "11446625",
-          "season": "여름"
-        },
-        {
-          "rank": 57,
-          "name": "[오즈키즈] 조카선물/어린이선물 로벨리아 여아 여름 원피스 (가방세트)",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "9782673",
-          "season": "여름"
-        },
-        {
-          "rank": 262,
-          "name": "[오즈키즈] 조카선물 팅클텝LED 유아 남아 여아 장화 가벼운 키즈 레인부츠",
-          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260616132211_af76bf46e72d4812a66b59483bb07f67.jpg",
-          "product_code": "13043305",
-          "season": "사계절"
-        },
-        {
-          "rank": 310,
-          "name": "[오즈키즈] 조카선물/여아선물 판타아일랜드 여아 원피스 잡화세트",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "7115898",
-          "season": "여름"
-        },
-        {
-          "rank": 437,
-          "name": "[오즈키즈] 조카선물/어린이선물 모비아쿠아 유아 남아 여아 메쉬 샌들",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "2026325",
-          "season": "여름"
-        },
-        {
-          "rank": 448,
-          "name": "[오즈키즈] 세라픽 유아 여아 원피스",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "13667562",
-          "season": "기타"
-        },
-        {
-          "rank": 464,
-          "name": "[오즈키즈] 조카선물/여아선물 바다공주LED 유아 여아 젤리슈즈",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "2065190",
-          "season": "여름"
-        },
-        {
-          "rank": 466,
-          "name": "[오즈키즈] 조카선물여아 블랙리본 유아 여아 상하복 세트",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "9576155",
-          "season": "여름"
-        }
-      ],
-      "niece_ranking": [
-        {
-          "rank": 82,
-          "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
-          "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260526133058_33aee25e9004411ba7a8058f52752ec4.jpg",
-          "product_code": "11387692",
-          "season": "여름"
-        },
-        {
-          "rank": 96,
-          "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "11446625",
-          "season": "여름"
-        },
-        {
-          "rank": 155,
-          "name": "[오즈키즈] 조카선물/어린이선물 로벨리아 여아 여름 원피스 (가방세트)",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "9782673",
-          "season": "여름"
-        },
-        {
-          "rank": 156,
-          "name": "[오즈키즈] 조카선물여아 유아 공주 여름 여아원피스 7종 (택1)",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "11444785",
-          "season": "여름"
-        },
-        {
-          "rank": 188,
-          "name": "[오즈키즈] 조카선물여아 유아 여아 어린이 원피스 가방세트 4종 (택1)",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "13479918",
-          "season": "기타"
-        },
-        {
-          "rank": 227,
-          "name": "[오즈키즈] 조카선물 크링클쿨 유아 여아남아 상하복 세트",
-          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
-          "product_code": "13213129",
-          "season": "여름"
-        }
-      ]
-    },
     {
       "date": "2026-06-17",
       "seasonal_ranking": [
@@ -4753,6 +4655,202 @@
         },
         {
           "rank": 288,
+          "name": "[오즈키즈] 조카선물 퐁퐁에어 유아 아동 어린이 아쿠아 운동화",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13791586",
+          "season": "기타"
+        }
+      ]
+    },
+    {
+      "date": "2026-07-16",
+      "seasonal_ranking": [
+        {
+          "rank": 28,
+          "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11387692",
+          "season": "여름"
+        },
+        {
+          "rank": 52,
+          "name": "[오즈키즈] 조카선물여아 샤인하트 유아 여아 샤 원피스",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "12819540",
+          "season": "봄/가을"
+        },
+        {
+          "rank": 72,
+          "name": "[오즈키즈] 조카선물남아 유아 아동복 어린이 남아 상하복 세트 5종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13566155",
+          "season": "기타"
+        },
+        {
+          "rank": 83,
+          "name": "[오즈키즈] 조카선물 유아 아동 여아 남아 레인코드 우비 4종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13550332",
+          "season": "기타"
+        },
+        {
+          "rank": 121,
+          "name": "[오즈키즈] 조카선물여아 [선물포장] 유아 여아 여름 말랑말랑 젤리슈즈 BEST 6종 (택1)",
+          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260703113034_ff1f0454b740422fba67a54f12883117.jpg",
+          "product_code": "9829259",
+          "season": "여름"
+        },
+        {
+          "rank": 122,
+          "name": "[오즈키즈] 조카선물여아 유아 여아 어린이 원피스 가방세트 4종 (택1)",
+          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260702113556_9c0608916e7e4bc5a15dc52d8df0b06c.jpg",
+          "product_code": "13479918",
+          "season": "기타"
+        },
+        {
+          "rank": 129,
+          "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11446625",
+          "season": "여름"
+        },
+        {
+          "rank": 219,
+          "name": "[오즈키즈] 조카선물/여아선물 바다공주LED 유아 여아 젤리슈즈",
+          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250701173154_67eb30f900a644e8a40f42eba100341d.jpg",
+          "product_code": "2065190",
+          "season": "여름"
+        },
+        {
+          "rank": 301,
+          "name": "[오즈키즈] 조카선물/어린이선물 로벨리아 여아 여름 원피스 (가방세트)",
+          "img": "https://img1.kakaocdn.net/thumb/C175x175@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20240508154149_c8ead97870a1421189e55558bfff802b.jpg",
+          "product_code": "9782673",
+          "season": "여름"
+        },
+        {
+          "rank": 330,
+          "name": "[오즈키즈] 조카선물여아 [어린이선물] 블룸 유아 여아 슬립온",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11494581",
+          "season": "봄/가을"
+        },
+        {
+          "rank": 349,
+          "name": "[오즈키즈] 여아조카선물 매직캐슬LED 유아 여름 샌들",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "7141756",
+          "season": "여름"
+        },
+        {
+          "rank": 375,
+          "name": "[오즈키즈] 조카선물 [카카오단독] 썸머프렌즈 유아 여아 남아 반팔 아트웍 링거 티셔츠",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13762541",
+          "season": "기타"
+        },
+        {
+          "rank": 448,
+          "name": "[오즈키즈] 조카선물/어린이선물 오즈키즈 신발 운동화 유아신발 슬립온 5종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11390217",
+          "season": "봄/가을"
+        },
+        {
+          "rank": 463,
+          "name": "[오즈키즈] 조카선물여아 리본튜튜 유아 여아 원피스",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13213223",
+          "season": "여름"
+        }
+      ],
+      "niece_ranking": [
+        {
+          "rank": 68,
+          "name": "[오즈키즈] 조카선물여아 유아 여름 아기 여아 원피스 가방세트 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11387692",
+          "season": "여름"
+        },
+        {
+          "rank": 94,
+          "name": "[오즈키즈] 조카선물여아 유아 여아 여름 상하복 세트 8종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "11446625",
+          "season": "여름"
+        },
+        {
+          "rank": 167,
+          "name": "[오즈키즈] 조카선물여아 유아 여아 어린이 원피스 가방세트 4종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13479918",
+          "season": "기타"
+        },
+        {
+          "rank": 185,
+          "name": "[오즈키즈] 조카선물남아 유아 아동복 어린이 남아 상하복 세트 5종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13566155",
+          "season": "기타"
+        },
+        {
+          "rank": 218,
+          "name": "[오즈키즈] 조카선물/어린이선물 모기장옷 남아 여아 상하복 세트",
+          "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20250415151705_14f552b4062b42f39b41e87448bdb36a.jpg",
+          "product_code": "7115361",
+          "season": "여름"
+        },
+        {
+          "rank": 242,
+          "name": "[오즈키즈] 조카선물/어린이선물 [선물포장] 브리드 여아 남아 편안한 매쉬 샌들",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "2518473",
+          "season": "여름"
+        },
+        {
+          "rank": 252,
+          "name": "[오즈키즈] 조카선물/어린이선물 여아 남아 물놀이 시원한 아쿠아슈즈 11종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "9923281",
+          "season": "여름"
+        },
+        {
+          "rank": 276,
+          "name": "[오즈키즈] 조카선물 [카카오단독] 썸머프렌즈 유아 여아 남아 반팔 아트웍 링거 티셔츠",
+          "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260619105420_87a0a1d6cee64688a5792a623d1b919b.jpg",
+          "product_code": "13762541",
+          "season": "기타"
+        },
+        {
+          "rank": 277,
+          "name": "[오즈키즈] 조카선물/어린이선물 [카카오단독] 포에버홀스 유아 여아 남아 아기 링거 티셔츠",
+          "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260625175819_ba494a90a9ca4876b81df3e5453bda82.jpg",
+          "product_code": "13802588",
+          "season": "기타"
+        },
+        {
+          "rank": 279,
+          "name": "[오즈키즈] 조카선물 [카카오단독] 르구떼썸머 유아 여아 남아 반팔 아트웍 링거 티셔츠",
+          "img": "https://img1.kakaocdn.net/thumb/C138x138@2x.q82/?fname=https%3A%2F%2Fst.kakaocdn.net%2Fproduct%2Fgift%2Fproduct%2F20260619104539_06f5dad22cd947408be6cdc73f4aef0b.jpg",
+          "product_code": "13762527",
+          "season": "기타"
+        },
+        {
+          "rank": 280,
+          "name": "[오즈키즈] 조카선물/어린이선물 [카카오단독] 보더토끼 유아 남아 여아 아기 링거 티셔츠",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13802604",
+          "season": "기타"
+        },
+        {
+          "rank": 285,
+          "name": "[오즈키즈] 조카선물 유아 여아 아동 여아 남아 수영복 5종 (택1)",
+          "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
+          "product_code": "13801670",
+          "season": "기타"
+        },
+        {
+          "rank": 286,
           "name": "[오즈키즈] 조카선물 퐁퐁에어 유아 아동 어린이 아쿠아 운동화",
           "img": "https://st.kakaocdn.net/commerce_ui/static/common_module/default_fallback_thumbnail.png",
           "product_code": "13791586",
